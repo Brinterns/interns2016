@@ -1,7 +1,7 @@
 {
-  "name": "intern-demo",
+  "name": "interns2016",
   "version": "0.0.1",
-  "description": "Intern Demo",
+  "description": "Interns 2016",
   "main": "app.js",
   "engines": {
     "node" : ">=5.8.0"
