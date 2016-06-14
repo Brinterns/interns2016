@@ -1,3 +1,3 @@
-require('./cloak-server');
+var server = require('./server');
 
-module.exports = require('./server');
+require('./cloak-server')(server);

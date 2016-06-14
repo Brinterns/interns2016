@@ -6,7 +6,7 @@ export default class Lobby extends Component {
             // TODO: Add configuration
         });
 
-        cloak.run('http://localhost:8090');
+        cloak.run('http://localhost:8080');
     }
 
     render() {

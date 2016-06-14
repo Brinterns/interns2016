@@ -1,9 +1,9 @@
 var cloak = require('cloak');
 
-var config = require('./config');
+module.exports = function(expressServer) {
+    cloak.configure({
+        express: expressServer
+    });
 
-cloak.configure({
-    port: config.cloakPort
-});
-
-cloak.run();
+    cloak.run();
+};
