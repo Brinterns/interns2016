@@ -4,7 +4,7 @@
   "description": "Interns 2016",
   "main": "app.js",
   "engines": {
-    "node" : ">=5.8.0"
+    "node": ">=5.8.0"
   },
   "scripts": {
     "build": "gulp build",
@@ -28,6 +28,7 @@
     "gulp": "gulpjs/gulp#4.0",
     "gulp-concat": "^2.6.0",
     "gulp-load-plugins": "^1.2.0",
+    "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "jquery": "^2.2.0",
     "node-sass": "^3.7.0",
@@ -61,7 +62,7 @@
   },
   "repository": {
     "type": "git",
-    "url" : "https://github.com/Brinterns/interns2016.git"
+    "url": "https://github.com/Brinterns/interns2016.git"
   },
   "author": "Kenneth Gray",
   "license": "ISC"

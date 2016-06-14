@@ -3,8 +3,11 @@ var path = require('path');
 var root = path.resolve(__dirname, '../../');
 var src = path.join(root, 'src');
 var dist = path.join(root, 'dist');
+
 var clientSrc = path.join(src, 'client');
+var clientSrcConfig = path.join(clientSrc, 'config');
 var clientDist = path.join(dist, 'client');
+
 var serverSrc = path.join(src, 'server');
 var serverSrcGlob = path.join(serverSrc, '**/*');
 var serverDist = path.join(dist, 'server');
@@ -15,6 +18,12 @@ module.exports = {
     dist: dist,
     client: {
         src: clientSrc,
+        config: {
+            name: 'config.js',
+            dev: path.join(clientSrcConfig, 'config.dev.js'),
+            prod: path.join(clientSrcConfig, 'config.prod.js'),
+            dest: clientSrcConfig
+        },
         index: path.join(clientSrc, 'index.html'),
         dist: {
             location: clientDist,

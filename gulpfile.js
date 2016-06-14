@@ -11,6 +11,7 @@ gulp.task('clean', clean);
 gulp.task('build', build());
 
 gulp.task('demo', gulp.series(
+    enableDemo,
     build(),
     startServer,
     openBrowser
@@ -48,12 +49,38 @@ function build() {
 }
 
 function buildClient() {
-    return gulp.parallel(
-        buildClientIndex,
-        buildClientCssVendors,
-        buildClientJsVendors,
-        buildClientWebpack
+    return gulp.series(
+        buildClientConfig,
+        gulp.parallel(
+            buildClientIndex,
+            buildClientCssVendors,
+            buildClientJsVendors,
+            buildClientWebpack
+        )
     );
+}
+
+var buildClientConfigHasRun = false;
+function buildClientConfig(done) {
+    if(buildClientConfigHasRun) {
+        done();
+
+        return;
+    }
+
+    buildClientConfigHasRun = true;
+
+    var stream;
+
+    if(args.dev || args.demo) {
+        stream = gulp.src(locationConfig.client.config.dev);
+    } else {
+        stream = gulp.src(locationConfig.client.config.prod);
+    }
+
+    return stream
+        .pipe($.rename(locationConfig.client.config.name))
+        .pipe(gulp.dest(locationConfig.client.config.dest));
 }
 
 function buildClientIndex() {
@@ -149,6 +176,11 @@ function enableDev(done) {
     done();
 }
 
+function enableDemo(done) {
+    args.demo = true;
+    done();
+}
+
 function startServer(done) {
     var nodemon = require('nodemon');
     nodemon({
@@ -164,6 +196,16 @@ function openBrowser(done) {
 
     opn(serverAddress);
     done();
+}
+
+function test() {
+    return gulp.series(
+        buildClientConfig,
+        gulp.parallel(
+            testClient,
+            testServer
+        )
+    )
 }
 
 function testClient(done) {
@@ -188,11 +230,4 @@ function testServer(done) {
     if(args.dev) {
         gulp.watch(locationConfig.server.srcGlob, testServer);
     }
-}
-
-function test() {
-    return gulp.parallel(
-        testClient,
-        testServer
-    )
 }
