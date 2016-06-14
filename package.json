@@ -10,7 +10,7 @@
     "build": "gulp build",
     "demo": "gulp demo",
     "dev": "gulp dev",
-    "start": "node dist/server",
+    "start": "npm run build && node dist/server",
     "test": "gulp test"
   },
   "dependencies": {
