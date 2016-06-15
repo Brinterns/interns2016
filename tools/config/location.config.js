@@ -20,6 +20,7 @@ module.exports = {
         src: clientSrc,
         config: {
             name: 'config.js',
+            local: path.join(clientSrcConfig, 'config.local.js'),
             dev: path.join(clientSrcConfig, 'config.dev.js'),
             prod: path.join(clientSrcConfig, 'config.prod.js'),
             dest: clientSrcConfig

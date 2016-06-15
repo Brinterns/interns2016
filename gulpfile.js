@@ -73,6 +73,8 @@ function buildClientConfig(done) {
     var stream;
 
     if(args.dev || args.demo) {
+        stream = gulp.src(locationConfig.client.config.local);
+    } else if(process.env.BUILD_ENV === 'dev') {
         stream = gulp.src(locationConfig.client.config.dev);
     } else {
         stream = gulp.src(locationConfig.client.config.prod);

@@ -6,3 +6,7 @@ deployment:
     branch: master
     heroku:
       appname: decrementer
+  dev:
+    branch: develop
+    heroku:
+      appname: decrementer-dev

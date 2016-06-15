@@ -1,3 +1,3 @@
 export default {
-    cloakAddress: 'http://localhost:8080'
+    cloakAddress: 'http://decrementer-dev.herokuapp.com'
 };
