@@ -10,10 +10,10 @@ module.exports = function(config) {
         frameworks: ['jasmine'],
         reporters: ['mocha'],
         files: [
-            '**/*.spec.js*'
+            '**/*.spec.js'
         ],
         preprocessors: {
-            '**/*.js*': ['webpack']
+            '**/*.js': ['webpack']
         },
         webpack: webpack,
         webpackMiddleware: {

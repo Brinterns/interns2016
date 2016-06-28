@@ -19,7 +19,7 @@ var configDev = cloneWith(configShared, {
     ]
 }, true);
 
-// Add react hot loader to js/jsx loader
+// Add react hot loader to js loader
 configDev.module.loaders[0].query.plugins = ['react-hot-loader/babel'];
 
 module.exports = configDev;
