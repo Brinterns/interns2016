@@ -17,7 +17,7 @@ var configTest = cloneWith(configShared, {
     }
 }, true);
 
-// Add rewire to js/jsx loader
+// Add rewire to js loader
 configTest.module.loaders[0].query.plugins = ['rewire'];
 
 module.exports = configTest;

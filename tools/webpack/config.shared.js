@@ -4,19 +4,16 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var locationConfig = require('../config/location.config');
 
 module.exports = {
-    entry: path.join(locationConfig.client.src, 'index.jsx'),
+    entry: path.join(locationConfig.client.src, 'index.js'),
     output: {
         path: locationConfig.client.dist.location,
         filename: 'js/bundle.js',
         publicPath: locationConfig.publicPath
     },
-    resolve: {
-        extensions: ['', '.jsx', '.js']
-    },
     module: {
         loaders: [
             {
-                test: /\.jsx?$/,
+                test: /\.js$/,
                 loader: 'babel',
                 query: {
                     presets: ['es2015', 'react']
