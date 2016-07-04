@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
+import { connect, dispatch } from 'react-redux';
 
 import config from '../config/config';
-import Lobby from './lobby'
-import RoomList from './room-list'
-import RoomCreator from './room-creator'
+import Lobby from './lobby';
+import RoomList from './room-list';
+import RoomCreator from './room-creator';
+
+import { refreshLobby } from '../actions';
 
 import style from './lobby.scss'
 
-export default  class LobbyPage extends Component {
+export class LobbyPage extends Component {
     componentWillMount() {
         cloak.configure({
-            // TODO: Add configuration
+            messages: {
+                refreshLobby: arg => {
+                    this.props.refreshLobby(arg);
+                }
+            }
         });
 
         cloak.run(config.cloakAddress);
@@ -19,10 +26,27 @@ export default  class LobbyPage extends Component {
     render() {
         return (
             <div className={'container-fluid '+ style.lobbyHeader}>
-                <Lobby />
+                <Lobby lobbyUsers={this.props.lobbyUsers}/>
                 <RoomList />
                 <RoomCreator />
             </div>
         );
     }
 };
+
+const mapStateToProps = (state) => ({
+    lobbyUsers: state.lobbyUsers
+});
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        refreshLobby: arg => {
+            dispatch(refreshLobby(arg));
+        }
+    }
+}
+
+export default connect (
+    mapStateToProps,
+    mapDispatchToProps
+)(LobbyPage);
