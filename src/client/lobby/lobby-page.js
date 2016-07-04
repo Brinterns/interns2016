@@ -8,8 +8,6 @@ import RoomCreator from './room-creator';
 
 import { refreshLobby } from '../actions';
 
-import style from './lobby.scss'
-
 export class LobbyPage extends Component {
     componentWillMount() {
         cloak.configure({
@@ -25,7 +23,7 @@ export class LobbyPage extends Component {
 
     render() {
         return (
-            <div className={'container-fluid '+ style.lobbyHeader}>
+            <div className='container-fluid'>
                 <Lobby lobbyUsers={this.props.lobbyUsers}/>
                 <RoomList />
                 <RoomCreator />
