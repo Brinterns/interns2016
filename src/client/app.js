@@ -1,8 +1,10 @@
 import React from 'react';
-import Lobby from './lobby/lobby';
+import LobbyPage from './lobby/lobby-page';
+
+import style from './app.scss'
 
 export default () => (
-    <div className="container">
-        <Lobby />
+    <div >
+        <LobbyPage />
     </div>
 );
