@@ -9,12 +9,12 @@ export default class RoomCreator extends Component {
                 <h2>Create Room & Set Username</h2>
                 <div className="row">
                     <input type="text" placeholder="Please type your new username"></input>
-                    <button className="btn btn-primary">Set Username</button>
+                    <button className="btn btn-success">Set Username</button>
                 </div>
                 <br></br>
                 <div className="row">
                     <input type="text" placeholder="Please type new room name"></input>
-                    <button className="btn btn-primary">Create Room</button>
+                    <button className="btn btn-success">Create Room</button>
                 </div>
             </div>
         );
