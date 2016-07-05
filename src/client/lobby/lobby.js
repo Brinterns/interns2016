@@ -35,7 +35,7 @@ export class Lobby extends Component {
                 </div>
                 <div className="container-fluid">
                     <UserList lobbyUsers={this.props.lobbyUsers} />
-                    <RoomList />
+                    <RoomList roomList={[]}/>
                     <RoomCreator setUsername={this.setUsername}/>
                 </div>
             </div>
