@@ -18,7 +18,7 @@ export default  class LobbyPage extends Component {
 
     render() {
         return (
-            <div className={"container-fluid "+ style.lobbyHeader}>
+            <div className={"container-fluid "+style.lobbyHeader}>
                 <Lobby />
                 <RoomList />
                 <RoomCreator />
