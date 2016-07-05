@@ -24,7 +24,7 @@ module.exports = function(expressServer) {
 };
 
 function fireLobbyReload(){
-    let lobby = cloak.getLobby();
-    let list = lobby.getMembers(true);
+    var lobby = cloak.getLobby();
+    var list = lobby.getMembers(true);
     lobby.messageMembers('refreshLobby', list);
 }
