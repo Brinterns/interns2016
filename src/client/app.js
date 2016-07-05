@@ -1,8 +1,8 @@
 import React from 'react';
-import LobbyPage from './lobby/lobby-page';
+import Lobby from './lobby/lobby';
 
 export default () => (
     <div>
-        <LobbyPage />
+        <Lobby />
     </div>
 );

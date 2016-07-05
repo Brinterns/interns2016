@@ -6,6 +6,6 @@ import RoomList from './room-list';
 describe('<RoomList />', () => {
     it('contains "Rooms Available" heading', () => {
         const wrapper = shallow(<RoomList />);
-        expect(wrapper.find('h1').text()).toEqual('Rooms Available');
+        expect(wrapper.find('h2').text()).toEqual('Rooms Available');
     });
 });
