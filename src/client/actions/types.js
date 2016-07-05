@@ -1,0 +1,1 @@
+export const UPDATE_LOBBY_LIST = 'UPDATE_LOBBY_LIST';

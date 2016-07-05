@@ -1,10 +1,7 @@
 import { combineReducers } from 'redux';
 
-const fake = () => {
-    return null;
-};
+import lobbyUsers from './lobby-users'
 
 export default combineReducers({
-    // TODO: Add reducers
-    fake
+    lobbyUsers
 });

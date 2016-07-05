@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Lobby from './lobby';
+import { Lobby } from './lobby';
 
 describe('<Lobby />', () => {
     beforeEach(() => {
