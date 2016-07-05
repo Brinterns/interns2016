@@ -8,7 +8,7 @@ export default function UserList(props) {
     return (
         <div className="col-lg-4 text-center">
             <h2>User List</h2>
-            <div className={style['list-areas']}>
+            <div className={`pre-scrollable ${style["list-areas"]}`}>
                 {props.lobbyUsers.map( result => {
                     return (
                         <p className='row' key={result['id']}>
