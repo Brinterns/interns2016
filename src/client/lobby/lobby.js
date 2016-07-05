@@ -23,6 +23,10 @@ export class Lobby extends Component {
         cloak.run(config.cloakAddress);
     }
 
+    setUsername(arg){
+        cloak.message('setUsername',arg);
+    }
+
     render() {
         return (
             <div>
@@ -32,7 +36,7 @@ export class Lobby extends Component {
                 <div className="container-fluid">
                     <UserList lobbyUsers={this.props.lobbyUsers} />
                     <RoomList />
-                    <RoomCreator />
+                    <RoomCreator setUsername={this.setUsername}/>
                 </div>
             </div>
         );
