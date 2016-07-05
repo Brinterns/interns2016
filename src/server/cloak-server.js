@@ -16,6 +16,12 @@ module.exports = function(expressServer) {
             disconnect: (user) => {
                 cloak.getLobby().removeMember(user);
             }
+        },
+        messages: {
+            setUsername: (arg, user) => {
+                user.name = arg;
+                fireLobbyReload();
+            }
         }
 
     });
@@ -24,7 +30,7 @@ module.exports = function(expressServer) {
 };
 
 function fireLobbyReload(){
-    let lobby = cloak.getLobby();
-    let list = lobby.getMembers(true);
+    var lobby = cloak.getLobby();
+    var list = lobby.getMembers(true);
     lobby.messageMembers('refreshLobby', list);
 }
