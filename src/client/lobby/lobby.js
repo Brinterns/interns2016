@@ -11,7 +11,6 @@ import { refreshLobby } from '../actions';
 import style from './lobby.scss';
 
 export class Lobby extends Component {
-
     componentWillMount() {
         cloak.configure({
             messages: {
