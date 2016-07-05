@@ -30,7 +30,7 @@ export class Lobby extends Component {
                     <h1>Lobby</h1>
                 </div>
                 <div className="container-fluid">
-                    <UserList lobbyUsers={this.props.lobbyUsers}/>
+                    <UserList lobbyUsers={this.props.lobbyUsers} />
                     <RoomList />
                     <RoomCreator />
                 </div>
@@ -39,11 +39,11 @@ export class Lobby extends Component {
     }
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     lobbyUsers: state.lobbyUsers
 });
 
-const mapDispatchToProps = (dispatch) =>{
+const mapDispatchToProps = dispatch =>{
     return {
         refreshLobby: arg => {
             dispatch(refreshLobby(arg));
