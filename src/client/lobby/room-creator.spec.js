@@ -8,4 +8,11 @@ describe('<RoomCreator />', () => {
         const wrapper = shallow(<RoomCreator />);
         expect(wrapper.find('h2').text()).toEqual('Create Room & Set Username');
     });
+    it('renders "Set Username and Create Room" buttons', () => {
+        const names = ['Set Username', 'Create Room'];
+        const wrapper = shallow(<RoomCreator />);
+        wrapper.find('button').forEach((current, index) => {
+            expect(current.text()).toEqual(names[index]);
+        });
+    });
 });
