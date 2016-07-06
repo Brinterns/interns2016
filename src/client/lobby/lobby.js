@@ -7,6 +7,7 @@ import RoomList from './room-list';
 import RoomCreator from './room-creator';
 
 import { refreshLobby } from '../actions';
+import { refreshRooms } from '../actions';
 
 import style from './lobby.scss';
 
@@ -25,6 +26,9 @@ export class Lobby extends Component {
                 updateData: arg => {
                     localStorage['id'] = arg.id;
                     localStorage['name'] = arg.name;
+                },
+                refreshRooms: arg => {
+                    this.props.refreshRooms(arg);
                 }
             },
             initialData: {
@@ -41,6 +45,10 @@ export class Lobby extends Component {
         localStorage['name'] = arg;
     }
 
+    createRoom(arg){
+        cloak.message('createRoom', arg);
+    }
+
     render() {
         return (
             <div>
@@ -49,8 +57,8 @@ export class Lobby extends Component {
                 </div>
                 <div className="container-fluid">
                     <UserList lobbyUsers={this.props.lobbyUsers} />
-                    <RoomList roomList={[]}/>
-                    <RoomCreator setUsername={this.setUsername}/>
+                    <RoomList roomList={this.props.activeRooms}/>
+                    <RoomCreator setUsername={this.setUsername} setRoomname={this.createRoom}/>
                 </div>
             </div>
         );
@@ -58,13 +66,17 @@ export class Lobby extends Component {
 };
 
 const mapStateToProps = state => ({
-    lobbyUsers: state.lobbyUsers
+    lobbyUsers: state.lobbyUsers,
+    activeRooms: state.activeRooms
 });
 
 const mapDispatchToProps = dispatch => {
     return {
         refreshLobby: arg => {
             dispatch(refreshLobby(arg));
+        },
+        refreshRooms: arg => {
+            dispatch(refreshRooms(arg));
         }
     }
 };
