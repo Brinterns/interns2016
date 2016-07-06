@@ -13,10 +13,23 @@ import style from './lobby.scss';
 export class Lobby extends Component {
     componentWillMount() {
         cloak.configure({
+            serverEvents: {
+                begin: () => {
+                    cloak.message('setUserUp');
+                }
+            },
             messages: {
                 refreshLobby: arg => {
                     this.props.refreshLobby(arg);
+                },
+                updateData: arg => {
+                    localStorage['id'] = arg.id;
+                    localStorage['name'] = arg.name;
                 }
+            },
+            initialData: {
+                id: localStorage['id'],
+                name: localStorage['name']
             }
         });
 
@@ -25,6 +38,7 @@ export class Lobby extends Component {
 
     setUsername(arg){
         cloak.message('setUsername',arg);
+        localStorage['name'] = arg;
     }
 
     render() {
@@ -35,7 +49,7 @@ export class Lobby extends Component {
                 </div>
                 <div className="container-fluid">
                     <UserList lobbyUsers={this.props.lobbyUsers} />
-                    <RoomList />
+                    <RoomList roomList={[]}/>
                     <RoomCreator setUsername={this.setUsername}/>
                 </div>
             </div>
