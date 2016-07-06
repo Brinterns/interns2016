@@ -11,7 +11,8 @@
     "demo": "gulp demo",
     "dev": "gulp dev",
     "start": "npm run build && node dist/server",
-    "test": "gulp test"
+    "test": "gulp test",
+    "test:server": "gulp test:server"
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",
@@ -56,6 +57,7 @@
     "karma-jasmine": "^1.0.2",
     "karma-mocha-reporter": "^2.0.4",
     "karma-webpack": "^1.7.0",
+    "mockery": "^1.7.0",
     "react-addons-test-utils": "^15.1.0",
     "redux-devtools": "^3.3.1",
     "webpack-dev-server": "^1.14.1"
