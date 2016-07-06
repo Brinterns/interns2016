@@ -21,6 +21,17 @@ module.exports = function(expressServer) {
             setUsername: (arg, user) => {
                 user.name = arg;
                 fireLobbyReload();
+            },
+            setUserUp: (arg, user) => {
+                if(user.data.name !== undefined){
+                    user.name = user.data.name;
+                }
+                if(user.data.id !== undefined){
+                    user.id = user.data.id;
+                }
+                var newData = {id: user.id, name: user.name};
+                user.message('updateData', newData);
+                fireLobbyReload();
             }
         }
 
