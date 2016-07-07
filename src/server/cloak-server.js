@@ -37,10 +37,6 @@ module.exports = function(expressServer) {
             createRoom: (arg, user) => {
                 cloak.createRoom(arg);
                 fireRoomListReload();
-            },
-            getRoomList: (arg, user) => {
-                var rooms = cloak.getRooms(true);
-                user.message('refreshRooms', rooms);
             }
         }
 
