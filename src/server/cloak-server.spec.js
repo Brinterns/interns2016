@@ -100,11 +100,4 @@ describe('cloak server', function() {
         cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
         expect(cloak.createRoom).toHaveBeenCalledWith('TEST_ROOM_NAME');
     });
-
-    it('getRoomList: sends refreshRooms message with correct arguments ', function() {
-        require('./cloak-server')({});
-        cloakConfig.messages.getRoomList("", user);
-        expect(user.message).toHaveBeenCalledWith('refreshRooms', rooms);
-    });
-
 });
