@@ -5,24 +5,12 @@ module.exports = function(expressServer) {
         express: expressServer,
         autoJoinLobby: true,
         lobby: {
-            newMember: () => {
-                fireLobbyReload();
-                fireRoomListReload();
-            },
-            memberLeaves: () => {
-                fireLobbyReload();
-                fireRoomListReload();
-            }
+            newMember: refreshListener,
+            memberLeaves: refreshListener
         },
         room: {
-            init: () => {
-                fireRoomListReload();
-                fireLobbyReload();
-            },
-            close: () => {
-                fireRoomListReload();
-                fireLobbyReload();
-            }
+            init: refreshListener,
+            close: refreshListener
         },
         clientEvents: {
             disconnect: (user) => {
@@ -60,6 +48,11 @@ module.exports = function(expressServer) {
 
     cloak.run();
 };
+
+function refreshListener(){
+    fireLobbyReload();
+    fireRoomListReload();
+}
 
 function fireLobbyReload(){
     var lobby = cloak.getLobby();

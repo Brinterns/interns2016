@@ -7,9 +7,26 @@ describe('cloak server', function() {
 
     var cloak;
     var cloakConfig;
+    var lobby;
+    var user;
+    var room;
+    var users = ['Raul', 'Jamie'];
+    var rooms = ['Room1', 'Room2'];
+    var disconnect;
     beforeEach(function() {
         mockery.registerAllowable('./cloak-server');
-        cloak = jasmine.createSpyObj('cloak', ['configure', 'run']);
+
+        cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'getLobby', 'getRooms', 'createRoom']);
+        lobby = jasmine.createSpyObj('lobby', ['getMembers', 'messageMembers', 'removeMember']);
+        user = jasmine.createSpyObj('user', ['getRoom', 'message']);
+        user.data = {name: "name", id: 0};
+        room = jasmine.createSpyObj('room', ['removeMember']);
+
+        cloak.getLobby.and.returnValue(lobby);
+        lobby.getMembers.and.returnValue(users);
+        cloak.getRooms.and.returnValue(rooms);
+        user.getRoom.and.returnValue(room);
+
         cloak.configure.and.callFake(function(_config_) {
             cloakConfig = _config_;
         });
@@ -26,13 +43,68 @@ describe('cloak server', function() {
 
     it('calls configure', function() {
         require('./cloak-server')({});
-
         expect(cloak.configure).toHaveBeenCalled();
     });
 
     it('calls run', function() {
         require('./cloak-server')({});
-
         expect(cloak.run).toHaveBeenCalled();
     });
+
+    it('newMember: on creating a new member, refreshLobby message sent with correct list of users', function() {
+        require('./cloak-server')({});
+        cloakConfig.lobby.newMember();
+        expect(lobby.messageMembers).toHaveBeenCalledWith('refreshLobby', users);
+    });
+
+    it('newMember: on creating a new member, refreshRooms message sent with correct list of rooms', function() {
+        require('./cloak-server')({});
+        cloakConfig.lobby.newMember();
+        expect(lobby.messageMembers).toHaveBeenCalledWith('refreshRooms', rooms);
+    });
+
+    it('disconnect: calls room.removeMember with correct user', function() {
+        require('./cloak-server')({});
+        cloakConfig.clientEvents.disconnect(user);
+        expect(room.removeMember).toHaveBeenCalledWith(user);
+    });
+
+    it('disconnect: calls getLobby.removeMember with correct user', function() {
+        require('./cloak-server')({});
+        cloakConfig.clientEvents.disconnect(user);
+        expect(lobby.removeMember).toHaveBeenCalledWith(user);
+    });
+
+    it('setUserUp: updates user correctly', function() {
+        require('./cloak-server')({});
+        cloakConfig.messages.setUserUp("", user);
+        var userData = {name: user.name, id: user.id};
+        expect(userData).toEqual(user.data);
+    });
+
+    it('setUsername: sets user.name to the passed argument', function() {
+        require('./cloak-server')({});
+        cloakConfig.messages.setUsername('TEST_USERNAME', user);
+        expect(user.name).toEqual('TEST_USERNAME');
+    });
+
+    it('setUserUp: sends updateData message', function() {
+        require('./cloak-server')({});
+        cloakConfig.messages.setUserUp("", user);
+        var userData = {name: user.name, id: user.id};
+        expect(user.message).toHaveBeenCalledWith('updateData', user.data);
+    });
+
+    it('createRoom: creates room with the passed argument', function() {
+        require('./cloak-server')({});
+        cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+        expect(cloak.createRoom).toHaveBeenCalledWith('TEST_ROOM_NAME');
+    });
+
+    it('getRoomList: sends refreshRooms message with correct arguments ', function() {
+        require('./cloak-server')({});
+        cloakConfig.messages.getRoomList("", user);
+        expect(user.message).toHaveBeenCalledWith('refreshRooms', rooms);
+    });
+
 });
