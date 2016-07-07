@@ -6,8 +6,7 @@ import UserList from './user-list';
 import RoomList from './room-list';
 import RoomCreator from './room-creator';
 
-import { refreshLobby } from '../actions';
-import { refreshRooms } from '../actions';
+import { refreshLobby, refreshRooms } from '../actions';
 
 import style from './lobby.scss';
 
