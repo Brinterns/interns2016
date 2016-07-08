@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 import RoomList from './room-list';
 
-let mockList = [{id: 0, name: 'Room 0'}, {id: 1, name: 'Room 1'}];
+let mockList = [{id: 0, name: 'Room 0', users: []}, {id: 1, name: 'Room 1', users: ['a','b']}];
 
 describe('<RoomList />', () => {
 
@@ -14,8 +14,8 @@ describe('<RoomList />', () => {
 
     it('renders the list of open rooms correctly', () => {
         const wrapper = shallow(<RoomList roomList={mockList} />);
-        wrapper.find('p').forEach((current, index) => {
-            expect(current.text()).toEqual(mockList[index]['name']);
+        wrapper.find('button').forEach((current, index) => {
+            expect(current.text()).toEqual(mockList[index]['name']+mockList[index]['users'].length);
         });
     });
 
