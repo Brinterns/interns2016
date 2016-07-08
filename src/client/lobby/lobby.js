@@ -27,6 +27,7 @@ export class Lobby extends Component {
 
     createRoom(arg) {
         cloak.message('createRoom', arg);
+        browserHistory.push(`/room/${arg}`);
     }
 
     joinRoom(arg) {
