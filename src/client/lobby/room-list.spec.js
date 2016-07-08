@@ -15,7 +15,7 @@ describe('<RoomList />', () => {
     it('renders the list of open rooms correctly', () => {
         const wrapper = shallow(<RoomList roomList={mockList} />);
         wrapper.find('button').forEach((current, index) => {
-            expect(current.text()).toEqual(mockList[index]['name']+mockList[index]['users'].length);
+            expect(current.text()).toEqual(`${mockList[index].name}${mockList[index].users.length}`);
         });
     });
 
