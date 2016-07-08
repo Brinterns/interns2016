@@ -18,16 +18,16 @@ export class Lobby extends Component {
         cloak.run(config.cloakAddress);
     }
 
-    setUsername(arg){
+    setUsername(arg) {
         cloak.message('setUsername',arg);
         localStorage.name = arg;
     }
 
-    createRoom(arg){
+    createRoom(arg) {
         cloak.message('createRoom', arg);
     }
 
-    joinRoom(arg){
+    joinRoom(arg) {
         cloak.message('joinRoom', arg)
     }
 
