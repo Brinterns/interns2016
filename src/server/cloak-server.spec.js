@@ -16,15 +16,16 @@ describe('cloak server', function() {
     beforeEach(function() {
         mockery.registerAllowable('./cloak-server');
 
-        cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'getLobby', 'getRooms', 'createRoom']);
+        cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'getLobby', 'getRooms', 'createRoom', 'getRoom']);
         lobby = jasmine.createSpyObj('lobby', ['getMembers', 'messageMembers', 'removeMember']);
         user = jasmine.createSpyObj('user', ['getRoom', 'message']);
         user.data = {name: "name", id: 0};
-        room = jasmine.createSpyObj('room', ['removeMember']);
+        room = jasmine.createSpyObj('room', ['removeMember', 'addMember']);
 
         cloak.getLobby.and.returnValue(lobby);
         lobby.getMembers.and.returnValue(users);
         cloak.getRooms.and.returnValue(rooms);
+        cloak.getRoom.and.returnValue(room);
         user.getRoom.and.returnValue(room);
 
         cloak.configure.and.callFake(function(_config_) {
@@ -100,4 +101,17 @@ describe('cloak server', function() {
         cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
         expect(cloak.createRoom).toHaveBeenCalledWith('TEST_ROOM_NAME');
     });
+
+    it('joinRoom: finds the room that has the ID passed as argument', function() {
+        require('./cloak-server')({});
+        cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
+        expect(cloak.getRoom).toHaveBeenCalledWith('TEST_ROOM_ID');
+    });
+
+    it('joinRoom: makes the current user join the room with the correct ID', function() {
+        require('./cloak-server')({});
+        cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
+        expect(room.addMember).toHaveBeenCalledWith(user);
+    });
+
 });
