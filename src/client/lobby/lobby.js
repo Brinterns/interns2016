@@ -27,6 +27,10 @@ export class Lobby extends Component {
         cloak.message('createRoom', arg);
     }
 
+    joinRoom(arg){
+        cloak.message('joinRoom', arg)
+    }
+
     render() {
         return (
             <div>
@@ -35,8 +39,8 @@ export class Lobby extends Component {
                 </div>
                 <div className="container-fluid">
                     <UserList lobbyUsers={this.props.lobbyUsers} />
-                    <RoomList roomList={this.props.activeRooms}/>
-                    <RoomCreator setUsername={this.setUsername} setRoomname={this.createRoom}/>
+                    <RoomList roomList={this.props.activeRooms} joinRoom={this.joinRoom} />
+                    <RoomCreator setUsername={this.setUsername} setRoomname={this.createRoom} />
                 </div>
             </div>
         );
