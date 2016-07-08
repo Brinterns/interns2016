@@ -6,3 +6,10 @@ export function refreshLobby(arg) {
         payload: arg
     };
 }
+
+export function refreshRooms(arg) {
+    return {
+        type: types.UPDATE_ROOM_LIST,
+        payload: arg
+    };
+}

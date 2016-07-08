@@ -11,7 +11,7 @@ export default class RoomCreator extends Component {
 
     onRoomnameClick(){
         var roomname = document.getElementById('room-name').value;
-        this.props.setRoomname(username);
+        this.props.setRoomname(roomname);
     }
 
     render() {
@@ -25,7 +25,7 @@ export default class RoomCreator extends Component {
                 <br></br>
                 <div className="row">
                     <input id="room-name" type="text" placeholder="Please type new room name"></input>
-                    <button id="room-name-button" className="btn btn-success">Create Room</button>
+                    <button id="room-name-button" className="btn btn-success" onClick={this.onRoomnameClick.bind(this)}>Create Room</button>
                 </div>
             </div>
         );

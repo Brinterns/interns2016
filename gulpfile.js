@@ -31,6 +31,8 @@ gulp.task('dev', gulp.series(
 ));
 
 gulp.task('test', test());
+gulp.task('test:server', testServer)
+
 
 function clean() {
     var del = require('del');

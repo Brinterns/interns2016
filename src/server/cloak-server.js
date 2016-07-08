@@ -5,15 +5,16 @@ module.exports = function(expressServer) {
         express: expressServer,
         autoJoinLobby: true,
         lobby: {
-            newMember: () => {
-                fireLobbyReload();
-            },
-            memberLeaves: () => {
-                fireLobbyReload();
-            }
+            newMember: refreshListener,
+            memberLeaves: refreshListener
+        },
+        room: {
+            init: refreshListener,
+            close: refreshListener
         },
         clientEvents: {
             disconnect: (user) => {
+                user.getRoom().removeMember(user);
                 cloak.getLobby().removeMember(user);
             }
         },
@@ -32,6 +33,10 @@ module.exports = function(expressServer) {
                 var newData = {id: user.id, name: user.name};
                 user.message('updateData', newData);
                 fireLobbyReload();
+            },
+            createRoom: (arg, user) => {
+                cloak.createRoom(arg);
+                fireRoomListReload();
             }
         }
 
@@ -40,8 +45,19 @@ module.exports = function(expressServer) {
     cloak.run();
 };
 
+function refreshListener(){
+    fireLobbyReload();
+    fireRoomListReload();
+}
+
 function fireLobbyReload(){
     var lobby = cloak.getLobby();
     var list = lobby.getMembers(true);
     lobby.messageMembers('refreshLobby', list);
+}
+
+function fireRoomListReload(){
+    var rooms = cloak.getRooms(true);
+    var lobby = cloak.getLobby();
+    lobby.messageMembers('refreshRooms', rooms);
 }
