@@ -1,4 +1,4 @@
-export default (refreshLobby, refreshRooms)=> {
+export default function(refreshLobby, refreshRooms) {
     cloak.configure({
         serverEvents: {
             begin: () => {
