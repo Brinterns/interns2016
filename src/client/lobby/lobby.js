@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect, dispatch } from 'react-redux';
 
+import configure from './cloak-configure.js'
 import config from '../config/config';
+
 import UserList from './user-list';
 import RoomList from './room-list';
 import RoomCreator from './room-creator';
@@ -12,30 +14,7 @@ import style from './lobby.scss';
 
 export class Lobby extends Component {
     componentWillMount() {
-        cloak.configure({
-            serverEvents: {
-                begin: () => {
-                    cloak.message('setUserUp');
-                }
-            },
-            messages: {
-                refreshLobby: arg => {
-                    this.props.refreshLobby(arg);
-                },
-                updateData: arg => {
-                    localStorage['id'] = arg.id;
-                    localStorage['name'] = arg.name;
-                },
-                refreshRooms: arg => {
-                    this.props.refreshRooms(arg);
-                }
-            },
-            initialData: {
-                id: localStorage['id'],
-                name: localStorage['name']
-            }
-        });
-
+        configure(this.props.refreshLobby, this.props.refreshRooms);
         cloak.run(config.cloakAddress);
     }
 
