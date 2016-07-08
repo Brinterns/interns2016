@@ -11,9 +11,9 @@ export default function RoomList(props) {
             <div className="col-lg-12 pre-scrollable list-group">
                 {props.roomList.map( result => {
                     return (
-                        <button className={`list-group-item list-group-item-warning ${style.space}`} key={result['id']}>
-                            {result['name']}
-                            <span className='badge'>{result['users'].length}</span>
+                        <button className={`list-group-item list-group-item-warning ${style.space}`} key={result.id}>
+                            {result.name}
+                            <span className='badge'>{result.users.length}</span>
                         </button>
                     );
                 })}

@@ -12,8 +12,8 @@ export default function UserList(props) {
                 <ul>
                     {props.lobbyUsers.map( result => {
                         return (
-                            <li className={`list-group-item list-group-item-success ${style.space}`} key={result['id']}>
-                                {result['name']}
+                            <li className={`list-group-item list-group-item-success ${style.space}`} key={result.id}>
+                                {result.name}
                             </li>
                         );
                     })}

@@ -10,16 +10,16 @@ export default (refreshLobby, refreshRooms)=> {
                 refreshLobby(arg);
             },
             updateData: arg => {
-                localStorage['id'] = arg.id;
-                localStorage['name'] = arg.name;
+                localStorage.id = arg.id;
+                localStorage.name = arg.name;
             },
             refreshRooms: arg => {
                 refreshRooms(arg);
             }
         },
         initialData: {
-            id: localStorage['id'],
-            name: localStorage['name']
+            id: localStorage.id,
+            name: localStorage.name
         }
     });
 }

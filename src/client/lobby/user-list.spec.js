@@ -14,7 +14,7 @@ describe('<UserList />', () => {
     it('renders the list of users in lobby correctly', () => {
         const wrapper = shallow(<UserList lobbyUsers={mockList} />);
         wrapper.find('li').forEach((current, index) => {
-            expect(current.text()).toEqual(mockList[index]['name']);
+            expect(current.text()).toEqual(mockList[index].name);
         });
     });
 });

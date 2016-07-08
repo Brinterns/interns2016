@@ -20,7 +20,7 @@ export class Lobby extends Component {
 
     setUsername(arg){
         cloak.message('setUsername',arg);
-        localStorage['name'] = arg;
+        localStorage.name = arg;
     }
 
     createRoom(arg){
