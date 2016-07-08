@@ -8,14 +8,16 @@ export default function UserList(props) {
     return (
         <div className="col-lg-4 text-center">
             <h2>User List</h2>
-            <div className={`pre-scrollable ${style['list-areas']}`}>
-                {props.lobbyUsers.map( result => {
-                    return (
-                        <p className='row' key={result['id']}>
-                            {result['name']}
-                        </p>
-                    );
-                })}
+            <div className="col-lg-12 pre-scrollable list-group">
+                <ul>
+                    {props.lobbyUsers.map( result => {
+                        return (
+                            <li className={`list-group-item list-group-item-success ${style.space}`} key={result.id}>
+                                {result.name}
+                            </li>
+                        );
+                    })}
+                </ul>
             </div>
         </div>
     );
