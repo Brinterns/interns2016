@@ -13,6 +13,7 @@ export default function RoomList(props) {
                     return (
                         <button className={`list-group-item list-group-item-warning ${style.space}`} key={result['id']}>
                             {result['name']}
+                            <span className='badge'>{result['users'].length}</span>
                         </button>
                     );
                 })}
