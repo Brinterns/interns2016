@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect, dispatch } from 'react-redux';
+import { push } from 'react-router-redux';
+import { browserHistory } from 'react-router';
 
 import configure from './cloak-configure.js'
 import config from '../config/config';
@@ -46,6 +48,10 @@ export class Lobby extends Component {
         );
     }
 };
+
+function redirectToRoom(arg){
+    browserHistory.push(`/room/${arg}`);
+}
 
 const mapStateToProps = state => ({
     lobbyUsers: state.lobbyUsers,
