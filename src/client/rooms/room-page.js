@@ -15,8 +15,6 @@ export class RoomPage extends Component {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-    lobbyUsers: state.lobbyUsers,
-    activeRooms: state.activeRooms,
     roomUsers: state.roomUsers
 });
 
