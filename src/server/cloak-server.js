@@ -55,6 +55,7 @@ function createRoom(arg, user) {
 function joinRoom(arg, user) {
     var room = cloak.getRoom(arg);
     room.addMember(user);
+    user.message('refreshRoomUsers', room.getMembers(true));
     refreshListener();
 }
 

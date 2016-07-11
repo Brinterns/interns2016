@@ -13,3 +13,10 @@ export function refreshRooms(arg) {
         payload: arg
     };
 }
+
+export function refreshRoomUsers(arg) {
+    return {
+        type: types.UPDATE_ROOM_USERS,
+        payload: arg
+    };
+}

@@ -7,19 +7,21 @@ import { syncHistoryWithStore } from 'react-router-redux';
 
 import configureStore from './store';
 import App from './app';
-import RoomPage from './lobby/room-page'
+import RoomPage from './lobby/room-page';
 
 const store = configureStore();
 const app = document.getElementById('app');
 const history = syncHistoryWithStore(browserHistory, store);
 
 render((
-    <Provider store={store}>
-        <Router history={history}>
-            <Route path="/" component={App} />
-                <Route path="/room/:id" component={RoomPage} />
-        </Router>
-    </Provider>
+    <AppContainer>
+        <Provider store={store}>
+            <Router history={history}>
+                <Route path="/" component={App} />
+                    <Route path="room/:id" component={RoomPage} />
+            </Router>
+        </Provider>
+    </AppContainer>
 ), app)
 
 if(module.hot) {

@@ -1,4 +1,4 @@
-export default function(refreshLobby, refreshRooms) {
+export default function(refreshLobby, refreshRooms, refreshRoomUsers) {
     cloak.configure({
         serverEvents: {
             begin: () => {
@@ -15,6 +15,9 @@ export default function(refreshLobby, refreshRooms) {
             },
             refreshRooms: arg => {
                 refreshRooms(arg);
+            },
+            refreshRoomUsers: arg => {
+                refreshRoomUsers(arg);
             }
         },
         initialData: {
