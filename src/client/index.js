@@ -2,21 +2,27 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
+import { Router, Route, browserHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 
 import configureStore from './store';
 import App from './app';
+import RoomPage from './rooms/room-page'
 
 const store = configureStore();
 const app = document.getElementById('app');
+const history = syncHistoryWithStore(browserHistory, store);
 
-render(
+render((
     <AppContainer>
         <Provider store={store}>
-            <App />
+            <Router history={history}>
+                <Route path="/" component={App} />
+                    <Route path="/room/:id" component={RoomPage} />
+            </Router>
         </Provider>
-    </AppContainer>,
-    app
-);
+    </AppContainer>
+), app)
 
 if(module.hot) {
     module.hot.accept('./app', () => {
