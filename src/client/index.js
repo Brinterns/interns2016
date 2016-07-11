@@ -7,7 +7,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 
 import configureStore from './store';
 import App from './app';
-import RoomPage from './lobby/room-page'
+import RoomPage from './rooms/room-page'
 
 const store = configureStore();
 const app = document.getElementById('app');
