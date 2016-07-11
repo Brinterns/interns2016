@@ -18,13 +18,17 @@ export class Lobby extends Component {
         cloak.run(config.cloakAddress);
     }
 
-    setUsername(arg){
+    setUsername(arg) {
         cloak.message('setUsername',arg);
         localStorage.name = arg;
     }
 
-    createRoom(arg){
+    createRoom(arg) {
         cloak.message('createRoom', arg);
+    }
+
+    joinRoom(arg) {
+        cloak.message('joinRoom', arg)
     }
 
     render() {
@@ -35,8 +39,8 @@ export class Lobby extends Component {
                 </div>
                 <div className="container-fluid">
                     <UserList lobbyUsers={this.props.lobbyUsers} />
-                    <RoomList roomList={this.props.activeRooms}/>
-                    <RoomCreator setUsername={this.setUsername} setRoomname={this.createRoom}/>
+                    <RoomList roomList={this.props.activeRooms} joinRoom={this.joinRoom} />
+                    <RoomCreator setUsername={this.setUsername} setRoomname={this.createRoom} />
                 </div>
             </div>
         );
