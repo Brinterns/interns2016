@@ -10,7 +10,7 @@ export default function UserList(props) {
             <h2>User List</h2>
             <div className="col-lg-12 pre-scrollable list-group">
                 <ul>
-                    {props.lobbyUsers.map( result => {
+                    {props.users.map( result => {
                         return (
                             <li className={`list-group-item list-group-item-success ${style.space}`} key={result.id}>
                                 {result.name}
