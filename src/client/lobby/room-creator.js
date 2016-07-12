@@ -4,7 +4,14 @@ import config from '../config/config';
 
 import style from './lobby.scss';
 
+var username;
+var roomname;
+
 export default class RoomCreator extends Component {
+    componentDidMount(){
+        username = document.getElementById('user-name');
+        roomname = document.getElementById('room-name');
+    }
     render() {
         return (
             <div className="col-lg-4 text-center">
@@ -26,12 +33,10 @@ export default class RoomCreator extends Component {
 };
 
 function onUsernameClick() {
-    var username = document.getElementById('user-name').value;
-    cloak.message('setUsername', username);
-    localStorage.name = username;
+    cloak.message('setUsername', username.value);
+    localStorage.name = username.value;
 }
 
 function onRoomnameClick() {
-    var roomname = document.getElementById('room-name').value;
-    cloak.message('createRoom', roomname);
+    cloak.message('createRoom', roomname.value);
 }
