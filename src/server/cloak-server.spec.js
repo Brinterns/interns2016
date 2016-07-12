@@ -22,7 +22,7 @@ describe('cloak server', function() {
         cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'getLobby', 'getRooms', 'createRoom', 'getRoom']);
         lobby = jasmine.createSpyObj('lobby', ['getMembers', 'messageMembers', 'removeMember']);
         user = jasmine.createSpyObj('user', ['getRoom', 'message']);
-        room = jasmine.createSpyObj('room', ['removeMember', 'addMember']);
+        room = jasmine.createSpyObj('room', ['removeMember', 'addMember', 'messageMembers', 'getMembers']);
     });
 
     beforeEach(function() {
@@ -54,7 +54,7 @@ describe('cloak server', function() {
 
         it('calls run', function() {
             expect(cloak.run).toHaveBeenCalled();
-        });        
+        });
     });
 
     describe('newMember', () => {
@@ -157,4 +157,18 @@ describe('cloak server', function() {
         });
     });
 
+    describe('refreshRoomUsers ', () => {
+        it('the members of the correct room are retrieved', function() {
+            cloakConfig.room.newMember.bind(room,'')();
+
+            expect(room.getMembers).toHaveBeenCalledWith(true);
+        });
+        it('the members of the correct room are messaged to refreshRooms', function() {
+            users = ['Raul', 'Jamie'];
+            room.getMembers.and.returnValue(users);
+            cloakConfig.room.newMember.bind(room,'')();
+
+            expect(room.messageMembers).toHaveBeenCalledWith('refreshRoomUsers', users);
+        });
+    });
 });

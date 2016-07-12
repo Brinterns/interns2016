@@ -10,6 +10,8 @@ module.exports = function(expressServer) {
         },
         room: {
             init: refreshListener,
+            newMember: refreshRoomUsers,
+            memberLeaves: refreshRoomUsers,
             close: refreshListener
         },
         clientEvents: {
@@ -73,4 +75,8 @@ function fireRoomListReload() {
     var rooms = cloak.getRooms(true);
     var lobby = cloak.getLobby();
     lobby.messageMembers('refreshRooms', rooms);
+}
+
+function refreshRoomUsers(arg) {
+    this.messageMembers('refreshRoomUsers', this.getMembers(true));
 }

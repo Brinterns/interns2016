@@ -18,7 +18,7 @@ render((
         <Provider store={store}>
             <Router history={history}>
                 <Route path="/" component={App} />
-                    <Route path="/room/:id" component={RoomPage} />
+                    <Route path="room/:id" component={RoomPage} />
             </Router>
         </Provider>
     </AppContainer>
