@@ -12,8 +12,8 @@ export class RoomPage extends Component {
                 <h1>{`Room: ${this.props.params.id}`}</h1>
                 <UserList users={this.props.roomUsers} />
                 <div className="col-lg-8" >
-                    <button className="btn btn-success">Start Game</button>
-                    <button className="btn btn-danger" onClick={leaveRoom}>Leave Room</button>
+                    <button id="start-game" className="btn btn-success">Start Game</button>
+                    <button id="leave-room" className="btn btn-danger" onClick={leaveRoom}>Leave Room</button>
                 </div>
             </div>
         );
