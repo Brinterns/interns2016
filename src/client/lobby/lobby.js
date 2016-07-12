@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { connect, dispatch } from 'react-redux';
-import { push } from 'react-router-redux';
-import { browserHistory } from 'react-router';
 
 import configure from './cloak-configure.js'
 import config from '../config/config';
@@ -27,31 +25,13 @@ export class Lobby extends Component {
                 </div>
                 <div className="container-fluid">
                     <UserList users={this.props.lobbyUsers} />
-                    <RoomList roomList={this.props.activeRooms} joinRoom={joinRoom} />
-                    <RoomCreator setUsername={setUsername} setRoomname={createRoom} />
+                    <RoomList roomList={this.props.activeRooms}/>
+                    <RoomCreator />
                 </div>
             </div>
         );
     }
 };
-
-function setUsername(arg) {
-    cloak.message('setUsername',arg);
-    localStorage.name = arg;
-}
-
-function createRoom(arg) {
-    cloak.message('createRoom', arg);
-}
-
-function joinRoom(arg) {
-    cloak.message('joinRoom', arg.id);
-    redirectToRoom(arg.name);
-}
-
-function redirectToRoom(arg){
-    browserHistory.push(`/room/${arg}`);
-}
 
 const mapStateToProps = state => ({
     lobbyUsers: state.lobbyUsers,

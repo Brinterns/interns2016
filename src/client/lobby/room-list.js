@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { push } from 'react-router-redux';
+import { browserHistory } from 'react-router';
 
 import config from '../config/config';
 
@@ -12,7 +14,7 @@ export default function RoomList(props) {
                 {props.roomList.map( result => {
                     return (
                         <button className={`list-group-item list-group-item-warning ${style.space}`} key={result.id}
-                             onClick={()=>props.joinRoom({id: result.id, name: result.name})}>
+                             onClick={()=>joinRoom({id: result.id, name: result.name})}>
                              {result.name}
                             <span className='badge'>{result.users.length}</span>
                         </button>
@@ -21,4 +23,13 @@ export default function RoomList(props) {
             </div>
         </div>
     );
+}
+
+function joinRoom(arg) {
+    cloak.message('joinRoom', arg.id);
+    redirectToRoom(arg.name);
+}
+
+function redirectToRoom(arg) {
+    browserHistory.push(`/room/${arg}`);
 }

@@ -25,12 +25,13 @@ export default class RoomCreator extends Component {
     }
 };
 
-function onUsernameClick(){
+function onUsernameClick() {
     var username = document.getElementById('user-name').value;
-    this.props.setUsername(username);
+    cloak.message('setUsername', username);
+    localStorage.name = username;
 }
 
-function onRoomnameClick(){
+function onRoomnameClick() {
     var roomname = document.getElementById('room-name').value;
-    this.props.setRoomname(roomname);
+    cloak.message('createRoom', roomname);
 }

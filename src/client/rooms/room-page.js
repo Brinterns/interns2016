@@ -5,8 +5,6 @@ import { browserHistory } from 'react-router';
 
 import UserList from '../lobby/user-list';
 
-import style from './room.scss'
-
 export class RoomPage extends Component {
     render() {
         return (
@@ -16,7 +14,6 @@ export class RoomPage extends Component {
                 <div className="col-lg-8" >
                     <button className="btn btn-success">Start Game</button>
                     <button className="btn btn-danger" onClick={leaveRoom}>Leave Room</button>
-                    <div className={style['game-area']}>GAME AREA</div>
                 </div>
             </div>
         );
