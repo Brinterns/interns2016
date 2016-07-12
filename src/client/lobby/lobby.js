@@ -19,21 +19,6 @@ export class Lobby extends Component {
         configure(this.props.refreshLobby, this.props.refreshRooms, this.props.refreshRoomUsers);
         cloak.run(config.cloakAddress);
     }
-
-    setUsername(arg) {
-        cloak.message('setUsername',arg);
-        localStorage.name = arg;
-    }
-
-    createRoom(arg) {
-        cloak.message('createRoom', arg);
-    }
-
-    joinRoom(arg) {
-        cloak.message('joinRoom', arg.id);
-        redirectToRoom(arg.name);
-    }
-
     render() {
         return (
             <div>
@@ -42,13 +27,27 @@ export class Lobby extends Component {
                 </div>
                 <div className="container-fluid">
                     <UserList users={this.props.lobbyUsers} />
-                    <RoomList roomList={this.props.activeRooms} joinRoom={this.joinRoom} />
-                    <RoomCreator setUsername={this.setUsername} setRoomname={this.createRoom} />
+                    <RoomList roomList={this.props.activeRooms} joinRoom={joinRoom} />
+                    <RoomCreator setUsername={setUsername} setRoomname={createRoom} />
                 </div>
             </div>
         );
     }
 };
+
+function setUsername(arg) {
+    cloak.message('setUsername',arg);
+    localStorage.name = arg;
+}
+
+function createRoom(arg) {
+    cloak.message('createRoom', arg);
+}
+
+function joinRoom(arg) {
+    cloak.message('joinRoom', arg.id);
+    redirectToRoom(arg.name);
+}
 
 function redirectToRoom(arg){
     browserHistory.push(`/room/${arg}`);
