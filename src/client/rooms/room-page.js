@@ -5,16 +5,19 @@ import { browserHistory } from 'react-router';
 
 import UserList from '../lobby/user-list';
 
+import style from './room.scss'
+
 export class RoomPage extends Component {
     render() {
         return (
             <div className="text-center">
-                <h2>{`Room: ${this.props.params.id}`}</h2>
+                <h1>{`Room: ${this.props.params.id}`}</h1>
                 <UserList users={this.props.roomUsers} />
-                <div>
-                    <button onClick={leaveRoom}>Leave Room</button>
+                <div className="col-lg-8" >
+                    <button className="btn btn-success">Start Game</button>
+                    <button className="btn btn-danger" onClick={leaveRoom}>Leave Room</button>
+                    <div className={style['game-area']}>GAME AREA</div>
                 </div>
-
             </div>
         );
     }
