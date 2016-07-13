@@ -10,8 +10,6 @@ import RoomCreator from './room-creator';
 
 import { refreshLobby, refreshRooms, refreshRoomUsers } from '../actions';
 
-import style from './lobby.scss';
-
 export class Lobby extends Component {
     componentWillMount() {
         configure(this.props.refreshLobby, this.props.refreshRooms, this.props.refreshRoomUsers);

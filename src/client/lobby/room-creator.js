@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import config from '../config/config';
 
-import style from './lobby.scss';
-
 var username;
 var roomname;
 
@@ -27,7 +25,7 @@ export default class RoomCreator extends Component {
             <div className="col-lg-4 text-center">
                 <h2>Create Room & Set Username</h2>
                 <div className="col-lg-12 list-group">
-                    <div className={`row ${style.space}`}>
+                    <div className={'row space'}>
                         <input id="user-name" type="text" placeholder="Please type your new username"></input>
                         <button id="user-name-button" className="btn btn-success" onClick={() => this.setUsername()}>Set Username</button>
                     </div>

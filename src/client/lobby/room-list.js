@@ -3,8 +3,6 @@ import { browserHistory } from 'react-router';
 
 import config from '../config/config';
 
-import style from './lobby.scss';
-
 export default function RoomList(props) {
     return (
         <div className="col-lg-4 text-center">
@@ -12,7 +10,7 @@ export default function RoomList(props) {
             <div className="col-lg-12 pre-scrollable list-group">
                 {props.roomList.map( result => {
                     return (
-                        <button className={`list-group-item list-group-item-warning ${style.space}`} key={result.id}
+                        <button className={'list-group-item list-group-item-warning space'} key={result.id}
                              onClick={()=>joinRoom({id: result.id, name: result.name})}>
                              {result.name}
                             <span className='badge'>{result.users.length}</span>

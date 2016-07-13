@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import config from '../config/config';
 
-import style from './lobby.scss';
-
 export default function UserList(props) {
     return (
         <div className="col-lg-4 text-center">
@@ -12,7 +10,7 @@ export default function UserList(props) {
                 <ul>
                     {props.users.map( result => {
                         return (
-                            <li className={`list-group-item list-group-item-success ${style.space}`} key={result.id}>
+                            <li className={'list-group-item list-group-item-success space'} key={result.id}>
                                 {result.name}
                             </li>
                         );
