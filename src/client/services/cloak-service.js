@@ -1,4 +1,5 @@
 import config from '../config/config';
+import { storeName, storeId, getUser } from '../services/storage-service';
 
 export {
     configureAndRun,
@@ -20,8 +21,8 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
                 refreshLobby(arg);
             },
             updateData: arg => {
-                localStorage.id = arg.id;
-                localStorage.name = arg.name;
+                storeId(arg.id);
+                storeName(arg.name);
             },
             refreshRooms: arg => {
                 refreshRooms(arg);
@@ -30,10 +31,7 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
                 refreshRoomUsers(arg);
             }
         },
-        initialData: {
-            id: localStorage.id,
-            name: localStorage.name
-        }
+        initialData: getUser()
     });
     cloak.run(config.cloakAddress);
 }
