@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { push } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 
 import config from '../config/config';
@@ -25,11 +24,11 @@ export default function RoomList(props) {
     );
 }
 
-function joinRoom(arg) {
-    cloak.message('joinRoom', arg.id);
-    redirectToRoom(arg.name);
+function joinRoom(room) {
+    cloak.message('joinRoom', room.id);
+    redirectToRoom(room.name);
 }
 
-function redirectToRoom(arg) {
-    browserHistory.push(`/room/${arg}`);
+function redirectToRoom(roomName) {
+    browserHistory.push(`/room/${roomName}`);
 }

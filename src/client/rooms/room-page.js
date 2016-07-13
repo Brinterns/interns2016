@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
 import { browserHistory } from 'react-router';
 
 import UserList from '../lobby/user-list';
