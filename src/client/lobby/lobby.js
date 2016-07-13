@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { configureAndRun } from '../services/cloak-service.js';
 
-import UserList from './user-list';
+import UserList from '../user/user-list';
 import RoomList from './room-list';
 import RoomCreator from './room-creator';
 

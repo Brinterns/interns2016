@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import router from '../services/routing-service';
 import { messageLeaveRoom } from '../services/cloak-service';
 
-import UserList from '../lobby/user-list';
+import UserList from '../user/user-list';
 
 export class RoomPage extends Component {
     render() {
