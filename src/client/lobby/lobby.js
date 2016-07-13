@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import configure from './cloak-configure.js'
+import { configureAndRun } from '../services/cloak-service.js'
 import config from '../config/config';
 
 import UserList from './user-list';
@@ -12,9 +12,9 @@ import { refreshLobby, refreshRooms, refreshRoomUsers } from '../actions';
 
 export class Lobby extends Component {
     componentWillMount() {
-        configure(this.props.refreshLobby, this.props.refreshRooms, this.props.refreshRoomUsers);
-        cloak.run(config.cloakAddress);
+        configureAndRun(this.props.refreshLobby, this.props.refreshRooms, this.props.refreshRoomUsers, config.cloakAddress);
     }
+
     render() {
         return (
             <div>

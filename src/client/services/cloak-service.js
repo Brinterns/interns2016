@@ -1,4 +1,4 @@
-export default function(refreshLobby, refreshRooms, refreshRoomUsers) {
+export function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers, address) {
     cloak.configure({
         serverEvents: {
             begin: () => {
@@ -25,4 +25,5 @@ export default function(refreshLobby, refreshRooms, refreshRoomUsers) {
             name: localStorage.name
         }
     });
+    cloak.run(address);
 }
