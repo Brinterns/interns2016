@@ -1,4 +1,13 @@
-# Interns 2016
+# Decrementer
+A brand new massively multiplayer online game pitting your smarts, vocabulary and number stuff against the ~~clock~~ evil enemy decrementor!
+
+### Dev
+[![Circle CI](https://circleci.com/gh/Brinterns/interns2016/tree/develop.svg?style=svg)](https://circleci.com/gh/Brinterns/interns2016/tree/develop)
+    http://decrementer-dev.herokuapp.com/
+
+### Master
+[![Circle CI](https://circleci.com/gh/Brinterns/interns2016/tree/master.svg?style=svg)](https://circleci.com/gh/Brinterns/interns2016/tree/master) http://decrementer.herokuapp.com/
+
 
 ### Node Version
 
