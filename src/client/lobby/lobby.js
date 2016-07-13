@@ -1,37 +1,17 @@
 import React, { Component } from 'react';
-import { connect, dispatch } from 'react-redux';
-import { push } from 'react-router-redux';
-import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
 
-import configure from './cloak-configure.js'
-import config from '../config/config';
+import { configureAndRun } from '../services/cloak-service.js';
 
-import UserList from './user-list';
+import UserList from '../user/user-list';
 import RoomList from './room-list';
 import RoomCreator from './room-creator';
 
 import { refreshLobby, refreshRooms, refreshRoomUsers } from '../actions';
 
-import style from './lobby.scss';
-
 export class Lobby extends Component {
     componentWillMount() {
-        configure(this.props.refreshLobby, this.props.refreshRooms, this.props.refreshRoomUsers);
-        cloak.run(config.cloakAddress);
-    }
-
-    setUsername(arg) {
-        cloak.message('setUsername',arg);
-        localStorage.name = arg;
-    }
-
-    createRoom(arg) {
-        cloak.message('createRoom', arg);
-    }
-
-    joinRoom(arg) {
-        cloak.message('joinRoom', arg.id);
-        redirectToRoom(arg.name);
+        configureAndRun(this.props.refreshLobby, this.props.refreshRooms, this.props.refreshRoomUsers);
     }
 
     render() {
@@ -42,17 +22,13 @@ export class Lobby extends Component {
                 </div>
                 <div className="container-fluid">
                     <UserList users={this.props.lobbyUsers} />
-                    <RoomList roomList={this.props.activeRooms} joinRoom={this.joinRoom} />
-                    <RoomCreator setUsername={this.setUsername} setRoomname={this.createRoom} />
+                    <RoomList roomList={this.props.activeRooms}/>
+                    <RoomCreator />
                 </div>
             </div>
         );
     }
 };
-
-function redirectToRoom(arg){
-    browserHistory.push(`/room/${arg}`);
-}
 
 const mapStateToProps = state => ({
     lobbyUsers: state.lobbyUsers,

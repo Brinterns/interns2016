@@ -171,4 +171,21 @@ describe('cloak server', function() {
             expect(room.messageMembers).toHaveBeenCalledWith('refreshRoomUsers', users);
         });
     });
+
+    describe('leaveRoom ', () => {
+        it('the correct room is retrieved for the user', function() {
+            user.getRoom.and.returnValue(room);
+
+            cloakConfig.messages.leaveRoom('', user);
+
+            expect(user.getRoom).toHaveBeenCalled();
+        });
+        it('the correct user is removed from the room', function() {
+            user.getRoom.and.returnValue(room);
+
+            cloakConfig.messages.leaveRoom('', user);
+
+            expect(room.removeMember).toHaveBeenCalledWith(user);
+        })
+    });
 });
