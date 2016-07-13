@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import router from '../services/routing-service';
 
 import UserList from '../lobby/user-list';
 
@@ -20,8 +20,8 @@ export class RoomPage extends Component {
 };
 
 function leaveRoom(){
-    browserHistory.push('/');
     cloak.message('leaveRoom');
+    router.navigateToLobby();
 }
 
 const mapStateToProps = (state, ownProps) => ({

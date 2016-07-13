@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
 
 import config from '../config/config';
+import router from '../services/routing-service';
 
 export default function RoomList(props) {
     return (
@@ -24,9 +24,5 @@ export default function RoomList(props) {
 
 function joinRoom(room) {
     cloak.message('joinRoom', room.id);
-    redirectToRoom(room.name);
-}
-
-function redirectToRoom(roomName) {
-    browserHistory.push(`/room/${roomName}`);
+    router.navigateToRoom(room.name);
 }
