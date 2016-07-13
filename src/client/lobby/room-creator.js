@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import config from '../config/config';
 
+import { messageSetUsername, messageCreateRoom } from '../services/cloak-service';
+
 var username;
 var roomname;
 
@@ -12,12 +14,12 @@ export default class RoomCreator extends Component {
     }
 
     setUsername() {
-        cloak.message('setUsername', username.value);
+        messageSetUsername(username.value);
         localStorage.name = username.value;
     }
 
     createRoom() {
-        cloak.message('createRoom', roomname.value);
+        messageCreateRoom(roomname.value);
     }
 
     render() {

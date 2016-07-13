@@ -1,4 +1,12 @@
-export function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers, address) {
+import config from '../config/config';
+
+export {
+    configureAndRun,
+    messageSetUsername,
+    messageCreateRoom
+};
+
+function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
     cloak.configure({
         serverEvents: {
             begin: () => {
@@ -25,5 +33,13 @@ export function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers, ad
             name: localStorage.name
         }
     });
-    cloak.run(address);
+    cloak.run(config.cloakAddress);
 }
+
+function messageSetUsername(username) {
+    cloak.message('setUsername', username);
+}
+
+function messageCreateRoom(roomname) {
+    cloak.message('createRoom', roomname);
+}   
