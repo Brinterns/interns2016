@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import config from '../config/config';
 import router from '../services/routing-service';
+import { messageJoinRoom } from '../services/cloak-service';
 
 export default function RoomList(props) {
     return (
@@ -23,6 +23,6 @@ export default function RoomList(props) {
 }
 
 function joinRoom(room) {
-    cloak.message('joinRoom', room.id);
+    messageJoinRoom(room.id);
     router.navigateToRoom(room.name);
 }

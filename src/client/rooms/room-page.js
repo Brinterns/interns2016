@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import router from '../services/routing-service';
+import { messageLeaveRoom } from '../services/cloak-service';
 
 import UserList from '../lobby/user-list';
 
@@ -19,8 +21,8 @@ export class RoomPage extends Component {
     }
 };
 
-function leaveRoom(){
-    cloak.message('leaveRoom');
+function leaveRoom() {
+    messageLeaveRoom();
     router.navigateToLobby();
 }
 
