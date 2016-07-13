@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect, dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import configure from './cloak-configure.js'
 import config from '../config/config';
