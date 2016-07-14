@@ -1,8 +1,8 @@
 import { browserHistory } from 'react-router';
 
 class RoutingService {
-	navigateToRoom(roomName) {
-	    browserHistory.push(`/room/${roomName}`);
+	navigateToRoom(room) {
+	    browserHistory.push(`/room/${room}`);
 	}
 
 	navigateToLobby() {

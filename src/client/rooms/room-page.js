@@ -7,10 +7,20 @@ import { messageLeaveRoom, messageJoinRoom, isConnected } from '../services/cloa
 import UserList from '../user/user-list';
 
 export class RoomPage extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            roomData: []
+        };
+    }
     componentWillMount() {
-        console.log(isConnected());
         if(isConnected()) {
-            messageJoinRoom(this.props.params.id);
+            this.setState({
+                roomData: this.props.params.data.split('&')
+            }, () => {
+                console.log(this.state);
+                messageJoinRoom(this.state.roomData[0]);
+            });
         } else {
             router.navigateToLobby();
         }
@@ -19,7 +29,7 @@ export class RoomPage extends Component {
     render() {
         return (
             <div className="text-center">
-                <h1>{`Room: ${this.props.params.id}`}</h1>
+                <h1>{`Room: ${this.state.roomData[1]}`}</h1>
                 <UserList users={this.props.roomUsers} />
                 <div className="col-lg-8" >
                     <button id="start-game" className="btn btn-success">Start Game</button>
