@@ -4,6 +4,7 @@ module.exports = function(expressServer) {
     cloak.configure({
         express: expressServer,
         autoJoinLobby: true,
+        reconnectWait: 300,
         lobby: {
             newMember: refreshListener,
             memberLeaves: refreshListener
@@ -13,9 +14,6 @@ module.exports = function(expressServer) {
             newMember: refreshRoomUsers,
             memberLeaves: refreshRoomUsers,
             close: refreshListener
-        },
-        clientEvents: {
-            disconnect: disconnect
         },
         messages: {
             setUsername: setUsername,
@@ -27,11 +25,6 @@ module.exports = function(expressServer) {
     });
     cloak.run();
 };
-
-function disconnect(user) {
-    user.getRoom().removeMember(user);
-    cloak.getLobby().removeMember(user);
-}
 
 function setUsername(arg, user) {
     user.name = arg;

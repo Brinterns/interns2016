@@ -2,11 +2,20 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import router from '../services/routing-service';
-import { messageLeaveRoom } from '../services/cloak-service';
+import { messageLeaveRoom, messageJoinRoom, isConnected } from '../services/cloak-service';
 
 import UserList from '../user/user-list';
 
 export class RoomPage extends Component {
+    componentWillMount() {
+        console.log(isConnected());
+        if(isConnected()) {
+            messageJoinRoom(this.props.params.id);
+        } else {
+            router.navigateToLobby();
+        }
+    }
+
     render() {
         return (
             <div className="text-center">
