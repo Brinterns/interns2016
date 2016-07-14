@@ -16,8 +16,8 @@ export class RoomPage extends Component {
     }
     componentWillMount() {
         if(isConnected()) {
-            messageJoinRoom(this.state.roomData);
-            getRoomData(this.state.roomData, this.props.getRoomDetails);
+            messageJoinRoom(this.props.params.data);
+            getRoomData(this.props.params.data, this.props.getRoomDetails);
         } else {
             router.navigateToLobby();
         }
@@ -32,7 +32,7 @@ export class RoomPage extends Component {
     render() {
         return (
             <div className="text-center">
-                <h1>{`Room: ${this.state.roomData}`}</h1>
+                <h1>{`Room: ${this.props.roomData.name}`}</h1>
                 <UserList users={this.props.roomUsers} />
                 <div className="col-lg-8" >
                     <button id="start-game" className="btn btn-success">Start Game</button>
@@ -54,7 +54,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => {
     return {
-        getRoomDetails: roomId => {
+        getRoomDetails: function(roomId) {
             dispatch(getRoomDetails(roomId));
         }
     }

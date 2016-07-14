@@ -80,6 +80,8 @@ function leaveRoom(arg, user) {
     user.getRoom().removeMember(user);
 }
 
-function roomDetails(arg, user) {
-    arg.dispatch(cloak.getRoom(arg.id));
+function roomDetails(roomId, user) {
+    var room = cloak.getRoom(roomId);
+    var response = {id: room.id, name: room.name, data: room.data};
+    user.message('roomDetailsResponse', response);
 }

@@ -21,9 +21,9 @@ export function refreshRoomUsers(arg) {
     };
 }
 
-export function getRoomDetails(roomId) {
+export function getRoomDetails(roomData) {
     return {
         type: types.GET_ROOM_DETAILS,
-        payload: roomId
+        payload: roomData
     }
 }
