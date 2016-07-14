@@ -15,8 +15,11 @@ export class RoomPage extends Component {
     }
     componentWillMount() {
         if(isConnected()) {
+            var data = this.props.params.data;
+            var id = data.slice(0, data.indexOf('&'));
+            var name = data.substring(data.indexOf('&')+1);
             this.setState({
-                roomData: this.props.params.data.split('&')
+                roomData: [id, name]
             }, () => {
                 messageJoinRoom(this.state.roomData[0]);
             });
