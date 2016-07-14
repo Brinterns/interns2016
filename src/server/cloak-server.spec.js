@@ -79,26 +79,6 @@ describe('cloak server', function() {
         });
     });
 
-    describe('disconnect', () => {
-        it('calls room.removeMember with correct user', function() {
-            user.data = {name: "name", id: 0};
-            user.getRoom.and.returnValue(room);
-
-            cloakConfig.clientEvents.disconnect(user);
-
-            expect(room.removeMember).toHaveBeenCalledWith(user);
-        });
-
-        it('calls getLobby.removeMember with correct user', function() {
-            user.data = {name: "name", id: 0};
-            user.getRoom.and.returnValue(room);
-
-            cloakConfig.clientEvents.disconnect(user);
-
-            expect(lobby.removeMember).toHaveBeenCalledWith(user);
-        });
-    });
-
     describe('setUserUp', () => {
         it('updates user correctly', function() {
             user.data = {name: "name", id: 0};
