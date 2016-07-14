@@ -18,7 +18,6 @@ export class RoomPage extends Component {
             this.setState({
                 roomData: this.props.params.data.split('&')
             }, () => {
-                console.log(this.state);
                 messageJoinRoom(this.state.roomData[0]);
             });
         } else {
