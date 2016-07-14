@@ -23,5 +23,5 @@ export default function RoomList(props) {
 }
 
 function joinRoom(room) {
-    router.navigateToRoom(`${room.id}&${room.name}`);
+    router.navigateToRoom(`${room.id}`);
 }

@@ -7,6 +7,7 @@ export {
     messageCreateRoom,
     messageJoinRoom,
     messageLeaveRoom,
+    getRoomData,
     isConnected
 };
 
@@ -55,4 +56,8 @@ function messageLeaveRoom() {
 
 function isConnected() {
     return cloak.connected();
+}
+
+function getRoomData(roomId, dispatch) {
+    cloak.message('roomDetails', {id: roomId, callback: dispatch})
 }

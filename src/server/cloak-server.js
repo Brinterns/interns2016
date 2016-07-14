@@ -20,7 +20,8 @@ module.exports = function(expressServer) {
             setUserUp: setUserUp,
             createRoom: createRoom,
             joinRoom: joinRoom,
-            leaveRoom: leaveRoom
+            leaveRoom: leaveRoom,
+            roomDetails: roomDetails
         }
     });
     cloak.run();
@@ -77,4 +78,8 @@ function refreshRoomUsers(arg) {
 
 function leaveRoom(arg, user) {
     user.getRoom().removeMember(user);
+}
+
+function roomDetails(arg, user) {
+    arg.dispatch(cloak.getRoom(arg.id));
 }
