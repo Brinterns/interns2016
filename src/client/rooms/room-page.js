@@ -28,6 +28,12 @@ export class RoomPage extends Component {
         }
     }
 
+    componentWillUnmount() {
+        if(isConnected()) {
+            messageLeaveRoom();
+        }
+    }
+
     render() {
         return (
             <div className="text-center">
@@ -43,7 +49,6 @@ export class RoomPage extends Component {
 };
 
 function leaveRoom() {
-    messageLeaveRoom();
     router.navigateToLobby();
 }
 
