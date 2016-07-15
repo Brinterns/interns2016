@@ -1,15 +1,13 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import lobbyUsers from './lobby/lobby-users-reducer';
-import activeRooms from './lobby/active-rooms-reducer';
-import roomUsers from './rooms/room-users-reducer';
-import roomData from './rooms/room-details-reducer';
+import lobby from './lobby/lobby-reducer';
+import room from './rooms/room-reducer';
+import game from './game/game-reducer';
 
 export default combineReducers({
-    lobbyUsers,
-    activeRooms,
-    roomUsers,
-    roomData,
+    lobby,
+    room,
+    game,
     routing: routerReducer
 });

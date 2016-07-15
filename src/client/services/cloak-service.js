@@ -1,5 +1,5 @@
 import config from '../config/config';
-import { storeName, storeId, getUser } from '../services/storage-service';
+import storageService from '../services/storage-service';
 
 export {
     configureAndRun,
@@ -8,10 +8,13 @@ export {
     messageJoinRoom,
     messageLeaveRoom,
     getRoomData,
-    isConnected
+    isConnected,
+    messageStartGame,
+    setStartGame
 };
 
-let callback;
+let roomDataDispatch;
+let startGameDispatch;
 
 function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
     cloak.configure({
@@ -21,24 +24,27 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
             }
         },
         messages: {
-            refreshLobby: arg => {
-                refreshLobby(arg);
+            refreshLobby: lobbyList => {
+                refreshLobby(lobbyList);
             },
-            updateData: arg => {
-                storeId(arg.id);
-                storeName(arg.name);
+            updateData: user => {
+                storageService.storeId(user.id);
+                storageService.storeName(user.name);
             },
-            refreshRooms: arg => {
-                refreshRooms(arg);
+            refreshRooms: roomList => {
+                refreshRooms(roomList);
             },
-            refreshRoomUsers: arg => {
-                refreshRoomUsers(arg);
+            refreshRoomUsers: roomUserList => {
+                refreshRoomUsers(roomUserList);
             },
-            roomDetailsResponse: arg => {
-                callback(arg);
+            roomDetailsResponse: roomDetails => {
+                roomDataDispatch(roomDetails);
+            },
+            startGame: arg => {
+                startGameDispatch();
             }
         },
-        initialData: getUser()
+        initialData: storageService.getUser()
     });
     cloak.run(config.cloakAddress);
 }
@@ -64,6 +70,14 @@ function isConnected() {
 }
 
 function getRoomData(roomId, dispatch) {
-    callback = dispatch;
+    roomDataDispatch = dispatch;
     cloak.message('roomDetails', roomId);
+}
+
+function messageStartGame() {
+    cloak.message('startGame');
+}
+
+function setStartGame(dispatch) {
+    startGameDispatch = dispatch;
 }

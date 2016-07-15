@@ -7,7 +7,8 @@ import UserList from '../user/user-list';
 import RoomList from './room-list';
 import RoomCreator from './room-creator';
 
-import { refreshLobby, refreshRooms, refreshRoomUsers } from '../actions';
+import { refreshLobby, refreshRooms} from './lobby-actions';
+import { refreshRoomUsers } from '../rooms/room-actions'; 
 
 export class Lobby extends Component {
     componentWillMount() {
@@ -31,24 +32,21 @@ export class Lobby extends Component {
 };
 
 const mapStateToProps = state => ({
-    lobbyUsers: state.lobbyUsers,
-    activeRooms: state.activeRooms,
-    roomUsers: state.roomUsers
+    lobbyUsers: state.lobby.users,
+    activeRooms: state.lobby.rooms
 });
 
-const mapDispatchToProps = dispatch => {
-    return {
-        refreshLobby: arg => {
-            dispatch(refreshLobby(arg));
-        },
-        refreshRooms: arg => {
-            dispatch(refreshRooms(arg));
-        },
-        refreshRoomUsers: arg => {
-            dispatch(refreshRoomUsers(arg));
-        }
+const mapDispatchToProps = dispatch => ({
+    refreshLobby(lobbyList) {
+        dispatch(refreshLobby(lobbyList));
+    },
+    refreshRooms(roomList) {
+        dispatch(refreshRooms(roomList));
+    },
+    refreshRoomUsers(roomUsers) {
+        dispatch(refreshRoomUsers(roomUsers));
     }
-};
+});
 
 export default connect(
     mapStateToProps,

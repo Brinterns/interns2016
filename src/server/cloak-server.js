@@ -21,14 +21,15 @@ module.exports = function(expressServer) {
             createRoom: createRoom,
             joinRoom: joinRoom,
             leaveRoom: leaveRoom,
-            roomDetails: roomDetails
+            roomDetails: roomDetails,
+            startGame: startGame
         }
     });
     cloak.run();
 };
 
-function setUsername(arg, user) {
-    user.name = arg;
+function setUsername(name, user) {
+    user.name = name;
     fireLobbyReload();
 }
 
@@ -44,13 +45,15 @@ function setUserUp(arg, user) {
    fireLobbyReload();
 }
 
-function createRoom(arg, user) {
-    cloak.createRoom(arg);
+function createRoom(name, user) {
+    var room = cloak.createRoom(name);
+    room.data.creator = {id: user.id, name: user.name};
+    room.data.started = false;
     fireRoomListReload();
 }
 
-function joinRoom(arg, user) {
-    var room = cloak.getRoom(arg);
+function joinRoom(id, user) {
+    var room = cloak.getRoom(id);
     room.addMember(user);
     refreshListener();
 }
@@ -68,6 +71,10 @@ function fireLobbyReload() {
 
 function fireRoomListReload() {
     var rooms = cloak.getRooms(true);
+    for(var i = 0; i < rooms.length; i++){
+        var currRoom = cloak.getRoom(rooms[i].id);
+        rooms[i].data = currRoom.data;
+    }
     var lobby = cloak.getLobby();
     lobby.messageMembers('refreshRooms', rooms);
 }
@@ -84,4 +91,11 @@ function roomDetails(roomId, user) {
     var room = cloak.getRoom(roomId);
     var response = {id: room.id, name: room.name, data: room.data};
     user.message('roomDetailsResponse', response);
+}
+
+function startGame(arg, user) {
+    var room = user.getRoom();
+    room.data.started = true;
+    room.messageMembers('startGame');
+    fireRoomListReload();
 }

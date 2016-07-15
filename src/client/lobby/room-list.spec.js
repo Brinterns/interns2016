@@ -3,7 +3,8 @@ import { shallow } from 'enzyme';
 
 import RoomList from './room-list';
 
-let mockList = [{id: 0, name: 'Room 0', users: []}, {id: 1, name: 'Room 1', users: ['a','b']}];
+let mockList = [{id: 0, name: 'Room 0', users: [], data: { started: false }},
+                {id: 1, name: 'Room 1', users: ['a','b'], data: { started: false }}];
 
 describe('<RoomList />', () => {
 

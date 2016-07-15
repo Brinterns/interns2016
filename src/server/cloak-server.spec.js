@@ -60,7 +60,9 @@ describe('cloak server', function() {
     describe('newMember', () => {
         it('on creating a new member, refreshLobby message sent with correct list of users', function() {
             users = ['Raul', 'Jamie'];
+            rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});
             lobby.getMembers.and.returnValue(users);
 
             cloakConfig.lobby.newMember();
@@ -69,8 +71,9 @@ describe('cloak server', function() {
         });
 
         it('on creating a new member, refreshRooms message sent with correct list of rooms', function() {
-            rooms = ['Room1', 'Room2'];
+            rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});      
             lobby.getMembers.and.returnValue(users);
 
             cloakConfig.lobby.newMember();
@@ -108,18 +111,37 @@ describe('cloak server', function() {
     });
 
 
-    it('createRoom: creates room with the passed argument', function() {
-        user.data = {name: "name", id: 0};
-        cloak.getRooms.and.returnValue(rooms);
+    describe('createRoom', () => {
+        it('creates room with the passed argument', function() {
+            user = {name: "name", id: 0};
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});
+            cloak.createRoom.and.returnValue({data:{creator:''}});
 
-        cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+            expect(cloak.createRoom).toHaveBeenCalledWith('TEST_ROOM_NAME');
+        });
 
-        expect(cloak.createRoom).toHaveBeenCalledWith('TEST_ROOM_NAME');
+        it('updates creator', function() {
+            user = {name: "name", id: "12345-abcde"};
+            room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});
+            cloak.createRoom.and.returnValue(room);
+ 
+            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+
+            expect(room.data.creator).toEqual(user);
+        });
     });
 
     describe('joinRoom', () => {
         it('finds the room that has the ID passed as argument', function() {
             user.data = {name: "name", id: 0};
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue(room);
 
             cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
@@ -129,6 +151,8 @@ describe('cloak server', function() {
 
         it('makes the current user join the room with the correct ID', function() {
             user.data = {name: "name", id: 0};
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue(room);
 
             cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
