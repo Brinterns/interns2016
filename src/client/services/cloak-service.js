@@ -24,24 +24,24 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
             }
         },
         messages: {
-            refreshLobby: arg => {
-                refreshLobby(arg);
+            refreshLobby: lobbyList => {
+                refreshLobby(lobbyList);
             },
-            updateData: arg => {
-                storeId(arg.id);
-                storeName(arg.name);
+            updateData: user => {
+                storeId(user.id);
+                storeName(user.name);
             },
-            refreshRooms: arg => {
-                refreshRooms(arg);
+            refreshRooms: roomList => {
+                refreshRooms(roomList);
             },
-            refreshRoomUsers: arg => {
-                refreshRoomUsers(arg);
+            refreshRoomUsers: roomUserList => {
+                refreshRoomUsers(roomUserList);
             },
-            roomDetailsResponse: arg => {
-                roomDataDispatch(arg);
+            roomDetailsResponse: roomDetails => {
+                roomDataDispatch(roomDetails);
             },
-            startGame: arg => {
-                startGameDispatch(arg);
+            startGame: start => {
+                startGameDispatch(start);
             }
         },
         initialData: getUser()

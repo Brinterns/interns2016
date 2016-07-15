@@ -28,8 +28,8 @@ module.exports = function(expressServer) {
     cloak.run();
 };
 
-function setUsername(arg, user) {
-    user.name = arg;
+function setUsername(name, user) {
+    user.name = name;
     fireLobbyReload();
 }
 
@@ -45,14 +45,14 @@ function setUserUp(arg, user) {
    fireLobbyReload();
 }
 
-function createRoom(arg, user) {
-    var room = cloak.createRoom(arg);
+function createRoom(name, user) {
+    var room = cloak.createRoom(name);
     room.data.creator = {id: user.id, name: user.name};
     fireRoomListReload();
 }
 
-function joinRoom(arg, user) {
-    var room = cloak.getRoom(arg);
+function joinRoom(id, user) {
+    var room = cloak.getRoom(id);
     room.addMember(user);
     refreshListener();
 }
