@@ -8,12 +8,6 @@ import UserList from '../user/user-list';
 import { getRoomDetails } from '../actions';
 
 export class RoomPage extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            roomData: []
-        };
-    }
     componentWillMount() {
         if(isConnected()) {
             messageJoinRoom(this.props.params.data);
