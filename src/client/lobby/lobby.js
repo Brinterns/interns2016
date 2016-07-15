@@ -36,19 +36,17 @@ const mapStateToProps = state => ({
     activeRooms: state.lobby.rooms
 });
 
-const mapDispatchToProps = dispatch => {
-    return {
-        refreshLobby: arg => {
-            dispatch(refreshLobby(arg));
-        },
-        refreshRooms: arg => {
-            dispatch(refreshRooms(arg));
-        },
-        refreshRoomUsers: arg => {
-            dispatch(refreshRoomUsers(arg));
-        }
+const mapDispatchToProps = dispatch => ({
+    refreshLobby(lobbyList) {
+        dispatch(refreshLobby(lobbyList));
+    },
+    refreshRooms(roomList) {
+        dispatch(refreshRooms(roomList));
+    },
+    refreshRoomUsers(roomUsers) {
+        dispatch(refreshRoomUsers(roomUsers));
     }
-};
+});
 
 export default connect(
     mapStateToProps,

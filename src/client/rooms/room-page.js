@@ -72,16 +72,14 @@ const mapStateToProps = (state, ownProps) => ({
     started: state.game.started
 });
 
-const mapDispatchToProps = dispatch => {
-    return {
-        getRoomDetails: function(roomId) {
-            dispatch(getRoomDetails(roomId));
-        },
-        startGame: function(start) {
-            dispatch(startGame(start));
-        }
+const mapDispatchToProps = dispatch => ({
+    getRoomDetails(roomId) {
+        dispatch(getRoomDetails(roomId));
+    },
+    startGame() {
+        dispatch(startGame());
     }
-};
+});
 
 export default connect(
     mapStateToProps,

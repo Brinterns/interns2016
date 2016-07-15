@@ -1,7 +1,7 @@
-export function refreshRoomUsers(arg) {
+export function refreshRoomUsers(roomUsers) {
     return {
         type: UPDATE_ROOM_USERS,
-        payload: arg
+        payload: roomUsers
     };
 }
 

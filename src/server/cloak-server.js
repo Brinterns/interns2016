@@ -96,6 +96,6 @@ function roomDetails(roomId, user) {
 function startGame(arg, user) {
     var room = user.getRoom();
     room.data.started = true;
-    room.messageMembers('startGame', true);
+    room.messageMembers('startGame');
     fireRoomListReload();
 }

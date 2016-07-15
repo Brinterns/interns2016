@@ -1,7 +1,7 @@
-export function refreshLobby(arg) {
+export function refreshLobby(lobbyList) {
     return {
         type: UPDATE_LOBBY_LIST,
-        payload: arg
+        payload: lobbyList
     };
 }
 
@@ -9,10 +9,10 @@ export const UPDATE_LOBBY_LIST = 'UPDATE_LOBBY_LIST';
 
 
 
-export function refreshRooms(arg) {
+export function refreshRooms(roomList) {
     return {
         type: UPDATE_ROOM_LIST,
-        payload: arg
+        payload: roomList
     };
 }
 

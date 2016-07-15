@@ -1,4 +1,4 @@
-export function startGame(start) {
+export function startGame() {
     return {
         type: START_GAME
     }

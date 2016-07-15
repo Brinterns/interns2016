@@ -40,8 +40,8 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
             roomDetailsResponse: roomDetails => {
                 roomDataDispatch(roomDetails);
             },
-            startGame: start => {
-                startGameDispatch(start);
+            startGame: arg => {
+                startGameDispatch();
             }
         },
         initialData: getUser()
@@ -75,7 +75,7 @@ function getRoomData(roomId, dispatch) {
 }
 
 function messageStartGame() {
-    cloak.message('startGame', true);
+    cloak.message('startGame');
 }
 
 function setStartGame(dispatch) {
