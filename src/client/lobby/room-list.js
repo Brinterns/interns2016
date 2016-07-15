@@ -9,12 +9,12 @@ export default function RoomList(props) {
         <div className="col-lg-4 text-center">
             <h2>Rooms Available</h2>
             <div className="col-lg-12 pre-scrollable list-group">
-                {props.roomList.map( result => {
+                {props.roomList.map( room => {
                     return (
-                        <button className={getClass(result)} key={result.id} 
-                             disabled={result.data.started} onClick={()=>joinRoom(result)}>
-                             {result.name}
-                            <span className='badge'>{result.users.length}</span>
+                        <button className={`list-group-item list-group-item-${getColour(room)} space`} key={room.id} 
+                             disabled={room.data.started} onClick={()=>joinRoom(room)}>
+                             {room.name}
+                            <span className='badge'>{room.users.length}</span>
                         </button>
                     );
                 })}
@@ -23,12 +23,12 @@ export default function RoomList(props) {
     );
 }
 
-function getClass(room) {
+function getColour(room) {
     if(room.data.started){
-        return 'list-group-item list-group-item-danger space';
+        return 'danger';
     }
     else{
-        return 'list-group-item list-group-item-warning space';
+        return 'warning';
     }
 }
 
