@@ -26,6 +26,24 @@ export class RoomPage extends Component {
             messageLeaveRoom();
         }
     }
+    
+    disable() {
+        if(this.enoughPlayers()){
+            return !this.isCreator();
+        }
+        return true;
+    }
+    
+    enoughPlayers() {
+        return this.props.roomUsers.length >= 2 ? true : false;
+    }
+
+    isCreator() {
+        var room = getRoom();
+        var creator = room.data.creator;
+        var user = getUser();
+        return JSON.stringify(creator) === JSON.stringify(user);
+    }
 
     render() {
         return (
@@ -33,7 +51,7 @@ export class RoomPage extends Component {
                 <h1>{`Room: ${this.props.roomData.name}`}</h1>
                 <UserList users={this.props.roomUsers} />
                 <div className="col-lg-8" >
-                    <button id="start-game" className="btn btn-success" disabled={disable.bind(this)()} 
+                    <button id="start-game" className="btn btn-success" disabled={this.disable()} 
                             onClick={() => {messageStartGame()}}>Start Game</button>
                     <button id="leave-room" className="btn btn-danger" onClick={leaveRoom}>Leave Room</button>
                 </div>
@@ -42,23 +60,6 @@ export class RoomPage extends Component {
         );
     }
 };
-
-function disable() {
-    if(enoughPlayers.bind(this)()){
-        return !isCreator();
-    }
-    return true;
-}
-function enoughPlayers() {
-    return this.props.roomUsers.length >= 2 ? true : false;
-}
-
-function isCreator() {
-    var room = getRoom();
-    var creator = room.data.creator;
-    var user = getUser();
-    return JSON.stringify(creator) === JSON.stringify(user);
-}
 
 function leaveRoom() {
     router.navigateToLobby();
