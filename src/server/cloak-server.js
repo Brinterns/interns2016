@@ -48,6 +48,7 @@ function setUserUp(arg, user) {
 function createRoom(name, user) {
     var room = cloak.createRoom(name);
     room.data.creator = {id: user.id, name: user.name};
+    room.data.started = false;
     fireRoomListReload();
 }
 
@@ -94,5 +95,7 @@ function roomDetails(roomId, user) {
 
 function startGame(arg, user) {
     var room = user.getRoom();
+    room.data.started = true;
     room.messageMembers('startGame', true);
+    fireRoomListReload();
 }
