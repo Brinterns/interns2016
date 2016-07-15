@@ -35,7 +35,6 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
                 refreshRoomUsers(arg);
             },
             roomDetailsResponse: arg => {
-                console.log(callback);
                 callback(arg);
             }
         },
