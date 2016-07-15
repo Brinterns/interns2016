@@ -2,15 +2,37 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import router from '../services/routing-service';
-import { messageLeaveRoom } from '../services/cloak-service';
+import { messageLeaveRoom, messageJoinRoom, getRoomData, isConnected } from '../services/cloak-service';
 
 import UserList from '../user/user-list';
+import { getRoomDetails } from '../actions';
 
 export class RoomPage extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            roomData: []
+        };
+    }
+    componentWillMount() {
+        if(isConnected()) {
+            messageJoinRoom(this.props.params.data);
+            getRoomData(this.props.params.data, this.props.getRoomDetails);
+        } else {
+            router.navigateToLobby();
+        }
+    }
+
+    componentWillUnmount() {
+        if(isConnected()) {
+            messageLeaveRoom();
+        }
+    }
+
     render() {
         return (
             <div className="text-center">
-                <h1>{`Room: ${this.props.params.id}`}</h1>
+                <h1>{`Room: ${this.props.roomData.name}`}</h1>
                 <UserList users={this.props.roomUsers} />
                 <div className="col-lg-8" >
                     <button id="start-game" className="btn btn-success">Start Game</button>
@@ -22,14 +44,23 @@ export class RoomPage extends Component {
 };
 
 function leaveRoom() {
-    messageLeaveRoom();
     router.navigateToLobby();
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    roomUsers: state.roomUsers
+    roomUsers: state.roomUsers,
+    roomData: state.roomData
 });
 
+const mapDispatchToProps = dispatch => {
+    return {
+        getRoomDetails: function(roomId) {
+            dispatch(getRoomDetails(roomId));
+        }
+    }
+};
+
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(RoomPage);

@@ -4,6 +4,7 @@ module.exports = function(expressServer) {
     cloak.configure({
         express: expressServer,
         autoJoinLobby: true,
+        reconnectWait: 300,
         lobby: {
             newMember: refreshListener,
             memberLeaves: refreshListener
@@ -14,24 +15,17 @@ module.exports = function(expressServer) {
             memberLeaves: refreshRoomUsers,
             close: refreshListener
         },
-        clientEvents: {
-            disconnect: disconnect
-        },
         messages: {
             setUsername: setUsername,
             setUserUp: setUserUp,
             createRoom: createRoom,
             joinRoom: joinRoom,
-            leaveRoom: leaveRoom
+            leaveRoom: leaveRoom,
+            roomDetails: roomDetails
         }
     });
     cloak.run();
 };
-
-function disconnect(user) {
-    user.getRoom().removeMember(user);
-    cloak.getLobby().removeMember(user);
-}
 
 function setUsername(arg, user) {
     user.name = arg;
@@ -84,4 +78,10 @@ function refreshRoomUsers(arg) {
 
 function leaveRoom(arg, user) {
     user.getRoom().removeMember(user);
+}
+
+function roomDetails(roomId, user) {
+    var room = cloak.getRoom(roomId);
+    var response = {id: room.id, name: room.name, data: room.data};
+    user.message('roomDetailsResponse', response);
 }

@@ -23,6 +23,5 @@ export default function RoomList(props) {
 }
 
 function joinRoom(room) {
-    messageJoinRoom(room.id);
-    router.navigateToRoom(room.name);
+    router.navigateToRoom(`${room.id}`);
 }

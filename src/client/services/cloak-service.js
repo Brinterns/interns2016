@@ -6,8 +6,12 @@ export {
     messageSetUsername,
     messageCreateRoom,
     messageJoinRoom,
-    messageLeaveRoom
+    messageLeaveRoom,
+    getRoomData,
+    isConnected
 };
+
+let callback;
 
 function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
     cloak.configure({
@@ -29,6 +33,9 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
             },
             refreshRoomUsers: arg => {
                 refreshRoomUsers(arg);
+            },
+            roomDetailsResponse: arg => {
+                callback(arg);
             }
         },
         initialData: getUser()
@@ -42,7 +49,7 @@ function messageSetUsername(username) {
 
 function messageCreateRoom(roomname) {
     cloak.message('createRoom', roomname);
-}   
+}
 
 function messageJoinRoom(roomId) {
     cloak.message('joinRoom', roomId);
@@ -50,4 +57,13 @@ function messageJoinRoom(roomId) {
 
 function messageLeaveRoom() {
     cloak.message('leaveRoom');
+}
+
+function isConnected() {
+    return cloak.connected();
+}
+
+function getRoomData(roomId, dispatch) {
+    callback = dispatch;
+    cloak.message('roomDetails', roomId);
 }

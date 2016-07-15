@@ -20,3 +20,10 @@ export function refreshRoomUsers(arg) {
         payload: arg
     };
 }
+
+export function getRoomDetails(roomData) {
+    return {
+        type: types.GET_ROOM_DETAILS,
+        payload: roomData
+    }
+}
