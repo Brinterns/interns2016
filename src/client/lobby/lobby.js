@@ -31,9 +31,8 @@ export class Lobby extends Component {
 };
 
 const mapStateToProps = state => ({
-    lobbyUsers: state.lobbyUsers,
-    activeRooms: state.activeRooms,
-    roomUsers: state.roomUsers
+    lobbyUsers: state.lobby.users,
+    activeRooms: state.lobby.rooms
 });
 
 const mapDispatchToProps = dispatch => {

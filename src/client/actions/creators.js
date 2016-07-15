@@ -23,7 +23,7 @@ export function refreshRoomUsers(arg) {
 
 export function getRoomDetails(roomData) {
     return {
-        type: types.GET_ROOM_DETAILS,
+        type: types.GET_ROOM_DATA,
         payload: roomData
     }
 }

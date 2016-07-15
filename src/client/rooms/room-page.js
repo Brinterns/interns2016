@@ -5,7 +5,7 @@ import router from '../services/routing-service';
 import { messageLeaveRoom, messageJoinRoom, getRoomData, messageStartGame, setStartGame, isConnected } from '../services/cloak-service';
 
 import UserList from '../user/user-list';
-import Game from './game';
+import Game from '../game/game';
 
 import { getRoomDetails, startGame } from '../actions';
 import { getRoom, getUser } from '../services/storage-service';
@@ -55,7 +55,7 @@ export class RoomPage extends Component {
                             onClick={() => {messageStartGame()}}>Start Game</button>
                     <button id="leave-room" className="btn btn-danger" onClick={leaveRoom}>Leave Room</button>
                 </div>
-                {this.props.start ? <Game/> : null}
+                {this.props.started ? <Game/> : null}
             </div>
         );
     }
@@ -66,9 +66,9 @@ function leaveRoom() {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    roomUsers: state.roomUsers,
-    roomData: state.roomData,
-    start: state.startGame
+    roomUsers: state.room.users,
+    roomData: state.room.data,
+    started: state.game.started
 });
 
 const mapDispatchToProps = dispatch => {
