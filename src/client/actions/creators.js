@@ -27,3 +27,9 @@ export function getRoomDetails(roomData) {
         payload: roomData
     }
 }
+
+export function startGame(start) {
+    return {
+        type: types.START_GAME
+    }
+}

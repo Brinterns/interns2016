@@ -8,10 +8,13 @@ export {
     messageJoinRoom,
     messageLeaveRoom,
     getRoomData,
-    isConnected
+    isConnected,
+    messageStartGame,
+    setStartGame
 };
 
 let roomDataDispatch;
+let startGameDispatch;
 
 function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
     cloak.configure({
@@ -36,6 +39,9 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
             },
             roomDetailsResponse: arg => {
                 roomDataDispatch(arg);
+            },
+            startGame: arg => {
+                startGameDispatch(arg);
             }
         },
         initialData: getUser()
@@ -66,4 +72,12 @@ function isConnected() {
 function getRoomData(roomId, dispatch) {
     roomDataDispatch = dispatch;
     cloak.message('roomDetails', roomId);
+}
+
+function messageStartGame() {
+    cloak.message('startGame', true);
+}
+
+function setStartGame(dispatch) {
+    startGameDispatch = dispatch;
 }

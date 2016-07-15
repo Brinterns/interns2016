@@ -21,7 +21,8 @@ module.exports = function(expressServer) {
             createRoom: createRoom,
             joinRoom: joinRoom,
             leaveRoom: leaveRoom,
-            roomDetails: roomDetails
+            roomDetails: roomDetails,
+            startGame: startGame
         }
     });
     cloak.run();
@@ -84,4 +85,9 @@ function roomDetails(roomId, user) {
     var room = cloak.getRoom(roomId);
     var response = {id: room.id, name: room.name, data: room.data};
     user.message('roomDetailsResponse', response);
+}
+
+function startGame(arg, user) {
+    var room = user.getRoom();
+    room.messageMembers('startGame', true);
 }
