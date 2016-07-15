@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import router from '../services/routing-service';
 import { messageJoinRoom } from '../services/cloak-service';
-import { setRoom } from '../services/storage-service';
+import storageService from '../services/storage-service';
 
 export default function RoomList(props) {
     return (
@@ -33,6 +33,6 @@ function getColour(room) {
 }
 
 function joinRoom(room) {
-    setRoom(JSON.stringify(room));
+    storageService.setRoom(JSON.stringify(room));
     router.navigateToRoom(`${room.id}`);
 }

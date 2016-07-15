@@ -1,5 +1,5 @@
 import config from '../config/config';
-import { storeName, storeId, getUser } from '../services/storage-service';
+import storageService from '../services/storage-service';
 
 export {
     configureAndRun,
@@ -28,8 +28,8 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
                 refreshLobby(lobbyList);
             },
             updateData: user => {
-                storeId(user.id);
-                storeName(user.name);
+                storageService.storeId(user.id);
+                storageService.storeName(user.name);
             },
             refreshRooms: roomList => {
                 refreshRooms(roomList);
@@ -44,7 +44,7 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
                 startGameDispatch();
             }
         },
-        initialData: getUser()
+        initialData: storageService.getUser()
     });
     cloak.run(config.cloakAddress);
 }

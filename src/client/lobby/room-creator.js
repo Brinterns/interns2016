@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import config from '../config/config';
 
 import { messageSetUsername, messageCreateRoom } from '../services/cloak-service';
-import { storeName } from '../services/storage-service';
+import storageService from '../services/storage-service';
 
 var username;
 var roomname;
@@ -16,7 +16,7 @@ export default class RoomCreator extends Component {
 
     setUsername() {
         messageSetUsername(username.value);
-        storeName(username.value);
+        storageService.storeName(username.value);
     }
 
     createRoom() {

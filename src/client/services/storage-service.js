@@ -1,9 +1,9 @@
-export {
-	storeName,
-	storeId,
-	getUser,
-	getRoom,
-	setRoom
+var storageService = {
+	storeName: storeName,
+	storeId: storeId,
+	getUser: getUser,
+	getRoom: getRoom,
+	setRoom: setRoom
 };
 
 function storeName(username) {
@@ -25,3 +25,6 @@ function setRoom(room) {
 function getRoom() {
 	return JSON.parse(sessionStorage.room);
 }
+
+
+export default storageService;

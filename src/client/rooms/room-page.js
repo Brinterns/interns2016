@@ -9,7 +9,7 @@ import Game from '../game/game';
 
 import { getRoomDetails, } from './room-actions';
 import { startGame } from '../game/game-actions'; 
-import { getRoom, getUser } from '../services/storage-service';
+import storageService from '../services/storage-service';
 
 export class RoomPage extends Component {
     componentWillMount() {
@@ -40,9 +40,9 @@ export class RoomPage extends Component {
     }
 
     isCreator() {
-        var room = getRoom();
+        var room = storageService.getRoom();
         var creator = room.data.creator;
-        var user = getUser();
+        var user = storageService.getUser();
         return JSON.stringify(creator) === JSON.stringify(user);
     }
 
