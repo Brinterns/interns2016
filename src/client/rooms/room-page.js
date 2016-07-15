@@ -8,6 +8,7 @@ import UserList from '../user/user-list';
 import Game from './game';
 
 import { getRoomDetails, startGame } from '../actions';
+import { getRoom, getUser } from '../services/storage-service';
 
 export class RoomPage extends Component {
     componentWillMount() {
@@ -32,7 +33,8 @@ export class RoomPage extends Component {
                 <h1>{`Room: ${this.props.roomData.name}`}</h1>
                 <UserList users={this.props.roomUsers} />
                 <div className="col-lg-8" >
-                    <button id="start-game" className="btn btn-success" onClick={() => {messageStartGame()}}>Start Game</button>
+                    <button id="start-game" className="btn btn-success" disabled={disable.bind(this)()} 
+                            onClick={() => {messageStartGame()}}>Start Game</button>
                     <button id="leave-room" className="btn btn-danger" onClick={leaveRoom}>Leave Room</button>
                 </div>
                 {this.props.start ? <Game/> : null}
@@ -40,6 +42,23 @@ export class RoomPage extends Component {
         );
     }
 };
+
+function disable() {
+    if(enoughPlayers.bind(this)()){
+        return !isCreator();
+    }
+    return true;
+}
+function enoughPlayers() {
+    return this.props.roomUsers.length >= 2 ? true : false;
+}
+
+function isCreator() {
+    var room = getRoom();
+    var creator = room.data.creator;
+    var user = getUser();
+    return JSON.stringify(creator) === JSON.stringify(user);
+}
 
 function leaveRoom() {
     router.navigateToLobby();

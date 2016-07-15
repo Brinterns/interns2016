@@ -1,7 +1,9 @@
 export {
 	storeName,
 	storeId,
-	getUser
+	getUser,
+	getRoom,
+	setRoom
 };
 
 function storeName(username) {
@@ -14,4 +16,12 @@ function storeId(id) {
 
 function getUser() {
 	return {id: localStorage.id, name: localStorage.name};
+}
+
+function setRoom(room) {
+	sessionStorage.room = room;
+}
+
+function getRoom() {
+	return JSON.parse(sessionStorage.room);
 }

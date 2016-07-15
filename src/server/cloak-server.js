@@ -46,7 +46,8 @@ function setUserUp(arg, user) {
 }
 
 function createRoom(arg, user) {
-    cloak.createRoom(arg);
+    var room = cloak.createRoom(arg);
+    room.data.creator = {id: user.id, name: user.name};
     fireRoomListReload();
 }
 
@@ -69,6 +70,10 @@ function fireLobbyReload() {
 
 function fireRoomListReload() {
     var rooms = cloak.getRooms(true);
+    for(var i = 0; i < rooms.length; i++){
+        var currRoom = cloak.getRoom(rooms[i].id);
+        rooms[i].data = currRoom.data;
+    }
     var lobby = cloak.getLobby();
     lobby.messageMembers('refreshRooms', rooms);
 }

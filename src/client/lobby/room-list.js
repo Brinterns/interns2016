@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import router from '../services/routing-service';
 import { messageJoinRoom } from '../services/cloak-service';
+import { setRoom } from '../services/storage-service';
 
 export default function RoomList(props) {
     return (
@@ -11,7 +12,7 @@ export default function RoomList(props) {
                 {props.roomList.map( result => {
                     return (
                         <button className={'list-group-item list-group-item-warning space'} key={result.id}
-                             onClick={()=>joinRoom({id: result.id, name: result.name})}>
+                             onClick={()=>joinRoom(result)}>
                              {result.name}
                             <span className='badge'>{result.users.length}</span>
                         </button>
@@ -23,5 +24,6 @@ export default function RoomList(props) {
 }
 
 function joinRoom(room) {
+    setRoom(JSON.stringify(room));
     router.navigateToRoom(`${room.id}`);
 }
