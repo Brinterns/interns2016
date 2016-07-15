@@ -11,7 +11,7 @@ export {
     isConnected
 };
 
-let roomDataCallback;
+let roomDataDispatch;
 
 function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
     cloak.configure({
@@ -35,7 +35,7 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
                 refreshRoomUsers(arg);
             },
             roomDetailsResponse: arg => {
-                roomDataCallback(arg);
+                roomDataDispatch(arg);
             }
         },
         initialData: getUser()
@@ -64,6 +64,6 @@ function isConnected() {
 }
 
 function getRoomData(roomId, dispatch) {
-    roomDataCallback = dispatch;
+    roomDataDispatch = dispatch;
     cloak.message('roomDetails', roomId);
 }
