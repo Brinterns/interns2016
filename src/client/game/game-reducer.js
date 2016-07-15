@@ -1,4 +1,4 @@
-import * as types from '../actions/types';
+import { START_GAME } from './game-actions';
 
 const initialState = {
 	started: false
@@ -6,7 +6,7 @@ const initialState = {
 
 const game = (state = initialState, action) => {
     switch (action.type) {
-        case types.START_GAME:
+        case START_GAME:
         	return Object.assign({}, state, {
         		started: true
         	});

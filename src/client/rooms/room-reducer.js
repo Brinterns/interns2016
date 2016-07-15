@@ -1,4 +1,4 @@
-import * as types from '../actions/types';
+import { UPDATE_ROOM_USERS, GET_ROOM_DATA } from './room-actions';
 
 const initialState = {
 	users: [],
@@ -7,11 +7,11 @@ const initialState = {
 
 const room = (state = initialState, action) => {
     switch (action.type) {
-        case types.UPDATE_ROOM_USERS: 
+        case UPDATE_ROOM_USERS: 
         	return Object.assign({}, state, {
         		users: action.payload
         	});
-        case types.GET_ROOM_DATA: 
+        case GET_ROOM_DATA: 
             return Object.assign({}, state, {
             	data: action.payload
             });

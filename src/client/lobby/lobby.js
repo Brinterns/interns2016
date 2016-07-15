@@ -7,7 +7,8 @@ import UserList from '../user/user-list';
 import RoomList from './room-list';
 import RoomCreator from './room-creator';
 
-import { refreshLobby, refreshRooms, refreshRoomUsers } from '../actions';
+import { refreshLobby, refreshRooms} from './lobby-actions';
+import { refreshRoomUsers } from '../rooms/room-actions'; 
 
 export class Lobby extends Component {
     componentWillMount() {

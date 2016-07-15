@@ -7,7 +7,8 @@ import { messageLeaveRoom, messageJoinRoom, getRoomData, messageStartGame, setSt
 import UserList from '../user/user-list';
 import Game from '../game/game';
 
-import { getRoomDetails, startGame } from '../actions';
+import { getRoomDetails, } from './room-actions';
+import { startGame } from '../game/game-actions'; 
 import { getRoom, getUser } from '../services/storage-service';
 
 export class RoomPage extends Component {

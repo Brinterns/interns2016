@@ -1,4 +1,4 @@
-import * as types from '../actions/types';
+import { UPDATE_LOBBY_LIST, UPDATE_ROOM_LIST } from './lobby-actions';
 
 const initialState = {
 	rooms: [],
@@ -7,11 +7,11 @@ const initialState = {
 
 const lobby = (state = initialState, action) => {
     switch(action.type) {
-        case types.UPDATE_ROOM_LIST:
+        case UPDATE_ROOM_LIST:
         	return Object.assign({}, state, {
         		rooms: action.payload
         	});
-     	case types.UPDATE_LOBBY_LIST: {
+     	case UPDATE_LOBBY_LIST: {
             return Object.assign({}, state, {
         		users: action.payload
         	});
