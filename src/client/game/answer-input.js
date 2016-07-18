@@ -2,33 +2,56 @@ import React, { Component } from 'react';
 
 import style from '../index.scss';
 
-const textArea = {
-    resize: 'none'
-}
-
 export default class AnswerInput extends Component {
     componentWillMount() {
         this.setState({
-            textRows: 1,
-            maxLength: 18
+            answerList: ['']
         });
     }
 
     handleEnterPress(event) {
         if(event.keyCode === 13 || event.which === 13) {
             this.setState({
-                textRows: (this.state.textRows + 1),
-                maxLength: (this.state.maxLength + 20)
+                answerList: [...this.state.answerList, 'Enter your answer here']
             });
         }
+    }
+
+    handleChange(event, id) {
+        console.log(this.state.answerList);
+        this.setState({
+            answerList: this.state.answerList
+                .map((originalAnswer, index) => {
+                    if(index === id) {
+                        return event.target.value;
+                    }
+
+                    return originalAnswer;
+                })
+        });
+    }
+
+    textBoxGenerator(props) {
+        return (
+            props.map((answer,index) => {
+                let focus = index === props.length-1;
+                return (
+                    <div className="row">
+                        <input maxLength="18" size="30" placeholder="Enter your answer here" autoFocus={focus}
+                            defaultValue={answer} onChange={(event) => this.handleChange(event, index)} onKeyDown={event => this.handleEnterPress(event)}/>
+                    </div>
+                );
+            })
+        );
     }
 
     render() {
         return (
             <div className="col-lg-12 text-center">
                 <h3 className={style.header3}>ANSWER INPUT</h3>
-                <textarea className={style['text-area']} rows={this.state.textRows} cols="25" maxLength={this.state.maxLength}
-                    onKeyDown={ (event) => this.handleEnterPress(event)}/>
+                <div>
+                    {this.textBoxGenerator(this.state.answerList)}
+                </div>
             </div>
         );
     }
