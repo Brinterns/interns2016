@@ -8,7 +8,9 @@ import RoomList from './room-list';
 import RoomCreator from './room-creator';
 
 import { refreshLobby, refreshRooms} from './lobby-actions';
-import { refreshRoomUsers } from '../rooms/room-actions'; 
+import { refreshRoomUsers } from '../rooms/room-actions';
+
+import style from '../index.scss';
 
 export class Lobby extends Component {
     componentWillMount() {
@@ -19,7 +21,7 @@ export class Lobby extends Component {
         return (
             <div>
                 <div className="text-center">
-                    <h1>Lobby</h1>
+                    <h1 className={style.header1}>Lobby</h1>
                 </div>
                 <div className="container-fluid">
                     <UserList users={this.props.lobbyUsers} />

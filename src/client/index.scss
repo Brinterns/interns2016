@@ -1,8 +1,8 @@
-h1 {
+.header1 {
     background-color: #cce6ff;
 }
 
-h2 {
+.header2 {
     background-color: #b3d9ff;
 }
 
@@ -10,18 +10,18 @@ h2 {
     background-color: #ffb366;
 }
 
-button {
+.button {
     margin-left: 10px;
     height: 60px;
     width: 150px;
 }
 
-li {
+.list-element {
     height: 60px;
     text-align: center;
 }
 
-input {
+.input {
     height: 60px;
     width: 250px;
 }

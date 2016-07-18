@@ -8,8 +8,10 @@ import UserList from '../user/user-list';
 import Game from '../game/game';
 
 import { getRoomDetails, } from './room-actions';
-import { startGame } from '../game/game-actions'; 
+import { startGame } from '../game/game-actions';
 import storageService from '../services/storage-service';
+
+import style from '../index.scss';
 
 export class RoomPage extends Component {
     componentWillMount() {
@@ -27,14 +29,14 @@ export class RoomPage extends Component {
             messageLeaveRoom();
         }
     }
-    
+
     disable() {
         if(this.enoughPlayers()){
             return !this.isCreator();
         }
         return true;
     }
-    
+
     enoughPlayers() {
         return this.props.roomUsers.length >= 2 ? true : false;
     }
@@ -49,12 +51,13 @@ export class RoomPage extends Component {
     render() {
         return (
             <div className="text-center">
-                <h1>{`Room: ${this.props.roomData.name}`}</h1>
+                <h1 className={style.header1}>{`Room: ${this.props.roomData.name}`}</h1>
                 <UserList users={this.props.roomUsers} />
                 <div className="col-lg-8" >
-                    <button id="start-game" className="btn btn-success" disabled={this.disable()} 
+                    <button className={`btn btn-success ${style.button}`} id="start-game" disabled={this.disable()}
                             onClick={() => {messageStartGame()}}>Start Game</button>
-                    <button id="leave-room" className="btn btn-danger" onClick={leaveRoom}>Leave Room</button>
+                    <button className={`btn btn-danger ${style.button}`} id="leave-room"
+                            onClick={leaveRoom}>Leave Room</button>
                 </div>
                 {this.props.started ? <Game/> : null}
             </div>
