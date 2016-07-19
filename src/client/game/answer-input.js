@@ -17,10 +17,12 @@ export default class AnswerInput extends Component {
     handleEnterPress(event) {
         switch (event.which) {
             case ENTER_KEY: { //Enter key press
-                this.setState({
-                    answerList: [...this.state.answerList, ''],
-                    focusIndex: this.state.answerList.length
-                });
+                if(event.target.value.length > 0) {
+                    this.setState({
+                        answerList: [...this.state.answerList, ''],
+                        focusIndex: this.state.answerList.length
+                    });
+                }
                 break;
             }
             case UP_KEY: {
@@ -51,15 +53,21 @@ export default class AnswerInput extends Component {
                 })
         });
     }
+    handleFocus(index) {
+        this.setState({
+            focusIndex: index
+        });
+    }
 
     textBoxGenerator(props, focusIndex) {
         return (
             props.map((answer,index) => {
                 let focus = index === focusIndex;
                 return (
-                    <div className="row">
-                        <input maxLength="18" size="30" placeholder="Enter your answer here" ref={index}
+                    <div className="row radio radio-info">
+                        <input maxLength="18" size="30" placeholder="Enter your answer here" ref={index} onFocus={() => this.handleFocus(index)}
                             defaultValue={answer} onChange={(event) => this.handleChange(event, index)} onKeyDown={event => this.handleEnterPress(event)}/>
+                        <input type="radio" name="answer" />
                     </div>
                 );
             })
@@ -75,6 +83,7 @@ export default class AnswerInput extends Component {
         return (
             <div className="col-lg-12 text-center">
                 <h3 className={style.header3}>ANSWER INPUT</h3>
+                <button className="btn btn-primary btn-success">Ready</button>
                 <div>
                     {this.textBoxGenerator(this.state.answerList, this.state.focusIndex)}
                 </div>
