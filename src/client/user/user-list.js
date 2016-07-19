@@ -14,6 +14,8 @@ export default function UserList({ users }) {
         </li>
     ));
 
+export default function UserList(props) {
+    let users = sort(props.users);
     return (
         <div className="col-lg-4 text-center">
             <h2>User List</h2>
