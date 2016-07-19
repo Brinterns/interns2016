@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 
 import style from '../index.scss';
 
+const ENTER_KEY = 13
+  , UP_KEY = 38
+  , DOWN_KEY = 40;
+
 export default class AnswerInput extends Component {
     componentWillMount() {
         this.setState({
@@ -12,21 +16,21 @@ export default class AnswerInput extends Component {
 
     handleEnterPress(event) {
         switch (event.which) {
-            case 13: { //Enter key press
+            case ENTER_KEY: { //Enter key press
                 this.setState({
-                    answerList: [...this.state.answerList, 'Enter your answer here'],
+                    answerList: [...this.state.answerList, ''],
                     focusIndex: this.state.answerList.length
                 });
                 break;
             }
-            case 38: {
+            case UP_KEY: {
                 let focusIndex = this.state.focusIndex === 0 ? 0 : this.state.focusIndex-1;
                 this.setState({
                     focusIndex: focusIndex
                 });
                 break;
             }
-            case 40: {
+            case DOWN_KEY: {
                 let focusIndex = this.state.focusIndex === this.state.answerList.length-1 ? this.state.answerList.length-1 : this.state.focusIndex+1;
                 this.setState({
                     focusIndex: focusIndex
@@ -37,7 +41,6 @@ export default class AnswerInput extends Component {
     }
 
     handleChange(event, id) {
-        console.log(this.state.answerList);
         this.setState({
             answerList: this.state.answerList
                 .map((originalAnswer, index) => {
@@ -53,7 +56,6 @@ export default class AnswerInput extends Component {
         return (
             props.map((answer,index) => {
                 let focus = index === focusIndex;
-                console.log(focus+' '+index);
                 return (
                     <div className="row">
                         <input maxLength="18" size="30" placeholder="Enter your answer here" ref={index}
