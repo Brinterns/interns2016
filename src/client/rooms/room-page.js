@@ -57,7 +57,7 @@ export class RoomPage extends Component {
                     <button className={`btn btn-danger`} id="leave-room"
                             onClick={leaveRoom}>Leave Room</button>
                 </div>
-                {this.props.started ? <Game/> : null}
+                {this.props.started ? <Game /> : null}
             </div>
         );
     }

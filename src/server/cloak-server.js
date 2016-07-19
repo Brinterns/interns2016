@@ -114,5 +114,15 @@ function startGame(arg, user) {
     var room = user.getRoom();
     room.data.started = true;
     room.messageMembers('startGame');
+    setLeader(user, room);
     fireRoomListReload();
+}
+
+function setLeader(user, room) {
+    user = {
+        id: user.id,
+        name: user.name,
+        data: user.data
+    };
+    room.messageMembers('setLeader', user);
 }
