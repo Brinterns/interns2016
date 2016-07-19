@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import style from '../index.scss';
 
-const SPACE = 32
+const SPACE_KEY = 32
   , ENTER_KEY = 13
   , UP_KEY = 38
   , DOWN_KEY = 40;
@@ -21,7 +21,6 @@ export default class AnswerInput extends Component {
                 if(event.target.value.length > 0) {
                     let answerList = this.state.answerList;
                     for(let i = 0; i < answerList.length; i++) {
-                        console.log(answerList[i])
                         if(answerList[i] === '') {
                             this.setState({
                                 answerList: [...this.state.answerList],
@@ -29,7 +28,7 @@ export default class AnswerInput extends Component {
                             });
                             return;
                         }
-                    }    
+                    }
                     this.setState({
                         answerList: [...this.state.answerList, ''],
                         focusIndex: this.state.answerList.length
@@ -51,7 +50,7 @@ export default class AnswerInput extends Component {
                 });
                 break;
             }
-            case SPACE: {
+            case SPACE_KEY: {
                 event.preventDefault();
                 break;
             }
