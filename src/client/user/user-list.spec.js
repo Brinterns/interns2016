@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 import UserList from './user-list';
 
-let mockList = [{id: 0, name: 'Jamie'}, {id: 1, name: 'Raul'}];
+let mockList = [{id: 0, name: 'Jamie', data:{score: undefined}}, {id: 1, name: 'Raul', data:{score: undefined}}];
 
 describe('<UserList />', () => {
     it('contains "User List" heading', () => {
