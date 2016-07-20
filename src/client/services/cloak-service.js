@@ -25,11 +25,6 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
                 cloak.message('setUserUp');
             }
         },
-        timerEvents: {
-            leaderTimer: function(millis) {
-
-            }
-        },
         messages: {
             refreshLobby: lobbyList => {
                 refreshLobby(lobbyList);

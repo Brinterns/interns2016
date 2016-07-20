@@ -112,17 +112,32 @@ function roomDetails(roomId, user) {
 
 function startGame(arg, user) {
     var room = user.getRoom();
+    var roomUsers = room.getMembers();
+    var leaderIndex = roomUsers.indexOf(user);
+    room.data.leader = leaderIndex;
     room.data.started = true;
     room.messageMembers('startGame');
-    setLeader(user, room);
+
+    setLeader(room);
     fireRoomListReload();
+    gameController(room);
 }
 
-function setLeader(user, room) {
-    user = {
-        id: user.id,
-        name: user.name,
-        data: user.data
-    };
-    room.messageMembers('setLeader', user);
+function setLeader(room) {
+    var nextLeader = room.data.leader;
+    var members = room.getMembers();
+    var leader = {
+        id: members[nextLeader].id,
+        name: members[nextLeader].name,
+        data: members[nextLeader].data
+    }
+    console.log(leader);
+    room.messageMembers('setLeader', leader);
+    nextLeader ++;
+    nextLeader = nextLeader >= members.length ? 0 : nextLeader;
+    room.data.leader = nextLeader;
+}
+
+function gameController(room) {
+    var roomTimer = setInterval(setLeader.bind(null, room), 5000);
 }
