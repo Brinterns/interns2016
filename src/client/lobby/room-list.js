@@ -4,6 +4,8 @@ import router from '../services/routing-service';
 import { messageJoinRoom } from '../services/cloak-service';
 import storageService from '../services/storage-service';
 
+import style from '../common/common.scss';
+
 export default function RoomList(props) {
     return (
         <div className="col-lg-4 text-center">
@@ -11,9 +13,9 @@ export default function RoomList(props) {
             <div className="col-lg-12 pre-scrollable list-group">
                 {props.roomList.map( room => {
                     return (
-                        <button className={`list-group-item list-group-item-${getColour(room)} space`} key={room.id} 
-                             disabled={room.data.started} onClick={()=>joinRoom(room)}>
-                             {room.name}
+                        <button className={`list-group-item list-group-item-${getColour(room)} ${style.space}`} key={room.id}
+                                disabled={room.data.started} onClick={()=>joinRoom(room)}>
+                            {room.name}
                             <span className='badge'>{room.users.length}</span>
                         </button>
                     );

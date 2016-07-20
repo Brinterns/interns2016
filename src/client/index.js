@@ -9,6 +9,8 @@ import configureStore from './store';
 import App from './app';
 import RoomPage from './rooms/room-page'
 
+import './index.scss';
+
 const store = configureStore();
 const app = document.getElementById('app');
 const history = syncHistoryWithStore(browserHistory, store);
