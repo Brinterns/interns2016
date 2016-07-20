@@ -53,6 +53,7 @@ function createRoom(name, user) {
 }
 
 function joinRoom(id, user) {
+    user.data.score = 0;
     var room = cloak.getRoom(id);
     room.addMember(user);
     refreshListener();
@@ -65,7 +66,14 @@ function refreshListener() {
 
 function fireLobbyReload() {
     var lobby = cloak.getLobby();
-    var list = lobby.getMembers(true);
+    var list = lobby.getMembers();
+    for(var i=0; i<list.length; i++) {
+        list[i] = {
+            id: list[i].id,
+            name: list[i].name,
+            data: list[i].data
+        };
+    }
     lobby.messageMembers('refreshLobby', list);
 }
 
@@ -80,10 +88,19 @@ function fireRoomListReload() {
 }
 
 function refreshRoomUsers(arg) {
-    this.messageMembers('refreshRoomUsers', this.getMembers(true));
+    var users = this.getMembers();
+    for(var i=0; i<users.length; i++) {
+        users[i] = {
+            id: users[i].id,
+            name: users[i].name,
+            data: users[i].data
+        };
+    }
+    this.messageMembers('refreshRoomUsers', users);
 }
 
 function leaveRoom(arg, user) {
+    user.data.score = undefined;
     user.getRoom().removeMember(user);
 }
 
