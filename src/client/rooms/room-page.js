@@ -7,7 +7,7 @@ import { messageLeaveRoom, messageJoinRoom, getRoomData, messageStartGame, setSt
 import UserList from '../user/user-list';
 import Game from '../game/game';
 
-import { getRoomDetails, } from './room-actions';
+import { getRoomDetails } from './room-actions';
 import { startGame } from '../game/game-actions';
 import storageService from '../services/storage-service';
 
