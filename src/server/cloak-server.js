@@ -131,7 +131,6 @@ function setLeader(room) {
         name: members[nextLeader].name,
         data: members[nextLeader].data
     }
-    console.log(leader);
     room.messageMembers('setLeader', leader);
     nextLeader ++;
     nextLeader = nextLeader >= members.length ? 0 : nextLeader;
