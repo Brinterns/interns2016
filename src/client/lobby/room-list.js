@@ -4,7 +4,7 @@ import router from '../services/routing-service';
 import { messageJoinRoom } from '../services/cloak-service';
 import storageService from '../services/storage-service';
 
-import style from '../css/common.scss';
+import style from '../common/common.scss';
 
 export default function RoomList(props) {
     return (

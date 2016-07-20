@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import config from '../config/config';
 
-import style from '../css/common.scss'
+import style from '../common/common.scss'
 
 export default function UserList(props) {
     return (

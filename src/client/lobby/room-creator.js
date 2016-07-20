@@ -5,7 +5,7 @@ import config from '../config/config';
 import { messageSetUsername, messageCreateRoom } from '../services/cloak-service';
 import storageService from '../services/storage-service';
 
-import style from '../css/lobby.scss';
+import style from './lobby.scss';
 
 export default class RoomCreator extends Component {
     setUsername() {
