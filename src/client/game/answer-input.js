@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 
-import style from '../index.scss';
-
-const SPACE_KEY = 32
-  , ENTER_KEY = 13
-  , UP_KEY = 38
-  , DOWN_KEY = 40;
+const SPACE_KEY = 32;
+const ENTER_KEY = 13;
+const UP_KEY = 38;
+const DOWN_KEY = 40;
 
 export default class AnswerInput extends Component {
     componentWillMount() {
@@ -15,43 +13,57 @@ export default class AnswerInput extends Component {
         });
     }
 
-    handleEnterPress(event) {
+    handleKeyPress(event) {
         switch (event.which) {
-            case ENTER_KEY: { //Enter key press
-                if(event.target.value.length > 0) {
-                    let answerList = this.state.answerList;
-                    for(let i = 0; i < answerList.length; i++) {
-                        if(answerList[i] === '') {
-                            this.setState({
-                                answerList: [...this.state.answerList],
-                                focusIndex: i
-                            });
-                            return;
-                        }
-                    }
-                    this.setState({
-                        answerList: [...this.state.answerList, ''],
-                        focusIndex: this.state.answerList.length
-                    });
+            case ENTER_KEY: {
+                if(event.target.value === "") {
+                    return;
                 }
+
+                const { answerList } = this.state;
+                for(let i = 0; i < answerList.length; i++) {
+                    if(answerList[i] === '') {
+                        this.setState({
+                            focusIndex: i
+                        });
+                        return;
+                    }
+                }
+
+                this.setState({
+                    answerList: [...answerList, ''],
+                    focusIndex: answerList.length
+                });
+
                 break;
             }
             case UP_KEY: {
-                let focusIndex = this.state.focusIndex === 0 ? 0 : this.state.focusIndex-1;
+                const { focusIndex } = this.state;
+                if(focusIndex === 0) {
+                    return;
+                }
+
                 this.setState({
-                    focusIndex: focusIndex
+                    focusIndex: focusIndex - 1
                 });
+
                 break;
             }
             case DOWN_KEY: {
-                let focusIndex = this.state.focusIndex === this.state.answerList.length-1 ? this.state.answerList.length-1 : this.state.focusIndex+1;
+                const { focusIndex } = this.state;
+                if(focusIndex === this.state.answerList.length-1) {
+                    return;
+                }
+
                 this.setState({
-                    focusIndex: focusIndex
+                    focusIndex: focusIndex + 1
                 });
+
                 break;
             }
             case SPACE_KEY: {
                 event.preventDefault();
+                
                 break;
             }
         }
@@ -74,14 +86,15 @@ export default class AnswerInput extends Component {
         });
     }
 
-    textBoxGenerator(props, focusIndex) {
+    textBoxes() {
+        const { answerList, focusIndex } = this.state;
         return (
-            props.map((answer,index) => {
+            answerList.map((answer,index) => {
                 let focus = index === focusIndex;
                 return (
                     <div className="row radio radio-info">
                         <input maxLength="18" size="30" placeholder="Enter your answer here" ref={index} onFocus={() => this.handleFocus(index)}
-                            defaultValue={answer} onChange={(event) => this.handleChange(event, index)} onKeyDown={event => this.handleEnterPress(event)}/>
+                            defaultValue={answer} onChange={(event) => this.handleChange(event, index)} onKeyDown={event => this.handleKeyPress(event)}/>
                         <input type="radio" name="answer" />
                     </div>
                 );
@@ -97,11 +110,9 @@ export default class AnswerInput extends Component {
     render() {
         return (
             <div className="col-lg-12 text-center">
-                <h3 className={style.header3}>ANSWER INPUT</h3>
+                <h3>ANSWER INPUT</h3>
                 <button className="btn btn-primary btn-success">Ready</button>
-                <div>
-                    {this.textBoxGenerator(this.state.answerList, this.state.focusIndex)}
-                </div>
+                <div>{this.textBoxes()}</div>
             </div>
         );
     }
