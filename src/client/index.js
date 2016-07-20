@@ -9,7 +9,7 @@ import configureStore from './store';
 import App from './app';
 import RoomPage from './rooms/room-page'
 
-import './index.scss';
+import './css/common.scss';
 
 const store = configureStore();
 const app = document.getElementById('app');

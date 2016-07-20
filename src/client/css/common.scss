@@ -14,13 +14,13 @@ h3 {
     background-color: #ffb366;
 }
 
-.button {
+button {
     margin-left: 10px;
     height: 60px;
     width: 150px;
 }
 
-.list-element {
+li {
     height: 60px;
     text-align: center;
 }
@@ -32,8 +32,4 @@ h3 {
 
 .space {
     margin-top: 10px;
-}
-
-.text-area {
-    resize: none;
 }

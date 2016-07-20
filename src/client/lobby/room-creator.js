@@ -5,7 +5,7 @@ import config from '../config/config';
 import { messageSetUsername, messageCreateRoom } from '../services/cloak-service';
 import storageService from '../services/storage-service';
 
-import style from '../index.scss';
+import style from '../css/lobby.scss';
 
 export default class RoomCreator extends Component {
     setUsername() {
@@ -26,19 +26,19 @@ export default class RoomCreator extends Component {
     render() {
         return (
             <div className="col-lg-4 text-center">
-                <h2 className={style.header2}>Create Room & Set Username</h2>
+                <h2>Create Room & Set Username</h2>
                 <div className="col-lg-12 list-group">
                     <div className={'row space'}>
-                        <input className={style.input} type="text" placeholder="Please type your new username"
+                        <input className={style['room-creator-input']}type="text" placeholder="Please type your new username"
                             onChange={(event) => this.handleChange(event, 'username')} />
-                        <button className={`btn btn-success ${style.button}`} id="user-name-button"
+                        <button className={`btn btn-success`} id="user-name-button"
                             onClick={() => this.setUsername()}>Set Username</button>
                     </div>
                     <br></br>
                     <div className="row">
-                        <input className={style.input} type="text" placeholder="Please type new room name"
+                        <input className={style['room-creator-input']} type="text" placeholder="Please type new room name"
                             onChange={(event) => this.handleChange(event, 'roomname')} />
-                        <button className={`btn btn-success ${style.button}`} id="room-name-button"
+                        <button className={`btn btn-success`} id="room-name-button"
                             onClick={() => this.createRoom()}>Create Room</button>
                     </div>
                 </div>
