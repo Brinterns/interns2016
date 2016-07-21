@@ -7,8 +7,6 @@ import { setLeader } from './game-actions';
 
 import { setSetLeaderDispatch } from '../services/cloak-service';
 
-import style from '../index.scss';
-
 export class Game extends Component {
     componentWillMount() {
         setSetLeaderDispatch(this.props.setLeader);
