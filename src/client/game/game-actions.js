@@ -6,6 +6,7 @@ export const GET_VOWEL = 'GET_VOWEL';
 export const DISABLE_CONSONANT = 'DISABLE_CONSONANT';
 export const DISABLE_VOWEL = 'DISABLE_VOWEL';
 
+
 export function startGame() {
     return {
         type: START_GAME

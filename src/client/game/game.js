@@ -16,7 +16,6 @@ export class Game extends Component {
             return true;
         }
         return false;
-    }
 
     render() {
         const letterButtons = (
@@ -42,32 +41,17 @@ export class Game extends Component {
     }
 };
 
-function randomInteger(min, max) {
-    return Math.floor(Math.random() * (max-min)) + min;
+function getConsonant() {
+    messageGetConsonant();
 }
 
-function getRandomItem(letterList) {
-    let totalWeight = totalWeights.consonants;
-    let randomNum = randomInteger(0, totalWeight);
-    let weightSum = 0;
-
-    for(let letter in letterList) {
-        weightSum += letterList[letter];
-        if(randomNum <= weightSum) {
-            return letter;
-        }
-    }
-}
-
-function randomLetter() {
-    let randomItem = getRandomItem(consonants);
-    return(
-        <p>{randomItem}</p>
-    )
+function getVowel() {
+    messageGetVowel();
 }
 
 const mapStateToProps = state => ({
-    leader: state.game.leader
+    leader: state.game.leader,
+    letterList: state.game.letterList
 });
 
 const mapStateToProps = state => ({

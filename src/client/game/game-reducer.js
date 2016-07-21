@@ -1,4 +1,3 @@
-
 import * as actionTypes from './game-actions';
 
 const initialState = {
@@ -50,6 +49,20 @@ const game = (state = initialState, action) => {
             return Object.assign({}, state, {
                 disableVowel: action.payload
             });
+        case actionTypes.GET_CONSONANT: {
+            let letterList = Array.from(state.letterList);
+            letterList.push(action.payload);
+            return Object.assign({}, state, {
+                letterList: letterList
+            });
+        }
+        case actionTypes.GET_VOWEL: {
+            let letterList = Array.from(state.letterList);
+            letterList.push(action.payload);
+            return Object.assign({}, state, {
+                letterList: letterList
+            });
+        }
         default:
             return state;
     }

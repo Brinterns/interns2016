@@ -115,6 +115,18 @@ function messageGetVowel() {
     cloak.message('getVowel');
 }
 
-function messageGetConsonant(dispatch) {
+function messageGetConsonant() {
+    cloak.message('getConsonant');
+}
 
+function setConsonantDispatch(dispatch) {
+    consonantDispatch = dispatch;
+}
+
+function messageGetVowel() {
+    cloak.message('getVowel');
+}
+
+function setVowelDispatch(dispatch) {
+    vowelDispatch = dispatch;
 }

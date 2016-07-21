@@ -223,3 +223,15 @@ function getVowel(arg, user) {
         user.message('disableVowel', true);
     }
 }
+
+function getConsonant(arg, user) {
+    var room = user.getRoom();
+    var consonant = randomConsonant();
+    room.messageMembers('updateConsonant', consonant);
+}
+
+function getVowel(arg, user) {
+    var room = user.getRoom();
+    var vowel = randomVowel();
+    room.messageMembers('updateVowel', vowel);
+}
