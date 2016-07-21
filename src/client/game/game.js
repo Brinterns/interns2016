@@ -39,14 +39,6 @@ export class Game extends Component {
             </div>
         );
     }
-};
-
-function getConsonant() {
-    messageGetConsonant();
-}
-
-function getVowel() {
-    messageGetVowel();
 }
 
 const mapStateToProps = state => ({
