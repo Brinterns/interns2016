@@ -41,9 +41,9 @@ export class RoomPage extends Component {
 
     isCreator() {
         var room = storageService.getRoom();
-        var creator = room.data.creator;
-        var user = storageService.getUser();
-        return JSON.stringify(creator) === JSON.stringify(user);
+        var creatorId = room.data.creator.id;
+        var userId = storageService.getUser().id;
+        return JSON.stringify(creatorId) === JSON.stringify(userId);
     }
 
     render() {
