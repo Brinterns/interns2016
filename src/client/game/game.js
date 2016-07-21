@@ -15,7 +15,7 @@ export class Game extends Component {
     render() {
         return (
             <div className="col-lg-8 text-center">
-                <h3 className={style.header3}>THIS IS GAME</h3>
+                <h3>THIS IS GAME</h3>
                 <p>{this.props.leader}</p>
                 <AnswerInput />
             </div>
