@@ -35,7 +35,7 @@ const totalWeights = {
 	vowels: 321
 }
 
-export {
+module.exports = {
 	consonants,
 	vowels,
 	totalWeights

@@ -1,4 +1,6 @@
 var cloak = require('cloak');
+var randomConsonant = require('./random-consonant-picker');
+var randomVowel = require('./random-vowel-picker');
 
 module.exports = function(expressServer) {
     cloak.configure({
@@ -22,7 +24,9 @@ module.exports = function(expressServer) {
             joinRoom: joinRoom,
             leaveRoom: leaveRoom,
             roomDetails: roomDetails,
-            startGame: startGame
+            startGame: startGame,
+            getConsonant: getConsonant,
+            getVowel: getVowel
         }
     });
     cloak.run();
@@ -164,4 +168,16 @@ function setNextLeader(room) {
 
 function gameController(room) {
     var roomTimer = setInterval(setNextLeader.bind(null, room), 5000);
+}
+
+function getConsonant(arg, user) {
+    var room = user.getRoom();
+    var consonant = randomConsonant();
+    room.messageMembers('updateConsonant', consonant);
+}
+
+function getVowel(arg, user) {
+    var room = user.getRoom();
+    var vowel = randomVowel();
+    room.messageMembers('updateVowel', vowel);
 }
