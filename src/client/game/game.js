@@ -17,32 +17,22 @@ export class Game extends Component {
     }
 
     render() {
-        const buttons = (
-            <div>
-                <button className="btn btn-info" onClick={() => getConsonant()}>Consonant</button>
-                <button className="btn btn-primary" onClick={() => getVowel()}>Vowel</button>
-            </div>
-        )
-
         return (
             <div className="col-lg-8 text-center">
                 <h3>COUNTDOWN</h3>
-                <p>{this.props.leader}</p>
-                {buttons}
-                {this.props.letterList}
+                <p>leader: {this.props.leader}</p>
+                <div>
+                    <button className="btn btn-info" onClick={() =>  messageGetConsonant()}>Consonant</button>
+                    <button className="btn btn-primary" onClick={() => messageGetVowel()}>Vowel</button>
+                </div>
+                <div>
+                    {this.props.letterList}
+                </div>
                 <AnswerInput />
             </div>
         );
     }
 };
-
-function getConsonant() {
-    cloakService.messageGetConsonant();
-}
-
-function getVowel() {
-    cloakService.messageGetVowel();
-}
 
 const mapStateToProps = state => ({
     leader: state.game.leader,
