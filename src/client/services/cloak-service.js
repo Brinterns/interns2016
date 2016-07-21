@@ -90,3 +90,7 @@ function setStartGame(dispatch) {
 function setLeaderDispatch(dispatch) {
     leaderDispatch = dispatch;
 }
+
+function messageGetConsonant(dispatch) {
+
+}
