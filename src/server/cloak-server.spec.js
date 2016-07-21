@@ -138,6 +138,19 @@ describe('cloak server', function() {
 
             expect(room.data.creator).toEqual(user);
         });
+
+        it('sets room to not started on creation', function() {
+            user = {name: "name", id: "12345-abcde"};
+            room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});
+            cloak.createRoom.and.returnValue(room);
+ 
+            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+
+            expect(room.data.started).toEqual(false);
+        });
     });
 
     describe('joinRoom', () => {
@@ -184,7 +197,7 @@ describe('cloak server', function() {
 
             cloakConfig.room.newMember.bind(room,'')();
 
-            expect(room.getMembers).toHaveBeenCalledWith();
+            expect(room.getMembers).toHaveBeenCalled();
         });
         it('the members of the correct room are messaged to refreshRooms', function() {
             users = ['Raul', 'Jamie'];
@@ -219,6 +232,83 @@ describe('cloak server', function() {
             cloakConfig.messages.leaveRoom('', user);
 
             expect(user.data.score).toEqual(undefined);
+        })
+    });
+
+    describe('roomDetails ', () => {
+        it('retrieves the correct room from the server', function() {
+            let roomDetails = {id: 1, name: 'Room 1', data:{started: false}};
+            cloak.getRoom.and.returnValue(roomDetails);
+
+            cloakConfig.messages.roomDetails(1, user);
+
+            expect(user.message).toHaveBeenCalledWith('roomDetailsResponse', roomDetails);
+        })
+    });
+
+    describe('startGame ', () => {
+        it('retrieves the correct room ', function() {
+            user.getRoom.and.returnValue(room);
+            room.getMembers.and.returnValue([user]);
+            room.data = {
+                leaderIndex: '',
+                started: false
+            };
+            cloak.getRooms.and.returnValue([]);
+
+            cloakConfig.messages.startGame('', user);
+
+            expect(user.getRoom).toHaveBeenCalled();
+        })
+
+        it('finds the index of the correct user in the room', function() {
+            user.getRoom.and.returnValue(room);
+            room.getMembers.and.returnValue([user]);
+            room.data = {
+                leaderIndex: '',
+                started: false
+            };
+            cloak.getRooms.and.returnValue([]);
+
+            cloakConfig.messages.startGame('', user);
+
+            expect(room.data).toEqual({leaderIndex: 0, started: true});
+        })
+
+        it('calls setLeader with correct room', function() {
+            user.getRoom.and.returnValue(room);
+            user.id = '1';
+            user.name = 'User 1';
+            user.data = '';
+            room.getMembers.and.returnValue([user]);
+            room.data = {
+                leaderIndex: '',
+                started: false
+            };
+            cloak.getRooms.and.returnValue([]);
+
+            cloakConfig.messages.startGame('', user);
+
+            var expectedLeader = {
+                id: user.id,
+                name: user.name,
+                data: user.data
+            }
+            expect(room.messageMembers).toHaveBeenCalledWith('setLeader', expectedLeader);
+        })
+
+        it('updates the leader index of the correct user in the room', function() {
+            user.getRoom.and.returnValue(room);
+            room.getMembers.and.returnValue([user,'']);
+            room.data = {
+                leaderIndex: '',
+                started: false
+            };
+            cloak.getRooms.and.returnValue([]);
+
+            cloakConfig.messages.startGame('', user);
+
+            expect(room.data.leaderIndex).toEqual(1);
         })
     });
 });

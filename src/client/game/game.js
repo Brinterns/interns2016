@@ -5,11 +5,11 @@ import AnswerInput from './answer-input';
 
 import { setLeader } from './game-actions';
 
-import { setSetLeaderDispatch } from '../services/cloak-service';
+import { setLeaderDispatch } from '../services/cloak-service';
 
 export class Game extends Component {
     componentWillMount() {
-        setSetLeaderDispatch(this.props.setLeader);
+        setLeaderDispatch(this.props.setLeader);
     }
 
     render() {

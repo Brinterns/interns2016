@@ -114,7 +114,7 @@ function startGame(arg, user) {
     var room = user.getRoom();
     var roomUsers = room.getMembers();
     var leaderIndex = roomUsers.indexOf(user);
-    room.data.leader = leaderIndex;
+    room.data.leaderIndex = leaderIndex;
     room.data.started = true;
     room.messageMembers('startGame');
 
@@ -124,7 +124,7 @@ function startGame(arg, user) {
 }
 
 function setLeader(room) {
-    var nextLeader = room.data.leader;
+    var nextLeader = room.data.leaderIndex;
     var members = room.getMembers();
     var leader = {
         id: members[nextLeader].id,
@@ -134,7 +134,7 @@ function setLeader(room) {
     room.messageMembers('setLeader', leader);
     nextLeader ++;
     nextLeader = nextLeader >= members.length ? 0 : nextLeader;
-    room.data.leader = nextLeader;
+    room.data.leaderIndex = nextLeader;
 }
 
 function gameController(room) {
