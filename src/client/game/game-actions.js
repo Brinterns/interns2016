@@ -3,6 +3,9 @@ export const LEAVE_GAME = 'LEAVE_GAME';
 export const SET_LEADER = 'SET_LEADER';
 export const GET_CONSONANT = 'GET_CONSONANT';
 export const GET_VOWEL = 'GET_VOWEL';
+export const DISABLE_CONSONANT = 'DISABLE_CONSONANT';
+export const DISABLE_VOWEL = 'DISABLE_VOWEL';
+
 
 
 export function startGame() {
@@ -35,5 +38,19 @@ export function getVowelDispatch(letter) {
 	return {
 		type: GET_VOWEL,
 		payload: letter
+	}
+}
+
+export function disableConsonantDispatch(bool) {
+	return {
+		type: DISABLE_CONSONANT,
+		payload: bool
+	}
+}
+
+export function disableVowelDispatch(bool) {
+	return {
+		type: DISABLE_VOWEL,
+		payload: bool
 	}
 }

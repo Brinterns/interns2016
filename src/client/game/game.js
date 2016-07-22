@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 
 import AnswerInput from './answer-input';
 
-import { setLeader, getConsonantDispatch, getVowelDispatch } from './game-actions';
+import { setLeader, getConsonantDispatch, getVowelDispatch, 
+        disableConsonantDispatch, disableVowelDispatch } from './game-actions';
 
 import cloakService from '../services/cloak-service';
 
@@ -15,14 +16,33 @@ export class Game extends Component {
         cloakService.setLeaderDispatch(this.props.setLeader);
         cloakService.setConsonantDispatch(this.props.getConsonantDispatch);
         cloakService.setVowelDispatch(this.props.getVowelDispatch);
+        cloakService.setDisableConsonantDispatch(this.props.disableConsonantDispatch);
+        cloakService.setDisableVowelDispatch(this.props.disableVowelDispatch);
+    }
+
+    isLeader() {
+        let userId = storageService.getUser().name;
+        if(userId === this.props.leader) {
+            return true;
+        }
+        return false;
     }
 
     render() {
+        const letterButtons = (
+            <div>
+                <button className="btn btn-info" onClick={() => cloakService.messageGetConsonant()}
+                disabled={this.props.disableConsonant}>Consonant</button>
+                <button className="btn btn-primary" onClick={() => cloakService.messageGetVowel()}
+                disabled={this.props.disableVowel}>Vowel</button>
+            </div>
+        );
+
         return (
             <div className="col-lg-8 text-center">
                 <h3>COUNTDOWN</h3>
                 <p>Leader: {this.props.leader}</p>
-                {isLeader.bind(this)() ? letterButtons : null}
+                {this.isLeader() ? letterButtons : null}
                 <div>
                     {this.props.letterList}
                 </div>
@@ -32,24 +52,12 @@ export class Game extends Component {
     }
 };
 
-function isLeader() {
-    let userId = storageService.getUser().name;
-    if(userId === this.props.leader) {
-        return true;
-    }
-    return false;
-}
-
-const letterButtons = (
-    <div>
-        <button className="btn btn-info" onClick={() => messageGetConsonant()}>Consonant</button>
-        <button className="btn btn-primary" onClick={() => messageGetVowel()}>Vowel</button>
-    </div>
-)
 
 const mapStateToProps = state => ({
     leader: state.game.leader,
-    letterList: state.game.letterList
+    letterList: state.game.letterList,
+    disableConsonant: state.game.disableConsonant,
+    disableVowel: state.game.disableVowel
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -61,6 +69,12 @@ const mapDispatchToProps = dispatch => ({
     },
     getVowelDispatch(letter) {
         dispatch(getVowelDispatch(letter));
+    },
+    disableConsonantDispatch(bool) {
+        dispatch(disableConsonantDispatch(bool));
+    },
+    disableVowelDispatch(bool) {
+        dispatch(disableVowelDispatch(bool));
     }
 });
 

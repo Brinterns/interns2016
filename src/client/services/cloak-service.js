@@ -15,7 +15,9 @@ export default {
     messageGetConsonant,
     setConsonantDispatch,
     messageGetVowel,
-    setVowelDispatch
+    setVowelDispatch,
+    setDisableConsonantDispatch,
+    setDisableVowelDispatch
 };
 
 let roomDataDispatch;
@@ -23,6 +25,8 @@ let startGameDispatch;
 let leaderDispatch;
 let consonantDispatch;
 let vowelDispatch;
+let disableConsonantDispatch;
+let disableVowelDispatch;
 
 function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
     cloak.configure({
@@ -55,10 +59,17 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
                 leaderDispatch(user);
             },
             updateConsonant: consonant => {
+                console.log(consonant);
                 consonantDispatch(consonant);
             },
             updateVowel: vowel => {
                 vowelDispatch(vowel);
+            },
+            disableConsonant: bool => {
+                disableConsonantDispatch(bool);
+            },
+            disableVowel: bool => {
+                disableVowelDispatch(bool);
             }
         },
         initialData: storageService.getUser()
@@ -117,4 +128,12 @@ function messageGetVowel() {
 
 function setVowelDispatch(dispatch) {
     vowelDispatch = dispatch;
+}
+
+function setDisableConsonantDispatch(dispatch) {
+    disableConsonantDispatch = dispatch;
+}
+
+function setDisableVowelDispatch(dispatch) {
+    disableVowelDispatch = dispatch;
 }
