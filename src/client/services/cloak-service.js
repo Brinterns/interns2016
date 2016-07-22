@@ -10,11 +10,13 @@ export {
     getRoomData,
     isConnected,
     messageStartGame,
-    setStartGame
+    setStartGame,
+    setLeaderDispatch
 };
 
 let roomDataDispatch;
 let startGameDispatch;
+let leaderDispatch;
 
 function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
     cloak.configure({
@@ -42,6 +44,9 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
             },
             startGame: arg => {
                 startGameDispatch();
+            },
+            setLeader: user => {
+                leaderDispatch(user);
             }
         },
         initialData: storageService.getUser()
@@ -80,4 +85,8 @@ function messageStartGame() {
 
 function setStartGame(dispatch) {
     startGameDispatch = dispatch;
+}
+
+function setLeaderDispatch(dispatch) {
+    leaderDispatch = dispatch;
 }

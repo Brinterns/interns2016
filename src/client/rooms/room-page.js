@@ -8,7 +8,7 @@ import UserList from '../user/user-list';
 import Game from '../game/game';
 
 import { getRoomDetails } from './room-actions';
-import { startGame } from '../game/game-actions';
+import { startGame, leaveGame } from '../game/game-actions';
 import storageService from '../services/storage-service';
 
 export class RoomPage extends Component {
@@ -24,6 +24,7 @@ export class RoomPage extends Component {
 
     componentWillUnmount() {
         if(isConnected()) {
+            this.props.leaveGame();
             messageLeaveRoom();
         }
     }
@@ -41,9 +42,9 @@ export class RoomPage extends Component {
 
     isCreator() {
         var room = storageService.getRoom();
-        var creator = room.data.creator;
-        var user = storageService.getUser();
-        return JSON.stringify(creator) === JSON.stringify(user);
+        var creatorId = room.data.creator.id;
+        var userId = storageService.getUser().id;
+        return JSON.stringify(creatorId) === JSON.stringify(userId);
     }
 
     render() {
@@ -57,7 +58,7 @@ export class RoomPage extends Component {
                     <button className={`btn btn-danger`} id="leave-room"
                             onClick={leaveRoom}>Leave Room</button>
                 </div>
-                {this.props.started ? <Game/> : null}
+                {this.props.started ? <Game /> : null}
             </div>
         );
     }
@@ -79,6 +80,9 @@ const mapDispatchToProps = dispatch => ({
     },
     startGame() {
         dispatch(startGame());
+    },
+    leaveGame() {
+        dispatch(leaveGame());
     }
 });
 

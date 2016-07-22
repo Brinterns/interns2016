@@ -6,7 +6,6 @@ import style from '../common/common.scss'
 
 export default function UserList({ users }) {
     let sortedUsers = sort(users);
-
     const userItems = sortedUsers.map(user => (
         <li className={`list-group-item list-group-item-success ${style.space}`} key={user.id}>
             {user.name}

@@ -5,7 +5,7 @@ import { Lobby } from './lobby';
 
 describe('<Lobby />', () => {
     beforeEach(() => {
-        window.cloak = jasmine.createSpyObj('cloak', ['configure', 'run']);
+        window.cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'connected']);
     });
 
     it('contains "Lobby" heading', () => {
