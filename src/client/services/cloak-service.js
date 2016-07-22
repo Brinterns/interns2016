@@ -130,3 +130,11 @@ function messageGetVowel() {
 function setVowelDispatch(dispatch) {
     vowelDispatch = dispatch;
 }
+
+function setDisableConsonantDispatch(dispatch) {
+    disableConsonantDispatch = dispatch;
+}
+
+function setDisableVowelDispatch(dispatch) {
+    disableVowelDispatch = dispatch;
+}

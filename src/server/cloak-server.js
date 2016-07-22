@@ -224,14 +224,51 @@ function getVowel(arg, user) {
     }
 }
 
+var letterList = {
+    letters: [],
+    consonantNum: 0,
+    vowelNum: 0
+};
+
+function checkListLength(user) {
+    if(letterList.letters.length >= 9){
+        user.message('disableConsonant', true);
+        user.message('disableVowel', true);
+        return;
+    }
+}
+
 function getConsonant(arg, user) {
+    if(letterList.letters.length >= 9){
+        return;
+    }
     var room = user.getRoom();
-    var consonant = randomConsonant();
-    room.messageMembers('updateConsonant', consonant);
+    if(letterList.consonantNum < 6) {
+        var consonant = randomConsonant();
+        letterList.letters.push(consonant);
+        letterList.consonantNum++;
+        console.log(cloak.getUsers(true));
+        room.messageMembers('updateConsonant', consonant);
+        checkListLength(user);
+    } else {
+        user.message('disableConsonant', true);
+    }
 }
 
 function getVowel(arg, user) {
+    if(letterList.letters.length >= 9){
+        return;
+    }
+
     var room = user.getRoom();
-    var vowel = randomVowel();
-    room.messageMembers('updateVowel', vowel);
+    if(letterList.vowelNum < 5) {
+        var vowel = randomVowel();
+        letterList.letters.push(vowel);
+        letterList.vowelNum++;
+        room.messageMembers('updateVowel', vowel);
+        checkListLength(user);
+    } else {
+        user.message('disableVowel', true);
+    }
 }
+

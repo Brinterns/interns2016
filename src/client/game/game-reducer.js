@@ -2,7 +2,7 @@ import * as actionTypes from './game-actions';
 
 const initialState = {
 	started: false,
-	leader: {
+    leader: {
         id: undefined, 
         name: undefined
     },
@@ -61,6 +61,16 @@ const game = (state = initialState, action) => {
             letterList.push(action.payload);
             return Object.assign({}, state, {
                 letterList: letterList
+            });
+        }
+        case DISABLE_CONSONANT: {
+            return Object.assign({}, state, {
+                disableConsonant: action.payload
+            });
+        }
+        case DISABLE_VOWEL: {
+            return Object.assign({}, state, {
+                disableVowel: action.payload
             });
         }
         default:
