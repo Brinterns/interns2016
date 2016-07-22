@@ -133,6 +133,9 @@ function startGame(arg, user) {
 }
 
 function makeLeader(leaderIndex, room) {
+    if(!room.data.started){
+        return;
+    }
     var roomMembers = room.getMembers();
     var leader = {
         id: 1,
