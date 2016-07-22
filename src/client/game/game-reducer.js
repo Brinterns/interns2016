@@ -2,7 +2,6 @@ import { START_GAME, SET_LEADER } from './game-actions';
 
 const initialState = {
 	started: false,
-	leader: 'undefined'
 };
 
 const game = (state = initialState, action) => {
