@@ -8,7 +8,7 @@ import UserList from '../user/user-list';
 import Game from '../game/game';
 
 import { getRoomDetails } from './room-actions';
-import { startGame } from '../game/game-actions';
+import { startGame, leaveGame } from '../game/game-actions';
 import storageService from '../services/storage-service';
 
 export class RoomPage extends Component {
@@ -24,6 +24,7 @@ export class RoomPage extends Component {
 
     componentWillUnmount() {
         if(isConnected()) {
+            this.props.leaveGame();
             messageLeaveRoom();
         }
     }
@@ -79,6 +80,9 @@ const mapDispatchToProps = dispatch => ({
     },
     startGame() {
         dispatch(startGame());
+    },
+    leaveGame() {
+        dispatch(leaveGame());
     }
 });
 
