@@ -101,7 +101,17 @@ function refreshRoomUsers(arg) {
 
 function leaveRoom(arg, user) {
     user.data.score = undefined;
+    var room = user.getRoom();
+    var leaderIndex = room.data.leaderIndex;
+    var userIndex = room.getMembers().indexOf(user);
+    if(userIndex < leaderIndex) {
+        room.data.leaderIndex--;
+    }
+    if(userIndex === leaderIndex) {
+        room.data.leaderIndex = userIndex===(room.getMembers().length-1) ? 0 : userIndex;
+    }
     user.getRoom().removeMember(user);
+    makeLeader(room.data.leaderIndex, room);
 }
 
 function roomDetails(roomId, user) {
@@ -117,26 +127,38 @@ function startGame(arg, user) {
     room.data.leaderIndex = leaderIndex;
     room.data.started = true;
     room.messageMembers('startGame');
-
-    setLeader(room);
+    makeLeader(room.data.leaderIndex, room);
     fireRoomListReload();
     gameController(room);
 }
 
-function setLeader(room) {
-    var nextLeader = room.data.leaderIndex;
-    var members = room.getMembers();
+function makeLeader(leaderIndex, room) {
+    var roomMembers = room.getMembers();
     var leader = {
-        id: members[nextLeader].id,
-        name: members[nextLeader].name,
-        data: members[nextLeader].data
+        id: 1,
+        name: 'God',
+    };
+    if(roomMembers.length !== 0) {
+        leader = {
+            id: roomMembers[leaderIndex].id,
+            name: roomMembers[leaderIndex].name,
+            data: roomMembers[leaderIndex].data
+        }
     }
     room.messageMembers('setLeader', leader);
-    nextLeader ++;
+}
+
+function setNextLeader(room) {    
+    var members = room.getMembers();
+    if(members.length === 0)
+        return;
+    var nextLeader = room.data.leaderIndex;
+    nextLeader++;
     nextLeader = nextLeader >= members.length ? 0 : nextLeader;
+    makeLeader(nextLeader, room);
     room.data.leaderIndex = nextLeader;
 }
 
 function gameController(room) {
-    var roomTimer = setInterval(setLeader.bind(null, room), 5000);
+    var roomTimer = setInterval(setNextLeader.bind(null, room), 5000);
 }

@@ -212,6 +212,10 @@ describe('cloak server', function() {
         it('the correct room is retrieved for the user', function() {
             user.getRoom.and.returnValue(room);
             user.data = {score: 0};
+            room.data = {
+                leaderIndex: 0
+            };
+            room.getMembers.and.returnValue(['', user]);
 
             cloakConfig.messages.leaveRoom('', user);
 
@@ -220,14 +224,22 @@ describe('cloak server', function() {
         it('the correct user is removed from the room', function() {
             user.getRoom.and.returnValue(room);
             user.data = {score: 0};
+            room.data = {
+                leaderIndex: 0
+            };
+            room.getMembers.and.returnValue(['', user]);
             
             cloakConfig.messages.leaveRoom('', user);
 
             expect(room.removeMember).toHaveBeenCalledWith(user);
         })
-        it('the sets the score of the user user that is removed from the room to undefined', function() {
+        it('sets the score of the user user that is removed from the room to undefined', function() {
             user.getRoom.and.returnValue(room);
             user.data = {score: 0};
+            room.data = {
+                leaderIndex: 0
+            };
+            room.getMembers.and.returnValue(['', user]);
             
             cloakConfig.messages.leaveRoom('', user);
 
@@ -299,7 +311,7 @@ describe('cloak server', function() {
 
         it('updates the leader index of the correct user in the room', function() {
             user.getRoom.and.returnValue(room);
-            room.getMembers.and.returnValue([user,'']);
+            room.getMembers.and.returnValue(['',user]);
             room.data = {
                 leaderIndex: '',
                 started: false
