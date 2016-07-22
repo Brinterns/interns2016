@@ -8,6 +8,7 @@ import { setLeader, getConsonantDispatch, getVowelDispatch } from './game-action
 import cloakService from '../services/cloak-service';
 
 import { consonants, vowels, totalWeights } from './letter-lists';
+import storageService from '../services/storage-service';
 
 export class Game extends Component {
     componentWillMount() {
@@ -20,11 +21,8 @@ export class Game extends Component {
         return (
             <div className="col-lg-8 text-center">
                 <h3>COUNTDOWN</h3>
-                <p>leader: {this.props.leader}</p>
-                <div>
-                    <button className="btn btn-info" onClick={() =>  messageGetConsonant()}>Consonant</button>
-                    <button className="btn btn-primary" onClick={() => messageGetVowel()}>Vowel</button>
-                </div>
+                <p>Leader: {this.props.leader}</p>
+                {isLeader.bind(this)() ? letterButtons : null}
                 <div>
                     {this.props.letterList}
                 </div>
@@ -33,6 +31,21 @@ export class Game extends Component {
         );
     }
 };
+
+function isLeader() {
+    let userId = storageService.getUser().name;
+    if(userId === this.props.leader) {
+        return true;
+    }
+    return false;
+}
+
+const letterButtons = (
+    <div>
+        <button className="btn btn-info" onClick={() => messageGetConsonant()}>Consonant</button>
+        <button className="btn btn-primary" onClick={() => messageGetVowel()}>Vowel</button>
+    </div>
+)
 
 const mapStateToProps = state => ({
     leader: state.game.leader,
