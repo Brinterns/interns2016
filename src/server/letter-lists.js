@@ -20,7 +20,7 @@ const consonants = {
 	W: 1, 
 	Y: 1,
 	Z: 1
-}
+};
 
 const vowels = {
 	A: 15,
@@ -28,7 +28,7 @@ const vowels = {
 	I: 13,
 	O: 13, 
 	U: 5
-}
+};
 
 const sumWeights = (letters) => (
 	Object.keys(letters).reduce( (total, letter) => total + letters[letter], 0)
@@ -37,10 +37,10 @@ const sumWeights = (letters) => (
 const totalWeights = {
 	consonants: sumWeights(consonants),
 	vowels: sumWeights(vowels)
-}
+};
 
 module.exports = {
 	consonants,
 	vowels,
 	totalWeights
-}
+};
