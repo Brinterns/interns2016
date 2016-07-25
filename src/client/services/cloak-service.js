@@ -4,13 +4,15 @@ import { dispatch } from '../store';
 import {
     startGame,
     setLeader,
-    getConsonantDispatch, 
-    getVowelDispatch, 
-    disableConsonantDispatch, 
-    disableVowelDispatch 
+    getConsonant, 
+    getVowel, 
+    disableConsonant, 
+    disableVowel 
 } from '../game/game-actions';
 
-import { getRoomDetails } from '../rooms/room-actions';
+import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
+
+import { refreshLobby, refreshRooms} from '../lobby/lobby-actions';
 
 export default {
     configureAndRun,
@@ -25,9 +27,7 @@ export default {
     messageGetVowel
 };
 
-let roomDataDispatch;
-
-function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
+function configureAndRun() {
     cloak.configure({
         serverEvents: {
             begin: () => {
@@ -36,17 +36,17 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
         },
         messages: {
             refreshLobby: lobbyList => {
-                refreshLobby(lobbyList);
+                dispatch(refreshLobby(lobbyList));
             },
             updateData: user => {
                 storageService.storeId(user.id);
                 storageService.storeName(user.name);
             },
             refreshRooms: roomList => {
-                refreshRooms(roomList);
+                dispatch(refreshRooms(roomList));
             },
             refreshRoomUsers: roomUserList => {
-                refreshRoomUsers(roomUserList);
+                dispatch(refreshRoomUsers(roomUserList));
             },
             roomDetailsResponse: roomDetails => {
                 dispatch(getRoomDetails(roomDetails));
@@ -58,19 +58,23 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
                 dispatch(setLeader(user));
             },
             updateConsonant: consonant => {
-                dispatch(getConsonantDispatch(consonant));
+                dispatch(getConsonant(consonant));
             },
             updateVowel: vowel => {
-                dispatch(getVowelDispatch(vowel));
+                dispatch(getVowel(vowel));
             },
             disableConsonant: bool => {
-                dispatch(disableConsonantDispatch(bool));
+                dispatch(disableConsonant(bool));
             },
             disableVowel: bool => {
-                dispatch(disableVowelDispatch(bool));
+                dispatch(disableVowel(bool));
             }
         },
-        initialData: storageService.getUser()
+        initialData: {
+            name: storageService.getUser().name,
+            id: storageService.getUser().id,
+            score: undefined
+        }
     });
     cloak.run(config.cloakAddress);
 }

@@ -25,28 +25,28 @@ export function setLeader(userObj) {
     }
 }
 
-export function getConsonantDispatch(letter) {
+export function getConsonant(letter) {
 	return {
 		type: GET_CONSONANT,
 		payload: letter
 	}
 }
 
-export function getVowelDispatch(letter) {
+export function getVowel(letter) {
 	return {
 		type: GET_VOWEL,
 		payload: letter
 	}
 }
 
-export function disableConsonantDispatch(bool) {
+export function disableConsonant(bool) {
 	return {
 		type: DISABLE_CONSONANT,
 		payload: bool
 	}
 }
 
-export function disableVowelDispatch(bool) {
+export function disableVowel(bool) {
 	return {
 		type: DISABLE_VOWEL,
 		payload: bool

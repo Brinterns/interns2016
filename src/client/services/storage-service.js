@@ -15,7 +15,10 @@ function storeId(id) {
 }
 
 function getUser() {
-	return {id: localStorage.id, name: localStorage.name};
+	return {
+		id: localStorage.id, 
+		name: localStorage.name
+	};
 }
 
 function setRoom(room) {
