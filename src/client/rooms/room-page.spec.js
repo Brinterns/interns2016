@@ -3,14 +3,10 @@ import { Provider } from 'react-redux';
 import { mount, shallow } from 'enzyme';
 
 import RoomPage from './room-page';
-import configureStore from '../store';
+import store from '../store';
 
-let store;
 var data;
-describe('<RoomCreator />', () => {
-    beforeEach(() =>{
-        store = configureStore();
-    });
+describe('<RoomPage />', () => {
 
     beforeEach(() => {
         window.cloak = jasmine.createSpyObj('cloak', ['connected', 'message']);

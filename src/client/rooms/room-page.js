@@ -7,16 +7,14 @@ import cloakService from '../services/cloak-service';
 import UserList from '../user/user-list';
 import Game from '../game/game';
 
-import { getRoomDetails } from './room-actions';
-import { startGame, leaveGame } from '../game/game-actions';
+import { leaveGame } from '../game/game-actions';
 import storageService from '../services/storage-service';
 
 export class RoomPage extends Component {
     componentWillMount() {
         if(cloakService.isConnected()) {
             cloakService.messageJoinRoom(this.props.params.data);
-            cloakService.getRoomData(this.props.params.data, this.props.getRoomDetails);
-            cloakService.setStartGame(this.props.startGame);
+            cloakService.getRoomData(this.props.params.data);
         } else {
             router.navigateToLobby();
         }
@@ -75,12 +73,6 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    getRoomDetails(roomId) {
-        dispatch(getRoomDetails(roomId));
-    },
-    startGame() {
-        dispatch(startGame());
-    },
     leaveGame() {
         dispatch(leaveGame());
     }

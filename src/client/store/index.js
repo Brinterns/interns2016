@@ -1,5 +1,14 @@
+let configureStore;
+
 if(process.env.NODE_ENV === 'production') {
-    module.exports = require('./configureStore.prod');
+    configureStore = require('./configureStore.prod').default;
 } else {
-    module.exports = require('./configureStore.dev');
+    configureStore = require('./configureStore.dev').default;
 }
+
+const store = configureStore();
+const dispatch = store.dispatch;
+
+export { dispatch };
+
+export default store;

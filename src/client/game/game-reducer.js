@@ -1,10 +1,12 @@
 
-import { START_GAME, LEAVE_GAME, SET_LEADER, GET_CONSONANT,
-         GET_VOWEL, DISABLE_CONSONANT, DISABLE_VOWEL } from './game-actions';
+import * as actionTypes from './game-actions';
 
 const initialState = {
 	started: false,
-	leader: undefined,
+	leader: {
+        id: undefined, 
+        name: undefined
+    },
     letterList: [],
     disableConsonant: false,
     disableVowel: false
@@ -12,47 +14,42 @@ const initialState = {
 
 const game = (state = initialState, action) => {
     switch (action.type) {
-        case START_GAME: 
+        case actionTypes.START_GAME: 
         	return Object.assign({}, state, {
         		started: true
         	});
-        case LEAVE_GAME:
+        case actionTypes.LEAVE_GAME:
             return Object.assign({}, state, {
                 started: false,
                 letterList: [],
                 disableConsonant: false,
                 disableVowel: false
             });
-        case SET_LEADER:
+        case actionTypes.SET_LEADER:
             return Object.assign({}, state, {
-                leader: action.payload.name,
+                leader: {
+                    id: action.payload.id,
+                    name: action.payload.name
+                },
                 disableConsonant: action.payload.disableConsonant,
                 disableVowel: action.payload.disableVowel
             });
-        case GET_CONSONANT: {
-            let letterList = Array.from(state.letterList);
-            letterList.push(action.payload);
+        case actionTypes.GET_CONSONANT:
             return Object.assign({}, state, {
-                letterList: letterList
+                letterList: [...state.letterList, action.payload]
             });
-        }
-        case GET_VOWEL: {
-            let letterList = Array.from(state.letterList);
-            letterList.push(action.payload);
+        case actionTypes.GET_VOWEL: 
             return Object.assign({}, state, {
-                letterList: letterList
+                letterList: [...state.letterList, action.payload]
             });
-        }
-        case DISABLE_CONSONANT: {
+        case actionTypes.DISABLE_CONSONANT:
             return Object.assign({}, state, {
                 disableConsonant: action.payload
             });
-        }
-        case DISABLE_VOWEL: {
+        case actionTypes.DISABLE_VOWEL: 
             return Object.assign({}, state, {
                 disableVowel: action.payload
             });
-        }
         default:
             return state;
     }

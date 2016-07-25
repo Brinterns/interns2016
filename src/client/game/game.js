@@ -3,25 +3,14 @@ import { connect } from 'react-redux';
 
 import AnswerInput from './answer-input';
 
-import { setLeader, getConsonantDispatch, getVowelDispatch, 
-        disableConsonantDispatch, disableVowelDispatch } from './game-actions';
-
 import cloakService from '../services/cloak-service';
 
 import storageService from '../services/storage-service';
 
 export class Game extends Component {
-    componentWillMount() {
-        cloakService.setLeaderDispatch(this.props.setLeader);
-        cloakService.setConsonantDispatch(this.props.getConsonantDispatch);
-        cloakService.setVowelDispatch(this.props.getVowelDispatch);
-        cloakService.setDisableConsonantDispatch(this.props.disableConsonantDispatch);
-        cloakService.setDisableVowelDispatch(this.props.disableVowelDispatch);
-    }
-
     isLeader() {
-        let userId = storageService.getUser().name;
-        if(userId === this.props.leader) {
+        let userId = storageService.getUser().id;
+        if(userId === this.props.leader.id) {
             return true;
         }
         return false;
@@ -40,7 +29,7 @@ export class Game extends Component {
         return (
             <div className="col-lg-8 text-center">
                 <h3>COUNTDOWN</h3>
-                <p>Leader: {this.props.leader}</p>
+                <p>Leader: {this.props.leader.name}</p>
                 {this.isLeader() ? letterButtons : null}
                 <div>
                     {this.props.letterList}
@@ -59,25 +48,6 @@ const mapStateToProps = state => ({
     disableVowel: state.game.disableVowel
 });
 
-const mapDispatchToProps = dispatch => ({
-    setLeader(user) {
-        dispatch(setLeader(user));
-    },
-    getConsonantDispatch(letter) {
-        dispatch(getConsonantDispatch(letter));
-    },
-    getVowelDispatch(letter) {
-        dispatch(getVowelDispatch(letter));
-    },
-    disableConsonantDispatch(bool) {
-        dispatch(disableConsonantDispatch(bool));
-    },
-    disableVowelDispatch(bool) {
-        dispatch(disableVowelDispatch(bool));
-    }
-});
-
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(Game);
