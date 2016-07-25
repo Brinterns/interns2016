@@ -52,6 +52,7 @@
   "devDependencies": {
     "babel-plugin-rewire": "^1.0.0-rc-3",
     "enzyme": "^2.3.0",
+    "gulp-node-inspector": "^0.1.0",
     "jasmine-core": "^2.4.1",
     "jasmine-node": "2.0.0-beta4",
     "karma": "^0.13.22",
