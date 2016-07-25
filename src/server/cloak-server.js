@@ -53,6 +53,13 @@ function createRoom(name, user) {
     var room = cloak.createRoom(name);
     room.data.creator = {id: user.id, name: user.name};
     room.data.started = false;
+    room.data.letterList = {
+        letters: [],
+        consonantNum: 0,
+        vowelNum: 0,
+        disableConsonant: false,
+        disableVowel: false
+    };
     fireRoomListReload();
 }
 
@@ -140,6 +147,7 @@ function makeLeader(leaderIndex, room) {
         return;
     }
     var roomMembers = room.getMembers();
+    var letterList = room.data.letterList;
     var leader = {
         id: 1,
         name: 'God',
@@ -148,7 +156,9 @@ function makeLeader(leaderIndex, room) {
         leader = {
             id: roomMembers[leaderIndex].id,
             name: roomMembers[leaderIndex].name,
-            data: roomMembers[leaderIndex].data
+            data: roomMembers[leaderIndex].data,
+            disableConsonant: letterList.disableConsonant,
+            disableVowel: letterList.disableVowel
         }
     }
     room.messageMembers('setLeader', leader);
@@ -165,14 +175,12 @@ function setNextLeader(room) {
     room.data.leaderIndex = nextLeader;
 }
 
-var letterList = {
-    letters: [],
-    consonantNum: 0,
-    vowelNum: 0
-};
-
 function checkListLength(user) {
+    var room = user.getRoom();
+    var letterList = room.data.letterList;
     if(letterList.letters.length >= 9){
+        letterList.disableConsonant = true;
+        letterList.disableVowel = true;
         user.message('disableConsonant', true);
         user.message('disableVowel', true);
         return;
@@ -180,10 +188,11 @@ function checkListLength(user) {
 }
 
 function getConsonant(arg, user) {
+    var room = user.getRoom();
+    var letterList = room.data.letterList;
     if(letterList.letters.length >= 9){
         return;
     }
-    var room = user.getRoom();
     if(letterList.consonantNum < 6) {
         var consonant = randomConsonant();
         letterList.letters.push(consonant);
@@ -196,11 +205,12 @@ function getConsonant(arg, user) {
 }
 
 function getVowel(arg, user) {
+    var room = user.getRoom();
+    var letterList = room.data.letterList;
     if(letterList.letters.length >= 9){
         return;
     }
 
-    var room = user.getRoom();
     if(letterList.vowelNum < 5) {
         var vowel = randomVowel();
         letterList.letters.push(vowel);

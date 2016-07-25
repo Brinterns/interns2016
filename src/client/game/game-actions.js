@@ -20,10 +20,10 @@ export function leaveGame() {
 	}
 }
 
-export function setLeader(user) {
+export function setLeader(userObj) {
     return {
         type: SET_LEADER,
-        payload: user
+        payload: userObj
     }
 }
 

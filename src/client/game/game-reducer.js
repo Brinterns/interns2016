@@ -18,11 +18,16 @@ const game = (state = initialState, action) => {
         	});
         case LEAVE_GAME:
             return Object.assign({}, state, {
-                started: false
+                started: false,
+                letterList: [],
+                disableConsonant: false,
+                disableVowel: false
             });
         case SET_LEADER:
             return Object.assign({}, state, {
-                leader: action.payload.name
+                leader: action.payload.name,
+                disableConsonant: action.payload.disableConsonant,
+                disableVowel: action.payload.disableVowel
             });
         case GET_CONSONANT: {
             let letterList = Array.from(state.letterList);

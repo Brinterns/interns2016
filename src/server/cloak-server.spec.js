@@ -267,7 +267,11 @@ describe('cloak server', function() {
             room.getMembers.and.returnValue([user]);
             room.data = {
                 leaderIndex: '',
-                started: false
+                started: false,
+                letterList: {
+                    disableConsonant: false,
+                    disableVowel: true
+                }
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -281,13 +285,24 @@ describe('cloak server', function() {
             room.getMembers.and.returnValue([user]);
             room.data = {
                 leaderIndex: '',
-                started: false
+                started: false,
+                letterList: {
+                    disableConsonant: false,
+                    disableVowel: true
+                }
             };
             cloak.getRooms.and.returnValue([]);
 
             cloakConfig.messages.startGame('', user);
 
-            expect(room.data).toEqual({leaderIndex: 0, started: true});
+            expect(room.data).toEqual({
+                    leaderIndex: 0, 
+                    started: true,
+                    letterList: {
+                        disableConsonant: false,
+                        disableVowel: true
+                    }
+            });
         })
 
         it('calls setLeader with correct room', function() {
@@ -298,7 +313,11 @@ describe('cloak server', function() {
             room.getMembers.and.returnValue([user]);
             room.data = {
                 leaderIndex: '',
-                started: false
+                started: false,
+                letterList: {
+                    disableConsonant: false,
+                    disableVowel: true
+                }
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -307,7 +326,9 @@ describe('cloak server', function() {
             var expectedLeader = {
                 id: user.id,
                 name: user.name,
-                data: user.data
+                data: user.data,
+                disableConsonant: false,
+                disableVowel: true
             }
             expect(room.messageMembers).toHaveBeenCalledWith('setLeader', expectedLeader);
         })
@@ -317,7 +338,11 @@ describe('cloak server', function() {
             room.getMembers.and.returnValue(['',user]);
             room.data = {
                 leaderIndex: '',
-                started: false
+                started: false,
+                letterList: {
+                    disableConsonant: false,
+                    disableVowel: true
+                }
             };
             cloak.getRooms.and.returnValue([]);
 
