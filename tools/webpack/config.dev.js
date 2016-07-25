@@ -7,6 +7,7 @@ var devServerConfig = require('./dev-server.config');
 
 var configDev = cloneWith(configShared, {
     devtool: 'eval-source-map',
+    debuggerPort : 8081,
     entry: [
         'react-hot-loader/patch',
         'webpack-dev-server/client?' + devServerConfig.address,

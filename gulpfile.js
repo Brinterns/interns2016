@@ -25,7 +25,7 @@ gulp.task('dev', gulp.series(
         test(),
         gulp.series(
             build(),
-            startServerDebug,
+            startServer,
             openBrowser
 
         )
@@ -187,24 +187,17 @@ function enableDemo(done) {
 }
 
 function inspect() {
-    var nodeInspector = require('gulp-node-inspector');
+    var conf = require('./tools/webpack/config.dev.js');
     return gulp.src(locationConfig.server.filesForBuild)
-    .pipe(nodeInspector({
-          webPort: 8081
+    .pipe($.nodeInspector({
+          webPort:  conf.debuggerPort
         }));
 
 }
-function startServer(done) {
-    getServer(false, done)
-}
 
-function startServerDebug(done) {
-    getServer(true, done)
-}
-
-function  getServer(debug, done) {
+function  startServer(done) {
     var nodemon = require('nodemon');
-    var exec = debug? 'node --debug': 'node'
+    var exec = args.dev? 'node --debug': 'node'
     nodemon({
             script: locationConfig.server.dist.location,
              exec: exec,
