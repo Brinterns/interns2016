@@ -14,7 +14,10 @@ module.exports = function(expressServer) {
         room: {
             init: refreshListener,
             newMember: refreshRoomUsers,
-            memberLeaves: refreshRoomUsers,
+            memberLeaves: function (user){
+                setNextLeader(this);
+                refreshRoomUsers.bind(this)();
+            },
             close: refreshListener
         },
         messages: {
@@ -122,7 +125,6 @@ function leaveRoom(arg, user) {
         room.data.leaderIndex = userIndex===(room.getMembers().length-1) ? 0 : userIndex;
     }
     user.getRoom().removeMember(user);
-    makeLeader(room.data.leaderIndex, room);
 }
 
 function roomDetails(roomId, user) {
@@ -221,4 +223,3 @@ function getVowel(arg, user) {
         user.message('disableVowel', true);
     }
 }
-
