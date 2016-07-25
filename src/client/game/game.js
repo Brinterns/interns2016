@@ -33,6 +33,9 @@ export class Game extends Component {
                 <div>
                     {this.props.letterList}
                 </div>
+                <div>
+                    {this.props.answering}
+                </div>
                 <AnswerInput />
             </div>
         );
@@ -44,7 +47,8 @@ const mapStateToProps = state => ({
     leader: state.game.leader,
     letterList: state.game.letterList,
     disableConsonant: state.game.disableConsonant,
-    disableVowel: state.game.disableVowel
+    disableVowel: state.game.disableVowel,
+    answering: state.game.answering
 });
 
 export default connect(

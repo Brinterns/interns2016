@@ -8,7 +8,8 @@ const initialState = {
     },
     letterList: [],
     disableConsonant: false,
-    disableVowel: false
+    disableVowel: false,
+    answering: 'false'
 };
 
 const game = (state = initialState, action) => {
@@ -22,7 +23,8 @@ const game = (state = initialState, action) => {
                 started: false,
                 letterList: [],
                 disableConsonant: false,
-                disableVowel: false
+                disableVowel: false,
+                answering: false
             });
         case actionTypes.SET_LEADER:
             return Object.assign({}, state, {
@@ -63,16 +65,22 @@ const game = (state = initialState, action) => {
                 letterList: letterList
             });
         }
-        case DISABLE_CONSONANT: {
+        case actionTypes.DISABLE_CONSONANT:
             return Object.assign({}, state, {
                 disableConsonant: action.payload
             });
-        }
-        case DISABLE_VOWEL: {
+        case actionTypes.DISABLE_VOWEL:
             return Object.assign({}, state, {
                 disableVowel: action.payload
             });
-        }
+        case actionTypes.START_ANSWERING:
+            return Object.assign({}, state, {
+                answering: 'true'
+            });
+        case actionTypes.STOP_ANSWERING:
+            return Object.assign({}, state, {
+                answering: 'false'
+            });    
         default:
             return state;
     }

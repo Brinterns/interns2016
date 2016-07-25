@@ -138,3 +138,11 @@ function setDisableConsonantDispatch(dispatch) {
 function setDisableVowelDispatch(dispatch) {
     disableVowelDispatch = dispatch;
 }
+
+function setStartAnsweringDispatch(dispatch) {
+    startAnsweringDispatch = dispatch;
+}
+
+function setStopAnsweringDispatch(dispatch) {
+    stopAnsweringDispatch = dispatch;
+}

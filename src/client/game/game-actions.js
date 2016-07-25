@@ -5,6 +5,8 @@ export const GET_CONSONANT = 'GET_CONSONANT';
 export const GET_VOWEL = 'GET_VOWEL';
 export const DISABLE_CONSONANT = 'DISABLE_CONSONANT';
 export const DISABLE_VOWEL = 'DISABLE_VOWEL';
+export const START_ANSWERING = 'START_ANSWERING';
+export const STOP_ANSWERING = 'STOP_ANSWERING';
 
 export function startGame() {
     return {
@@ -50,5 +52,17 @@ export function disableVowel(bool) {
 	return {
 		type: DISABLE_VOWEL,
 		payload: bool
+	}
+}
+
+export function startAnswering() {
+	return {
+		type: START_ANSWERING
+	}
+}
+
+export function stopAnswering() {
+	return {
+		type: STOP_ANSWERING
 	}
 }
