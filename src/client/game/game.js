@@ -8,7 +8,6 @@ import { setLeader, getConsonantDispatch, getVowelDispatch,
 
 import cloakService from '../services/cloak-service';
 
-import { consonants, vowels, totalWeights } from './letter-lists';
 import storageService from '../services/storage-service';
 
 export class Game extends Component {

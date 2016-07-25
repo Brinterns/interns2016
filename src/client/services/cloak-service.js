@@ -11,7 +11,7 @@ export default {
     isConnected,
     messageStartGame,
     setStartGame,
-    setLeaderDispatch
+    setLeaderDispatch,
     messageGetConsonant,
     setConsonantDispatch,
     messageGetVowel,
@@ -59,7 +59,6 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
                 leaderDispatch(user);
             },
             updateConsonant: consonant => {
-                console.log(consonant);
                 consonantDispatch(consonant);
             },
             updateVowel: vowel => {

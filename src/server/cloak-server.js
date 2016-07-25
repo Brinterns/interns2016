@@ -133,7 +133,6 @@ function startGame(arg, user) {
     room.messageMembers('startGame');
     makeLeader(room.data.leaderIndex, room);
     fireRoomListReload();
- //   gameController(room);
 }
 
 function makeLeader(leaderIndex, room) {
@@ -166,10 +165,6 @@ function setNextLeader(room) {
     room.data.leaderIndex = nextLeader;
 }
 
-function gameController(room) {
-    var roomTimer = setInterval(setNextLeader.bind(null, room), 5000);
-}
-
 var letterList = {
     letters: [],
     consonantNum: 0,
@@ -193,7 +188,6 @@ function getConsonant(arg, user) {
         var consonant = randomConsonant();
         letterList.letters.push(consonant);
         letterList.consonantNum++;
-        console.log(cloak.getUsers(true));
         room.messageMembers('updateConsonant', consonant);
         checkListLength(user);
     } else {
