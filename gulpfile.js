@@ -21,18 +21,19 @@ gulp.task('dev', gulp.series(
     enableDev,
     gulp.parallel(
         watchServer,
+        inspect,
+        test(),
         gulp.series(
             build(),
-            startServer,
-            openBrowser,
-            test()
+            startServerDebug,
+            openBrowser
+
         )
     )
 ));
 
 gulp.task('test', test());
 gulp.task('test:server', testServer)
-
 
 function clean() {
     var del = require('del');
@@ -185,14 +186,33 @@ function enableDemo(done) {
     done();
 }
 
+function inspect() {
+    var nodeInspector = require('gulp-node-inspector');
+    return gulp.src(locationConfig.server.filesForBuild)
+    .pipe(nodeInspector({
+          webPort: 8081
+        }));
+
+}
 function startServer(done) {
+    getServer(false, done)
+}
+
+function startServerDebug(done) {
+    getServer(true, done)
+}
+
+function  getServer(debug, done) {
     var nodemon = require('nodemon');
+    var exec = debug? 'node --debug': 'node'
     nodemon({
-        script: locationConfig.server.dist.location,
-        watch: locationConfig.server.dist.watch
-    })
+            script: locationConfig.server.dist.location,
+             exec: exec,
+            watch: locationConfig.server.dist.watch
+        })
         .once('start', done);
 }
+
 
 function openBrowser(done) {
     var opn = require('opn');
