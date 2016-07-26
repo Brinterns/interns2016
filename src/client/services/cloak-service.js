@@ -1,7 +1,7 @@
 import config from '../config/config';
 import storageService from '../services/storage-service';
 
-export {
+export default {
     configureAndRun,
     messageSetUsername,
     messageCreateRoom,
@@ -42,7 +42,7 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
             roomDetailsResponse: roomDetails => {
                 roomDataDispatch(roomDetails);
             },
-            startGame: arg => {
+            startGame: () => {
                 startGameDispatch();
             },
             setLeader: user => {

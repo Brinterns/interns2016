@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { configureAndRun, isConnected } from '../services/cloak-service.js';
+import cloakService from '../services/cloak-service.js';
 
 import UserList from '../user/user-list';
 import RoomList from './room-list';
@@ -12,8 +12,8 @@ import { refreshRoomUsers } from '../rooms/room-actions';
 
 export class Lobby extends Component {
     componentWillMount() {
-        if(!isConnected()){
-            configureAndRun(this.props.refreshLobby, this.props.refreshRooms, this.props.refreshRoomUsers);
+        if(!cloakService.isConnected()){
+            cloakService.configureAndRun(this.props.refreshLobby, this.props.refreshRooms, this.props.refreshRoomUsers);
         }
     }
 
