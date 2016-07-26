@@ -10,14 +10,26 @@ export default class AnswerInput extends Component {
         this.setState({
             answerList: [''],
             focusIndex: 0,
-            answerInputTimer: undefined,
-            timerValue: undefined
+            timerValue: null
         });
     }
 
+    componentWillUnmount() {
+        clearInterval(this.answerInputInterval);
+    }
+
     componentDidUpdate() {
-        let focusIndex = this.state.focusIndex;
-        this.refs[focusIndex].focus();
+        this.refs[this.state.focusIndex].focus();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(this.props.answering === nextProps.answering) {
+            return;
+        }
+
+        if(nextProps.answering) {
+            this.startTimer();
+        }
     }
 
     handleKeyPress(event) {
@@ -111,25 +123,22 @@ export default class AnswerInput extends Component {
     }
 
     timerTick() {
-        console.log(this.state);
         if(this.state.timerValue > 0){
             this.setState({
                 timerValue: this.state.timerValue - 1
             });
-        }
-        else {
-            clearTimeout(this.state.answerInputTimer);
+        } else {
+            clearInterval(this.answerInputInterval);
             this.setState({
-                answerInputTimer: undefined,
-                timerValue: undefined
+                timerValue: null
             });
         }
     }
 
+
     startTimer() {
-        let timer = setInterval(this.timerTick.bind(this), 1000);
+        this.answerInputInterval = setInterval(() => this.timerTick(), 1000);
         this.setState({
-            answerInputTimer: timer,
             timerValue: 30
         })
     }
@@ -139,10 +148,8 @@ export default class AnswerInput extends Component {
             <div>
                 <p>Answering Time Left: {this.state.timerValue}</p>
             </div>
-        )
-        if(this.props.answering && this.state.answerInputTimer === undefined) {
-            this.startTimer();
-        }
+        );
+
         return (
             <div className="col-lg-12 text-center">
                 <h3>ANSWER INPUT</h3>
