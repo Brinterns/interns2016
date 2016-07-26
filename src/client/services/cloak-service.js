@@ -122,4 +122,3 @@ function messageGetConsonant() {
 function messageGetVowel() {
     cloak.message('getVowel');
 }
-

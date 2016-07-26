@@ -11,7 +11,7 @@ const initialState = {
     letterList: [],
     disableConsonant: false,
     disableVowel: false,
-    answering: true
+    answering: false
 };
 
 const game = (state = initialState, action) => {

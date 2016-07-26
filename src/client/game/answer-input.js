@@ -9,8 +9,15 @@ export default class AnswerInput extends Component {
     componentWillMount() {
         this.setState({
             answerList: [''],
-            focusIndex: 0
+            focusIndex: 0,
+            answerInputTimer: undefined,
+            timerValue: undefined
         });
+    }
+
+    componentDidUpdate() {
+        let focusIndex = this.state.focusIndex;
+        this.refs[focusIndex].focus();
     }
 
     handleKeyPress(event) {
@@ -103,15 +110,43 @@ export default class AnswerInput extends Component {
         );
     }
 
-    componentDidUpdate(){
-        let focusIndex = this.state.focusIndex;
-        this.refs[focusIndex].focus();
+    timerTick() {
+        console.log(this.state);
+        if(this.state.timerValue > 0){
+            this.setState({
+                timerValue: this.state.timerValue - 1
+            });
+        }
+        else {
+            clearTimeout(this.state.answerInputTimer);
+            this.setState({
+                answerInputTimer: undefined,
+                timerValue: undefined
+            });
+        }
+    }
+
+    startTimer() {
+        let timer = setInterval(this.timerTick.bind(this), 1000);
+        this.setState({
+            answerInputTimer: timer,
+            timerValue: 30
+        })
     }
 
     render() {
+        const timerArea = (
+            <div>
+                <p>Answering Time Left: {this.state.timerValue}</p>
+            </div>
+        )
+        if(this.props.answering && this.state.answerInputTimer === undefined) {
+            this.startTimer();
+        }
         return (
             <div className="col-lg-12 text-center">
                 <h3>ANSWER INPUT</h3>
+                {this.props.answering ? timerArea : null}        
                 <div>{this.textBoxes()}</div>
             </div>
         );
