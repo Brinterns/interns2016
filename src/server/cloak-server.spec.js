@@ -25,8 +25,7 @@ describe('cloak server', function() {
         mockery.registerMock('./random-consonant-picker', randomConsonant);
         mockery.registerAllowable('./cloak-server');
         mockery.registerAllowable('./letter-lists');
-        mockery.registerAllowable('./random-consonant-picker');
-        mockery.registerAllowable('./random-vowel-picker');
+        mockery.registerMock('./random-vowel-picker', randomVowel);
     });
 
     beforeEach(function() {

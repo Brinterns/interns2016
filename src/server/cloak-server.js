@@ -221,7 +221,7 @@ function checkListLength(user) {
         user.message('disableConsonant', true);
         user.message('disableVowel', true);
         room.messageMembers('startAnswering');
-        var answeringTimer = setTimeout(answeringFinished.bind(null, room), 30000);
+        var answeringTimer = setTimeout(answeringFinished.bind(null, room), 2000);
         return;
     }
 }

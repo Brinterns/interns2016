@@ -14,7 +14,8 @@ export class Game extends Component {
             return true;
         }
         return false;
-
+    }
+    
     render() {
         const letterButtons = (
             <div>

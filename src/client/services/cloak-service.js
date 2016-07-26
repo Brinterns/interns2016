@@ -7,7 +7,9 @@ import {
     getConsonant, 
     getVowel, 
     disableConsonant, 
-    disableVowel 
+    disableVowel,
+    startAnswering,
+    stopAnswering
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -68,6 +70,12 @@ function configureAndRun() {
             },
             disableVowel: bool => {
                 dispatch(disableVowel(bool));
+            },
+            startAnswering: () => {
+                dispatch(startAnswering());
+            },
+            stopAnswering: () => {
+                dispatch(stopAnswering());
             }
         },
         initialData: {
