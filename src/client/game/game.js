@@ -36,7 +36,7 @@ export class Game extends Component {
                 <div>
                     {this.props.answering}
                 </div>
-                <AnswerInput />
+                <AnswerInput answering={this.props.answering} />
             </div>
         );
     }

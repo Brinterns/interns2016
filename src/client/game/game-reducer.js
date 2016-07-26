@@ -9,7 +9,7 @@ const initialState = {
     letterList: [],
     disableConsonant: false,
     disableVowel: false,
-    answering: 'false'
+    answering: false
 };
 
 const game = (state = initialState, action) => {
@@ -75,11 +75,11 @@ const game = (state = initialState, action) => {
             });
         case actionTypes.START_ANSWERING:
             return Object.assign({}, state, {
-                answering: 'true'
+                answering: true
             });
         case actionTypes.STOP_ANSWERING:
             return Object.assign({}, state, {
-                answering: 'false'
+                answering: false
             });    
         default:
             return state;
