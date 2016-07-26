@@ -1,4 +1,6 @@
 var cloak = require('cloak');
+var randomConsonant = require('./random-consonant-picker');
+var randomVowel = require('./random-vowel-picker');
 
 module.exports = function(expressServer) {
     cloak.configure({
@@ -12,7 +14,10 @@ module.exports = function(expressServer) {
         room: {
             init: refreshListener,
             newMember: refreshRoomUsers,
-            memberLeaves: refreshRoomUsers,
+            memberLeaves: function (user){
+                setNextLeader(this);
+                refreshRoomUsers.bind(this)();
+            },
             close: refreshListener
         },
         messages: {
@@ -22,7 +27,9 @@ module.exports = function(expressServer) {
             joinRoom: joinRoom,
             leaveRoom: leaveRoom,
             roomDetails: roomDetails,
-            startGame: startGame
+            startGame: startGame,
+            getConsonant: getConsonant,
+            getVowel: getVowel
         }
     });
     cloak.run();
@@ -49,6 +56,13 @@ function createRoom(name, user) {
     var room = cloak.createRoom(name);
     room.data.creator = {id: user.id, name: user.name};
     room.data.started = false;
+    room.data.letterList = {
+        letters: [],
+        consonantNum: 0,
+        vowelNum: 0,
+        disableConsonant: false,
+        disableVowel: false
+    };
     fireRoomListReload();
 }
 
@@ -111,7 +125,6 @@ function leaveRoom(arg, user) {
         room.data.leaderIndex = userIndex===(room.getMembers().length-1) ? 0 : userIndex;
     }
     user.getRoom().removeMember(user);
-    makeLeader(room.data.leaderIndex, room);
 }
 
 function roomDetails(roomId, user) {
@@ -129,7 +142,6 @@ function startGame(arg, user) {
     room.messageMembers('startGame');
     makeLeader(room.data.leaderIndex, room);
     fireRoomListReload();
-    gameController(room);
 }
 
 function makeLeader(leaderIndex, room) {
@@ -137,6 +149,7 @@ function makeLeader(leaderIndex, room) {
         return;
     }
     var roomMembers = room.getMembers();
+    var letterList = room.data.letterList;
     var leader = {
         id: 1,
         name: 'God',
@@ -145,7 +158,9 @@ function makeLeader(leaderIndex, room) {
         leader = {
             id: roomMembers[leaderIndex].id,
             name: roomMembers[leaderIndex].name,
-            data: roomMembers[leaderIndex].data
+            data: roomMembers[leaderIndex].data,
+            disableConsonant: letterList.disableConsonant,
+            disableVowel: letterList.disableVowel
         }
     }
     room.messageMembers('setLeader', leader);
@@ -162,6 +177,49 @@ function setNextLeader(room) {
     room.data.leaderIndex = nextLeader;
 }
 
-function gameController(room) {
-    var roomTimer = setInterval(setNextLeader.bind(null, room), 5000);
+function checkListLength(user) {
+    var room = user.getRoom();
+    var letterList = room.data.letterList;
+    if(letterList.letters.length >= 9){
+        letterList.disableConsonant = true;
+        letterList.disableVowel = true;
+        user.message('disableConsonant', true);
+        user.message('disableVowel', true);
+        return;
+    }
+}
+
+function getConsonant(arg, user) {
+    var room = user.getRoom();
+    var letterList = room.data.letterList;
+    if(letterList.letters.length >= 9){
+        return;
+    }
+    if(letterList.consonantNum < 6) {
+        var consonant = randomConsonant();
+        letterList.letters.push(consonant);
+        letterList.consonantNum++;
+        room.messageMembers('updateConsonant', consonant);
+        checkListLength(user);
+    } else {
+        user.message('disableConsonant', true);
+    }
+}
+
+function getVowel(arg, user) {
+    var room = user.getRoom();
+    var letterList = room.data.letterList;
+    if(letterList.letters.length >= 9){
+        return;
+    }
+
+    if(letterList.vowelNum < 5) {
+        var vowel = randomVowel();
+        letterList.letters.push(vowel);
+        letterList.vowelNum++;
+        room.messageMembers('updateVowel', vowel);
+        checkListLength(user);
+    } else {
+        user.message('disableVowel', true);
+    }
 }

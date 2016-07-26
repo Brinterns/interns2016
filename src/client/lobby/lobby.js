@@ -7,13 +7,10 @@ import UserList from '../user/user-list';
 import RoomList from './room-list';
 import RoomCreator from './room-creator';
 
-import { refreshLobby, refreshRooms} from './lobby-actions';
-import { refreshRoomUsers } from '../rooms/room-actions';
-
 export class Lobby extends Component {
     componentWillMount() {
         if(!cloakService.isConnected()){
-            cloakService.configureAndRun(this.props.refreshLobby, this.props.refreshRooms, this.props.refreshRoomUsers);
+            cloakService.configureAndRun();
         }
     }
 
@@ -38,19 +35,6 @@ const mapStateToProps = state => ({
     activeRooms: state.lobby.rooms
 });
 
-const mapDispatchToProps = dispatch => ({
-    refreshLobby(lobbyList) {
-        dispatch(refreshLobby(lobbyList));
-    },
-    refreshRooms(roomList) {
-        dispatch(refreshRooms(roomList));
-    },
-    refreshRoomUsers(roomUsers) {
-        dispatch(refreshRoomUsers(roomUsers));
-    }
-});
-
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(Lobby);

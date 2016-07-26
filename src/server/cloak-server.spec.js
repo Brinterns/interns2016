@@ -10,12 +10,22 @@ var rooms;
 var disconnect;
 
 describe('cloak server', function() {
+    var randomConsonant;
+    var randomVowel;
+    beforeEach(function() {
+        randomConsonant = jasmine.createSpy('randomConsonant');
+        randomVowel = jasmine.createSpy('randomVowel');
+    });
+
     beforeEach(function() {
         mockery.enable({ useCleanCache: true });
     });
 
     beforeEach(function() {
+        mockery.registerMock('./random-consonant-picker', randomConsonant);
         mockery.registerAllowable('./cloak-server');
+        mockery.registerAllowable('./letter-lists');
+        mockery.registerMock('./random-vowel-picker', randomVowel);
     });
 
     beforeEach(function() {
@@ -264,7 +274,11 @@ describe('cloak server', function() {
             room.getMembers.and.returnValue([user]);
             room.data = {
                 leaderIndex: '',
-                started: false
+                started: false,
+                letterList: {
+                    disableConsonant: false,
+                    disableVowel: true
+                }
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -278,13 +292,24 @@ describe('cloak server', function() {
             room.getMembers.and.returnValue([user]);
             room.data = {
                 leaderIndex: '',
-                started: false
+                started: false,
+                letterList: {
+                    disableConsonant: false,
+                    disableVowel: true
+                }
             };
             cloak.getRooms.and.returnValue([]);
 
             cloakConfig.messages.startGame('', user);
 
-            expect(room.data).toEqual({leaderIndex: 0, started: true});
+            expect(room.data).toEqual({
+                    leaderIndex: 0, 
+                    started: true,
+                    letterList: {
+                        disableConsonant: false,
+                        disableVowel: true
+                    }
+            });
         })
 
         it('calls setLeader with correct room', function() {
@@ -295,7 +320,11 @@ describe('cloak server', function() {
             room.getMembers.and.returnValue([user]);
             room.data = {
                 leaderIndex: '',
-                started: false
+                started: false,
+                letterList: {
+                    disableConsonant: false,
+                    disableVowel: true
+                }
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -304,7 +333,9 @@ describe('cloak server', function() {
             var expectedLeader = {
                 id: user.id,
                 name: user.name,
-                data: user.data
+                data: user.data,
+                disableConsonant: false,
+                disableVowel: true
             }
             expect(room.messageMembers).toHaveBeenCalledWith('setLeader', expectedLeader);
         })
@@ -314,7 +345,11 @@ describe('cloak server', function() {
             room.getMembers.and.returnValue(['',user]);
             room.data = {
                 leaderIndex: '',
-                started: false
+                started: false,
+                letterList: {
+                    disableConsonant: false,
+                    disableVowel: true
+                }
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -322,5 +357,128 @@ describe('cloak server', function() {
 
             expect(room.data.leaderIndex).toEqual(1);
         })
+    });
+    describe('getConsonant', () => {
+        it('sends disableConsonant if there are 6 or more consonants', function(){
+            user.getRoom.and.returnValue(room);
+            room.data = {
+                letterList: {
+                    letters: [],
+                    consonantNum: 7
+                }
+            }
+            cloakConfig.messages.getConsonant('', user);
+
+            expect(user.message).toHaveBeenCalledWith('disableConsonant', true);
+        });
+
+        it('sends updateConsonant if there are less than 6 consonants', function(){
+            let rndConsonant = 'F';
+            randomConsonant.and.returnValue(rndConsonant);
+
+            user.getRoom.and.returnValue(room);
+            room.data = {
+                letterList: {
+                    letters: [],
+                    consonantNum: 3
+                }
+            }
+            cloakConfig.messages.getConsonant('', user);
+
+            expect(room.messageMembers).toHaveBeenCalledWith('updateConsonant', rndConsonant);
+        });
+    });
+
+    describe('getVowel', () => {
+        it('sends disableVowel if there are 5 or more vowels', function(){
+            user.getRoom.and.returnValue(room);
+            room.data = {
+                letterList: {
+                    letters: [],
+                    vowelNum: 6
+                }
+            }
+            cloakConfig.messages.getVowel('', user);
+
+            expect(user.message).toHaveBeenCalledWith('disableVowel', true);
+        });
+
+        it('sends updateVowel if there are less than 5 vowels', function(){
+            let rndVowel = 'E';
+            randomVowel.and.returnValue(rndVowel);
+
+            user.getRoom.and.returnValue(room);
+            room.data = {
+                letterList: {
+                    letters: [],
+                    vowelNum: 4
+                }
+            }
+            cloakConfig.messages.getVowel('', user);
+
+            expect(room.messageMembers).toHaveBeenCalledWith('updateVowel', rndVowel);
+        });
+    });
+
+    describe('checkListLength', () => {
+        it('sends user disableConsonant message if there are 9 or more letters in the letterList', function() {
+            user.getRoom.and.returnValue(room);
+            room.data = {
+                letterList: {
+                    letters: ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
+                    vowelNum: 4,
+                    disableConsonant: false,
+                    disableVowel: false
+                }
+            }
+            cloakConfig.messages.getVowel('', user);
+
+            expect(user.message).toHaveBeenCalledWith('disableConsonant', true);
+        });
+
+        it('sends user disableVowel message if there are 9 or more letters in the letterList', function() {
+            user.getRoom.and.returnValue(room);
+            room.data = {
+                letterList: {
+                    letters: ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
+                    vowelNum: 4,
+                    disableConsonant: false,
+                    disableVowel: false
+                }
+            }
+            cloakConfig.messages.getVowel('', user);
+
+            expect(user.message).toHaveBeenCalledWith('disableVowel', true);
+        });
+
+        it('sets disableConsonant to true if there are 9 or more letters in the letter list', function() {
+            user.getRoom.and.returnValue(room);
+            room.data = {
+                letterList: {
+                    letters: ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
+                    vowelNum: 4,
+                    disableConsonant: false,
+                    disableVowel: false
+                }
+            }
+            cloakConfig.messages.getVowel('', user);
+
+            expect(room.data.letterList.disableConsonant).toEqual(true);
+        });
+
+        it('sets disableVowel to true if there are 9 or more letters in the letter list', function() {
+            user.getRoom.and.returnValue(room);
+            room.data = {
+                letterList: {
+                    letters: ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
+                    vowelNum: 4,
+                    disableConsonant: false,
+                    disableVowel: false
+                }
+            }
+            cloakConfig.messages.getVowel('', user);
+
+            expect(room.data.letterList.disableVowel).toEqual(true);
+        });
     });
 });

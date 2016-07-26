@@ -5,13 +5,12 @@ import { AppContainer } from 'react-hot-loader';
 import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 
-import configureStore from './store';
+import store from './store';
 import App from './app';
 import RoomPage from './rooms/room-page'
 
 import './index.scss';
 
-const store = configureStore();
 const app = document.getElementById('app');
 const history = syncHistoryWithStore(browserHistory, store);
 

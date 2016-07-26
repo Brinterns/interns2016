@@ -3,37 +3,51 @@ import { connect } from 'react-redux';
 
 import AnswerInput from './answer-input';
 
-import { setLeader } from './game-actions';
-
 import cloakService from '../services/cloak-service';
 
+import storageService from '../services/storage-service';
+
 export class Game extends Component {
-    componentWillMount() {
-        cloakService.setLeaderDispatch(this.props.setLeader);
+    isLeader() {
+        let userId = storageService.getUser().id;
+        if(userId === this.props.leader.id) {
+            return true;
+        }
+        return false;
     }
 
     render() {
+        const letterButtons = (
+            <div>
+                <button className="btn btn-info" onClick={() => cloakService.messageGetConsonant()}
+                disabled={this.props.disableConsonant}>Consonant</button>
+                <button className="btn btn-primary" onClick={() => cloakService.messageGetVowel()}
+                disabled={this.props.disableVowel}>Vowel</button>
+            </div>
+        );
+
         return (
             <div className="col-lg-8 text-center">
-                <h3>THIS IS GAME</h3>
-                <p>{this.props.leader}</p>
+                <h3>COUNTDOWN</h3>
+                <p>Leader: {this.props.leader.name}</p>
+                {this.isLeader() ? letterButtons : null}
+                <div>
+                    {this.props.letterList}
+                </div>
                 <AnswerInput />
             </div>
         );
     }
 };
 
-const mapStateToProps = state => ({
-    leader: state.game.leader
-});
 
-const mapDispatchToProps = dispatch => ({
-    setLeader(user) {
-        dispatch(setLeader(user));
-    }
+const mapStateToProps = state => ({
+    leader: state.game.leader,
+    letterList: state.game.letterList,
+    disableConsonant: state.game.disableConsonant,
+    disableVowel: state.game.disableVowel
 });
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(Game);

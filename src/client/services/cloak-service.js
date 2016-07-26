@@ -1,5 +1,18 @@
 import config from '../config/config';
 import storageService from '../services/storage-service';
+import { dispatch } from '../store';
+import {
+    startGame,
+    setLeader,
+    getConsonant, 
+    getVowel, 
+    disableConsonant, 
+    disableVowel 
+} from '../game/game-actions';
+
+import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
+
+import { refreshLobby, refreshRooms} from '../lobby/lobby-actions';
 
 export default {
     configureAndRun,
@@ -10,15 +23,11 @@ export default {
     getRoomData,
     isConnected,
     messageStartGame,
-    setStartGame,
-    setLeaderDispatch
+    messageGetConsonant,
+    messageGetVowel
 };
 
-let roomDataDispatch;
-let startGameDispatch;
-let leaderDispatch;
-
-function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
+function configureAndRun() {
     cloak.configure({
         serverEvents: {
             begin: () => {
@@ -27,29 +36,45 @@ function configureAndRun(refreshLobby, refreshRooms, refreshRoomUsers) {
         },
         messages: {
             refreshLobby: lobbyList => {
-                refreshLobby(lobbyList);
+                dispatch(refreshLobby(lobbyList));
             },
             updateData: user => {
                 storageService.storeId(user.id);
                 storageService.storeName(user.name);
             },
             refreshRooms: roomList => {
-                refreshRooms(roomList);
+                dispatch(refreshRooms(roomList));
             },
             refreshRoomUsers: roomUserList => {
-                refreshRoomUsers(roomUserList);
+                dispatch(refreshRoomUsers(roomUserList));
             },
             roomDetailsResponse: roomDetails => {
-                roomDataDispatch(roomDetails);
+                dispatch(getRoomDetails(roomDetails));
             },
             startGame: () => {
-                startGameDispatch();
+                dispatch(startGame());
             },
             setLeader: user => {
-                leaderDispatch(user);
+                dispatch(setLeader(user));
+            },
+            updateConsonant: consonant => {
+                dispatch(getConsonant(consonant));
+            },
+            updateVowel: vowel => {
+                dispatch(getVowel(vowel));
+            },
+            disableConsonant: bool => {
+                dispatch(disableConsonant(bool));
+            },
+            disableVowel: bool => {
+                dispatch(disableVowel(bool));
             }
         },
-        initialData: storageService.getUser()
+        initialData: {
+            name: storageService.getUser().name,
+            id: storageService.getUser().id,
+            score: undefined
+        }
     });
     cloak.run(config.cloakAddress);
 }
@@ -74,8 +99,7 @@ function isConnected() {
     return cloak.connected();
 }
 
-function getRoomData(roomId, dispatch) {
-    roomDataDispatch = dispatch;
+function getRoomData(roomId) {
     cloak.message('roomDetails', roomId);
 }
 
@@ -83,10 +107,10 @@ function messageStartGame() {
     cloak.message('startGame');
 }
 
-function setStartGame(dispatch) {
-    startGameDispatch = dispatch;
+function messageGetConsonant() {
+    cloak.message('getConsonant');
 }
 
-function setLeaderDispatch(dispatch) {
-    leaderDispatch = dispatch;
+function messageGetVowel() {
+    cloak.message('getVowel');
 }
