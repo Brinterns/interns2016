@@ -51,28 +51,6 @@ const game = (state = initialState, action) => {
             return Object.assign({}, state, {
                 disableVowel: action.payload
             });
-        case actionTypes.GET_CONSONANT: {
-            let letterList = Array.from(state.letterList);
-            letterList.push(action.payload);
-            return Object.assign({}, state, {
-                letterList: letterList
-            });
-        }
-        case actionTypes.GET_VOWEL: {
-            let letterList = Array.from(state.letterList);
-            letterList.push(action.payload);
-            return Object.assign({}, state, {
-                letterList: letterList
-            });
-        }
-        case actionTypes.DISABLE_CONSONANT:
-            return Object.assign({}, state, {
-                disableConsonant: action.payload
-            });
-        case actionTypes.DISABLE_VOWEL:
-            return Object.assign({}, state, {
-                disableVowel: action.payload
-            });
         case actionTypes.START_ANSWERING:
             return Object.assign({}, state, {
                 answering: true

@@ -34,9 +34,6 @@ export class Game extends Component {
                 <div>
                     {this.props.letterList}
                 </div>
-                <div>
-                    {this.props.answering}
-                </div>
                 <AnswerInput answering={this.props.answering} />
             </div>
         );

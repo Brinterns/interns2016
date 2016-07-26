@@ -123,34 +123,3 @@ function messageGetVowel() {
     cloak.message('getVowel');
 }
 
-function messageGetConsonant() {
-    cloak.message('getConsonant');
-}
-
-function setConsonantDispatch(dispatch) {
-    consonantDispatch = dispatch;
-}
-
-function messageGetVowel() {
-    cloak.message('getVowel');
-}
-
-function setVowelDispatch(dispatch) {
-    vowelDispatch = dispatch;
-}
-
-function setDisableConsonantDispatch(dispatch) {
-    disableConsonantDispatch = dispatch;
-}
-
-function setDisableVowelDispatch(dispatch) {
-    disableVowelDispatch = dispatch;
-}
-
-function setStartAnsweringDispatch(dispatch) {
-    startAnsweringDispatch = dispatch;
-}
-
-function setStopAnsweringDispatch(dispatch) {
-    stopAnsweringDispatch = dispatch;
-}
