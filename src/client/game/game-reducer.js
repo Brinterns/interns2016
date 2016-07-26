@@ -5,8 +5,8 @@ import updateState from '../utils/util';
 const initialState = {
 	started: false,
     leader: {
-        id: undefined, 
-        name: undefined
+        id: null, 
+        name: null
     },
     letterList: [],
     disableConsonant: false,
