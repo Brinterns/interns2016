@@ -9,7 +9,7 @@ const initialState = {
     letterList: [],
     disableConsonant: false,
     disableVowel: false,
-    answering: false
+    answering: true
 };
 
 const game = (state = initialState, action) => {
