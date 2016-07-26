@@ -9,7 +9,7 @@ import RoomCreator from './room-creator';
 
 export class Lobby extends Component {
     componentWillMount() {
-        if(!isConnected()){
+        if(!cloakService.isConnected()){
             cloakService.configureAndRun();
         }
     }
