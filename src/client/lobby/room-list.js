@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import router from '../services/routing-service';
-import { messageJoinRoom } from '../services/cloak-service';
 import storageService from '../services/storage-service';
 
 import style from '../common/common.scss';

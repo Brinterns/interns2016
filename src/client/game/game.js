@@ -5,11 +5,11 @@ import AnswerInput from './answer-input';
 
 import { setLeader } from './game-actions';
 
-import { setLeaderDispatch } from '../services/cloak-service';
+import cloakService from '../services/cloak-service';
 
 export class Game extends Component {
     componentWillMount() {
-        setLeaderDispatch(this.props.setLeader);
+        cloakService.setLeaderDispatch(this.props.setLeader);
     }
 
     render() {
@@ -36,4 +36,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Game)
+)(Game);

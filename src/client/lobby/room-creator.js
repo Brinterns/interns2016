@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 
 import config from '../config/config';
 
-import { messageSetUsername, messageCreateRoom } from '../services/cloak-service';
+import cloakService from '../services/cloak-service';
 import storageService from '../services/storage-service';
 
 import style from './lobby.scss';
 
 export default class RoomCreator extends Component {
     setUsername() {
-        messageSetUsername(this.state.username);
+        cloakService.messageSetUsername(this.state.username);
         storageService.storeName(this.state.username);
     }
 
     createRoom() {
-        messageCreateRoom(this.state.roomname);
+        cloakService.messageCreateRoom(this.state.roomname);
     }
 
     handleChange(event, property) {

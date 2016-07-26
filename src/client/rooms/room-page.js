@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import router from '../services/routing-service';
-import { messageLeaveRoom, messageJoinRoom, getRoomData, messageStartGame, setStartGame, isConnected } from '../services/cloak-service';
+import cloakService from '../services/cloak-service';
 
 import UserList from '../user/user-list';
 import Game from '../game/game';
@@ -13,19 +13,19 @@ import storageService from '../services/storage-service';
 
 export class RoomPage extends Component {
     componentWillMount() {
-        if(isConnected()) {
-            messageJoinRoom(this.props.params.data);
-            getRoomData(this.props.params.data, this.props.getRoomDetails);
-            setStartGame(this.props.startGame);
+        if(cloakService.isConnected()) {
+            cloakService.messageJoinRoom(this.props.params.data);
+            cloakService.getRoomData(this.props.params.data, this.props.getRoomDetails);
+            cloakService.setStartGame(this.props.startGame);
         } else {
             router.navigateToLobby();
         }
     }
 
     componentWillUnmount() {
-        if(isConnected()) {
+        if(cloakService.isConnected()) {
             this.props.leaveGame();
-            messageLeaveRoom();
+            cloakService.messageLeaveRoom();
         }
     }
 
@@ -54,7 +54,7 @@ export class RoomPage extends Component {
                 <UserList users={this.props.roomUsers} />
                 <div className="col-lg-8" >
                     <button className={`btn btn-success`} id="start-game" disabled={this.disable()}
-                            onClick={() => {messageStartGame()}}>Start Game</button>
+                            onClick={() => {cloakService.messageStartGame()}}>Start Game</button>
                     <button className={`btn btn-danger`} id="leave-room"
                             onClick={leaveRoom}>Leave Room</button>
                 </div>
