@@ -20,7 +20,7 @@ const consonants = {
 	W: 1, 
 	Y: 1,
 	Z: 1
-};
+}
 
 const vowels = {
 	A: 15,

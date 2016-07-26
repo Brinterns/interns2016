@@ -1,4 +1,5 @@
 import { UPDATE_ROOM_USERS, GET_ROOM_DATA } from './room-actions';
+import updateState from '../utils/util';
 
 const initialState = {
 	users: [],
@@ -10,11 +11,11 @@ const initialState = {
 const room = (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_ROOM_USERS:
-        	return Object.assign({}, state, {
+        	return updateState(state, {
         		users: action.payload
         	});
         case GET_ROOM_DATA:
-            return Object.assign({}, state, {
+            return updateState(state, {
             	data: action.payload
             });
         default:

@@ -15,7 +15,7 @@ export class Game extends Component {
         }
         return false;
     }
-
+    
     render() {
         const letterButtons = (
             <div>
@@ -34,18 +34,19 @@ export class Game extends Component {
                 <div>
                     {this.props.letterList}
                 </div>
-                <AnswerInput />
+                <AnswerInput answering={this.props.answering} />
             </div>
         );
     }
-};
+}
 
 
 const mapStateToProps = state => ({
     leader: state.game.leader,
     letterList: state.game.letterList,
     disableConsonant: state.game.disableConsonant,
-    disableVowel: state.game.disableVowel
+    disableVowel: state.game.disableVowel,
+    answering: state.game.answering
 });
 
 export default connect(

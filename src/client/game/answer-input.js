@@ -94,7 +94,8 @@ export default class AnswerInput extends Component {
                 return (
                     <div className="row radio radio-info">
                         <input maxLength="18" size="30" placeholder="Enter your answer here" ref={index} onFocus={() => this.handleFocus(index)}
-                            defaultValue={answer} onChange={(event) => this.handleChange(event, index)} onKeyDown={event => this.handleKeyPress(event)}/>
+                            defaultValue={answer} onChange={(event) => this.handleChange(event, index)} onKeyDown={event => this.handleKeyPress(event)}
+                            disabled={!this.props.answering} />
                         <input type="radio" name="answer" />
                     </div>
                 );
@@ -111,7 +112,6 @@ export default class AnswerInput extends Component {
         return (
             <div className="col-lg-12 text-center">
                 <h3>ANSWER INPUT</h3>
-                <button className="btn btn-primary btn-success">Ready</button>
                 <div>{this.textBoxes()}</div>
             </div>
         );

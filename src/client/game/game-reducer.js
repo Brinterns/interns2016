@@ -1,32 +1,35 @@
-
 import * as actionTypes from './game-actions';
+
+import updateState from '../utils/util';
 
 const initialState = {
 	started: false,
-	leader: {
-        id: undefined, 
-        name: undefined
+    leader: {
+        id: null, 
+        name: null
     },
     letterList: [],
     disableConsonant: false,
-    disableVowel: false
+    disableVowel: false,
+    answering: true
 };
 
 const game = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.START_GAME: 
-        	return Object.assign({}, state, {
+        	return updateState(state, {
         		started: true
         	});
         case actionTypes.LEAVE_GAME:
-            return Object.assign({}, state, {
+            return updateState(state, {
                 started: false,
                 letterList: [],
                 disableConsonant: false,
-                disableVowel: false
+                disableVowel: false,
+                answering: false
             });
         case actionTypes.SET_LEADER:
-            return Object.assign({}, state, {
+            return updateState(state, {
                 leader: {
                     id: action.payload.id,
                     name: action.payload.name
@@ -35,21 +38,29 @@ const game = (state = initialState, action) => {
                 disableVowel: action.payload.disableVowel
             });
         case actionTypes.GET_CONSONANT:
-            return Object.assign({}, state, {
+            return updateState(state, {
                 letterList: [...state.letterList, action.payload]
             });
         case actionTypes.GET_VOWEL: 
-            return Object.assign({}, state, {
+            return updateState(state, {
                 letterList: [...state.letterList, action.payload]
             });
         case actionTypes.DISABLE_CONSONANT:
-            return Object.assign({}, state, {
+            return updateState(state, {
                 disableConsonant: action.payload
             });
         case actionTypes.DISABLE_VOWEL: 
-            return Object.assign({}, state, {
+            return updateState(state, {
                 disableVowel: action.payload
             });
+        case actionTypes.START_ANSWERING:
+            return updateState(state, {
+                answering: true
+            });
+        case actionTypes.STOP_ANSWERING:
+            return updateState(state, {
+                answering: false
+            });    
         default:
             return state;
     }

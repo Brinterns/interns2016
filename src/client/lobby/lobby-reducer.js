@@ -1,4 +1,5 @@
 import { UPDATE_LOBBY_LIST, UPDATE_ROOM_LIST } from './lobby-actions';
+import updateState from '../utils/util';
 
 const initialState = {
 	rooms: [],
@@ -8,11 +9,11 @@ const initialState = {
 const lobby = (state = initialState, action) => {
     switch(action.type) {
         case UPDATE_ROOM_LIST:
-        	return Object.assign({}, state, {
+        	return updateState(state, {
         		rooms: action.payload
         	});
      	case UPDATE_LOBBY_LIST: {
-            return Object.assign({}, state, {
+            return updateState(state, {
         		users: action.payload
         	});
         }

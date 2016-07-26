@@ -177,18 +177,6 @@ function setNextLeader(room) {
     room.data.leaderIndex = nextLeader;
 }
 
-function checkListLength(user) {
-    var room = user.getRoom();
-    var letterList = room.data.letterList;
-    if(letterList.letters.length >= 9){
-        letterList.disableConsonant = true;
-        letterList.disableVowel = true;
-        user.message('disableConsonant', true);
-        user.message('disableVowel', true);
-        return;
-    }
-}
-
 function getConsonant(arg, user) {
     var room = user.getRoom();
     var letterList = room.data.letterList;
@@ -222,4 +210,22 @@ function getVowel(arg, user) {
     } else {
         user.message('disableVowel', true);
     }
+}
+
+function checkListLength(user) {
+    var room = user.getRoom();
+    var letterList = room.data.letterList;
+    if(letterList.letters.length >= 9){
+        letterList.disableConsonant = true;
+        letterList.disableVowel = true;
+        user.message('disableConsonant', true);
+        user.message('disableVowel', true);
+        room.messageMembers('startAnswering');
+        var answeringTimer = setTimeout(answeringFinished.bind(null, room), 30000);
+        return;
+    }
+}
+
+function answeringFinished(room) {
+    room.messageMembers('stopAnswering');
 }
