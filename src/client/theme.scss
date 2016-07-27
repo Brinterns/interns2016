@@ -1,0 +1,22 @@
+$primary-colour: #338A2E;
+$primary-colour-l1: #7EA77C;
+$primary-colour-l2: #559852;
+$primary-colour-d1: #157B10;
+$primary-colour-d2: #056D00;
+
+$secondary-colour: #71266E;
+$secondary-colour-l1: #896687;
+$secondary-colour-l2: #7D437A;
+$secondary-colour-d1: #650D61;
+$secondary-colour-d2: #590055;
+
+$accent-colour: #AA7739;
+$accent-colour-l1: #CEB699;
+$accent-colour-l2: #BC9565;
+$accent-colour-d1: #985D14;
+$accent-colour-d2: #864A00;
+
+.btn-success {
+    background-color: $primary-colour;
+    border-color: $primary-colour-d1;
+}
