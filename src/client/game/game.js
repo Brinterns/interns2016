@@ -7,6 +7,8 @@ import cloakService from '../services/cloak-service';
 
 import storageService from '../services/storage-service';
 
+import style from './game.scss';
+
 export class Game extends Component {
     isLeader() {
         let userId = storageService.getUser().id;
@@ -16,6 +18,12 @@ export class Game extends Component {
         return false;
     }
     
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.letterList.length-1 >= 0){
+            this.refs[`box${nextProps.letterList.length-1}`].className += ` ${style.flipped}`;
+        }
+    }
+
     render() {
         const letterButtons = (
             <div>
@@ -26,13 +34,30 @@ export class Game extends Component {
             </div>
         );
 
+        const letterBox = (letter, index) => (
+            <div className={style.flip}>
+                <div className={style.card} ref={`box${index}`}>
+                    <div className={`${style.face} ${style.front}`}>
+                    </div>
+                    <div className={`${style.face} ${style.back}`}>
+                        {letter}
+                    </div>
+                </div>
+            </div>
+        );
+
+        let letterBoxes = [];
+        for(let i = 0; i < 9; i++) {
+            letterBoxes.push(letterBox(this.props.letterList[i], i));
+        }
+
         return (
             <div className="col-lg-8 text-center">
                 <h3>COUNTDOWN</h3>
                 <p>Leader: {this.props.leader.name}</p>
                 {this.isLeader() ? letterButtons : null}
                 <div>
-                    {this.props.letterList}
+                    {letterBoxes}
                 </div>
                 <AnswerInput answering={this.props.answering} />
             </div>
