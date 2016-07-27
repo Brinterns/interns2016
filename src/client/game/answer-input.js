@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { timerTick, resetTimer } from './game-actions';
 
 const SPACE_KEY = 32;
 const ENTER_KEY = 13;
 const UP_KEY = 38;
 const DOWN_KEY = 40;
 
-export default class AnswerInput extends Component {
+export class AnswerInput extends Component {
     componentWillMount() {
         this.setState({
             answerList: [''],
-            focusIndex: 0,
-            timerValue: null
+            focusIndex: 0
         });
     }
 
@@ -123,30 +124,23 @@ export default class AnswerInput extends Component {
     }
 
     timerTick() {
-        if(this.state.timerValue > 0){
-            this.setState({
-                timerValue: this.state.timerValue - 1
-            });
+        if(this.props.timerValue > 0){
+            this.props.timerTick();
         } else {
             clearInterval(this.answerInputInterval);
-            this.setState({
-                timerValue: null
-            });
+            this.props.resetTimer();
         }
     }
 
 
     startTimer() {
         this.answerInputInterval = setInterval(() => this.timerTick(), 1000);
-        this.setState({
-            timerValue: 30
-        })
     }
 
     render() {
         const timerArea = (
             <div>
-                <p>Answering Time Left: {this.state.timerValue}</p>
+                <p>Answering Time Left: {this.props.timerValue}</p>
             </div>
         );
 
@@ -159,3 +153,21 @@ export default class AnswerInput extends Component {
         );
     }
 };
+
+const mapStateToProps = state => ({
+    timerValue: state.game.timerValue
+});
+
+const mapDispatchToProps = dispatch => ({
+    timerTick() {
+        dispatch(timerTick());
+    },
+    resetTimer() {
+        dispatch(resetTimer());
+    }
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AnswerInput);

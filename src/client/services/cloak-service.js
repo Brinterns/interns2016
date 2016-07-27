@@ -71,8 +71,8 @@ function configureAndRun() {
             disableVowel: bool => {
                 dispatch(disableVowel(bool));
             },
-            startAnswering: () => {
-                dispatch(startAnswering());
+            startAnswering: time => {
+                dispatch(startAnswering(time));
             },
             stopAnswering: () => {
                 dispatch(stopAnswering());

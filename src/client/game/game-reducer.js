@@ -11,7 +11,8 @@ const initialState = {
     letterList: [],
     disableConsonant: false,
     disableVowel: false,
-    answering: false
+    answering: false,
+    timerValue: null
 };
 
 const game = (state = initialState, action) => {
@@ -55,12 +56,21 @@ const game = (state = initialState, action) => {
             });
         case actionTypes.START_ANSWERING:
             return updateState(state, {
-                answering: true
+                answering: true,
+                timerValue: action.payload
             });
         case actionTypes.STOP_ANSWERING:
             return updateState(state, {
                 answering: false
-            });    
+            });
+        case actionTypes.TIMER_TICK:
+            return updateState(state, {
+                timerValue: state.timerValue-1
+            });
+        case actionTypes.RESET_TIMER:
+            return updateState(state, {
+                timerValue: null
+            });        
         default:
             return state;
     }
