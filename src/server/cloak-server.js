@@ -1,6 +1,7 @@
 var cloak = require('cloak');
 var randomConsonant = require('./random-consonant-picker');
 var randomVowel = require('./random-vowel-picker');
+var gameParameters = require('./game-parameters');
 
 module.exports = function(expressServer) {
     cloak.configure({
@@ -220,8 +221,8 @@ function checkListLength(user) {
         letterList.disableVowel = true;
         user.message('disableConsonant', true);
         user.message('disableVowel', true);
-        room.messageMembers('startAnswering');
-        var answeringTimer = setTimeout(answeringFinished.bind(null, room), 30000);
+        room.messageMembers('startAnswering', gameParameters.answerTime);
+        var answeringTimer = setTimeout(answeringFinished.bind(null, room), gameParameters.answerTime*1000);
         return;
     }
 }

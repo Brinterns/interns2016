@@ -1,16 +1,36 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { timerTick, resetTimer } from './game-actions';
 
 const SPACE_KEY = 32;
 const ENTER_KEY = 13;
 const UP_KEY = 38;
 const DOWN_KEY = 40;
 
-export default class AnswerInput extends Component {
+export class AnswerInput extends Component {
     componentWillMount() {
         this.setState({
             answerList: [''],
             focusIndex: 0
         });
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.answerInputInterval);
+    }
+
+    componentDidUpdate() {
+        this.refs[this.state.focusIndex].focus();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(this.props.answering === nextProps.answering) {
+            return;
+        }
+
+        if(nextProps.answering) {
+            this.startTimer();
+        }
     }
 
     handleKeyPress(event) {
@@ -103,17 +123,51 @@ export default class AnswerInput extends Component {
         );
     }
 
-    componentDidUpdate(){
-        let focusIndex = this.state.focusIndex;
-        this.refs[focusIndex].focus();
+    timerTick() {
+        if(this.props.timerValue > 0){
+            this.props.timerTick();
+        } else {
+            clearInterval(this.answerInputInterval);
+            this.props.resetTimer();
+        }
+    }
+
+
+    startTimer() {
+        this.answerInputInterval = setInterval(() => this.timerTick(), 1000);
     }
 
     render() {
+        const timerArea = (
+            <div>
+                <p>Answering Time Left: {this.props.timerValue}</p>
+            </div>
+        );
+
         return (
             <div className="col-lg-12 text-center">
                 <h3>ANSWER INPUT</h3>
+                {this.props.answering ? timerArea : null}        
                 <div>{this.textBoxes()}</div>
             </div>
         );
     }
 };
+
+const mapStateToProps = state => ({
+    timerValue: state.game.timerValue
+});
+
+const mapDispatchToProps = dispatch => ({
+    timerTick() {
+        dispatch(timerTick());
+    },
+    resetTimer() {
+        dispatch(resetTimer());
+    }
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AnswerInput);

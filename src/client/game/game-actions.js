@@ -7,6 +7,8 @@ export const DISABLE_CONSONANT = 'DISABLE_CONSONANT';
 export const DISABLE_VOWEL = 'DISABLE_VOWEL';
 export const START_ANSWERING = 'START_ANSWERING';
 export const STOP_ANSWERING = 'STOP_ANSWERING';
+export const TIMER_TICK = 'TIMER_TICK';
+export const RESET_TIMER = 'RESET_TIMER';
 
 export function startGame() {
     return {
@@ -55,14 +57,27 @@ export function disableVowel(bool) {
 	}
 }
 
-export function startAnswering() {
+export function startAnswering(time) {
 	return {
-		type: START_ANSWERING
+		type: START_ANSWERING,
+		payload: time
 	}
 }
 
 export function stopAnswering() {
 	return {
 		type: STOP_ANSWERING
+	}
+}
+
+export function timerTick() {
+	return {
+		type: TIMER_TICK
+	}
+}
+
+export function resetTimer() {
+	return {
+		type: RESET_TIMER
 	}
 }
