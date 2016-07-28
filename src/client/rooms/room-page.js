@@ -27,24 +27,6 @@ export class RoomPage extends Component {
         }
     }
 
-    disable() {
-        if(this.enoughPlayers()){
-            return !this.isCreator();
-        }
-        return true;
-    }
-
-    enoughPlayers() {
-        return this.props.roomUsers.length >= 2 ? true : false;
-    }
-
-    isCreator() {
-        var room = storageService.getRoom();
-        var creatorId = room.data.creator.id;
-        var userId = storageService.getUser().id;
-        return JSON.stringify(creatorId) === JSON.stringify(userId);
-    }
-
     render() {
         return (
             <div className="text-center">
