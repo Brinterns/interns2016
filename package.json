@@ -1,6 +1,6 @@
 {
   "name": "interns2016",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Interns 2016",
   "main": "app.js",
   "engines": {
@@ -11,7 +11,8 @@
     "demo": "gulp demo",
     "dev": "gulp dev",
     "start": "npm run build && node dist/server",
-    "test": "gulp test"
+    "test": "gulp test",
+    "test:server": "gulp test:server"
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",
@@ -31,6 +32,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "jquery": "^2.2.0",
+    "lodash": "^4.13.1",
     "node-sass": "^3.7.0",
     "nodemon": "^1.8.1",
     "opn": "^4.0.0",
@@ -39,14 +41,18 @@
     "react-dom": "^15.0.1",
     "react-hot-loader": "^3.0.0-beta.2",
     "react-redux": "^4.4.5",
+    "react-router": "^2.5.2",
+    "react-router-redux": "^4.0.5",
     "redux": "^3.5.2",
     "sass-loader": "^3.2.0",
+    "style-loader": "^0.13.1",
     "webpack": "^1.12.12",
     "yargs": "^3.32.0"
   },
   "devDependencies": {
     "babel-plugin-rewire": "^1.0.0-rc-3",
     "enzyme": "^2.3.0",
+    "gulp-node-inspector": "^0.1.0",
     "jasmine-core": "^2.4.1",
     "jasmine-node": "2.0.0-beta4",
     "karma": "^0.13.22",
@@ -54,10 +60,9 @@
     "karma-jasmine": "^1.0.2",
     "karma-mocha-reporter": "^2.0.4",
     "karma-webpack": "^1.7.0",
-    "lodash": "^4.13.1",
+    "mockery": "^1.7.0",
     "react-addons-test-utils": "^15.1.0",
     "redux-devtools": "^3.3.1",
-    "style-loader": "^0.13.1",
     "webpack-dev-server": "^1.14.1"
   },
   "repository": {

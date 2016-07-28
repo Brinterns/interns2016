@@ -21,16 +21,19 @@ gulp.task('dev', gulp.series(
     enableDev,
     gulp.parallel(
         watchServer,
+        inspect,
+        test(),
         gulp.series(
             build(),
             startServer,
-            openBrowser,
-            test()
+            openBrowser
+
         )
     )
 ));
 
 gulp.task('test', test());
+gulp.task('test:server', testServer)
 
 function clean() {
     var del = require('del');
@@ -73,6 +76,8 @@ function buildClientConfig(done) {
     var stream;
 
     if(args.dev || args.demo) {
+        stream = gulp.src(locationConfig.client.config.local);
+    } else if(process.env.BUILD_ENV === 'dev') {
         stream = gulp.src(locationConfig.client.config.dev);
     } else {
         stream = gulp.src(locationConfig.client.config.prod);
@@ -181,14 +186,26 @@ function enableDemo(done) {
     done();
 }
 
-function startServer(done) {
+function inspect() {
+    var conf = require('./tools/webpack/config.dev.js');
+    return gulp.src(locationConfig.server.filesForBuild)
+    .pipe($.nodeInspector({
+          webPort:  conf.debuggerPort
+        }));
+
+}
+
+function  startServer(done) {
     var nodemon = require('nodemon');
+    var exec = args.dev? 'node --debug': 'node'
     nodemon({
-        script: locationConfig.server.dist.location,
-        watch: locationConfig.server.dist.watch
-    })
+            script: locationConfig.server.dist.location,
+             exec: exec,
+            watch: locationConfig.server.dist.watch
+        })
         .once('start', done);
 }
+
 
 function openBrowser(done) {
     var opn = require('opn');

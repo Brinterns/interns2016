@@ -7,6 +7,7 @@ var devServerConfig = require('./dev-server.config');
 
 var configDev = cloneWith(configShared, {
     devtool: 'eval-source-map',
+    debuggerPort : 8081,
     entry: [
         'react-hot-loader/patch',
         'webpack-dev-server/client?' + devServerConfig.address,
@@ -19,7 +20,7 @@ var configDev = cloneWith(configShared, {
     ]
 }, true);
 
-// Add react hot loader to js/jsx loader
+// Add react hot loader to js loader
 configDev.module.loaders[0].query.plugins = ['react-hot-loader/babel'];
 
 module.exports = configDev;
