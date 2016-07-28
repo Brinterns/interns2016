@@ -11,6 +11,7 @@ export const TIMER_TICK = 'TIMER_TICK';
 export const RESET_TIMER = 'RESET_TIMER';
 export const DISABLE_START = 'DISABLE_START';
 export const RESET_LETTERS = 'RESET_LETTERS';
+export const START_SUBMISSION = 'START_SUBMISSION';
 
 export function startGame() {
     return {
@@ -95,5 +96,11 @@ export function resetLetters(list) {
 	return {
 		type: RESET_LETTERS,
 		payload: list
+	}
+}
+
+export function startSubmission() {
+	return {
+		type: START_SUBMISSION
 	}
 }

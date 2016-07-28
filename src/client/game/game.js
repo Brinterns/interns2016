@@ -63,7 +63,7 @@ export class Game extends Component {
                 <div>
                     {letterBoxes}
                 </div>
-                <AnswerInput answering={this.props.answering} />
+                <AnswerInput answering={this.props.answering} submission={this.props.submission}/>
             </div>
         );
     }
@@ -75,7 +75,8 @@ const mapStateToProps = state => ({
     letterList: state.game.letterList,
     disableConsonant: state.game.disableConsonant,
     disableVowel: state.game.disableVowel,
-    answering: state.game.answering
+    answering: state.game.answering,
+    submission: state.game.submission
 });
 
 export default connect(

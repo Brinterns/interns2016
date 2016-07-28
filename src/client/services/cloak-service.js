@@ -12,7 +12,8 @@ import {
     startAnswering,
     stopAnswering,
     disableStart,
-    resetLetters
+    resetLetters,
+    startSubmission
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -102,6 +103,9 @@ function configureAndRun(roomId) {
                     cloak.stop();
                     router.navigateToLobby();
                 }
+            },
+            startSubmission: () => {
+                dispatch(startSubmission());
             }
         },
         initialData: {

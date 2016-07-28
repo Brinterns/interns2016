@@ -13,7 +13,8 @@ const initialState = {
     disableVowel: false,
     answering: false,
     timerValue: null,
-    disableStart: true
+    disableStart: true,
+    submission: false
 };
 
 const game = (state = initialState, action) => {
@@ -81,6 +82,10 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 disableStart: action.payload
             });  
+        case actionTypes.START_SUBMISSION:
+            return updateState(state, {
+                submission: true
+            });
         default:
             return state;
     }

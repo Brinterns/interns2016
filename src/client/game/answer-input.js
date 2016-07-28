@@ -144,11 +144,18 @@ export class AnswerInput extends Component {
             </div>
         );
 
+        const submitButton = (
+            <div>
+                <button className="btn btn-success">Submit</button>
+            </div>
+        );
+
         return (
             <div className="col-lg-12 text-center">
                 <h3>ANSWER INPUT</h3>
                 {this.props.answering ? timerArea : null}        
                 <div>{this.textBoxes()}</div>
+                {this.props.submission ? submitButton : null}
             </div>
         );
     }
