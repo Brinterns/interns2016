@@ -327,3 +327,22 @@ function resetScore(arg, user) {
     user.data.score = undefined;
     refreshListener();
 }
+
+function answeringStarted(room) {
+    room.messageMembers('startAnswering');
+    var answeringTimer = setTimeout(answeringFinished.bind(null, room), 2000);
+}
+
+function answeringFinished(room) {
+    room.messageMembers('stopAnswering');
+    submissionStarted(room);
+}
+
+function submissionStarted(room) {
+    room.messageMembers('startSubmission');
+    var submissionTimer = setTimeout(submissionFinished.bind(null, room), 2000);
+}
+
+function submissionFinished(room) {
+    room.messageMembers('stopSubmission');
+}

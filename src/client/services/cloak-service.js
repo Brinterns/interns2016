@@ -13,7 +13,8 @@ import {
     stopAnswering,
     disableStart,
     resetLetters,
-    startSubmission
+    startSubmission,
+    stopSubmission
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -106,6 +107,9 @@ function configureAndRun(roomId) {
             },
             startSubmission: () => {
                 dispatch(startSubmission());
+            },
+            stopSubmission: () => {
+                dispatch(stopSubmission());
             }
         },
         initialData: {

@@ -86,6 +86,10 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 submission: true
             });
+        case actionTypes.STOP_SUBMISSION:
+            return updateState(state, {
+                submission: false
+            });
         default:
             return state;
     }
