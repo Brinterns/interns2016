@@ -328,21 +328,21 @@ function resetScore(arg, user) {
     refreshListener();
 }
 
-function answeringStarted(room) {
-    room.messageMembers('startAnswering');
-    var answeringTimer = setTimeout(answeringFinished.bind(null, room), 2000);
+function startAnswering(room) {
+    room.messageMembers('startAnswering', gameParameters.answerTime);
+    setTimeout(stopAnswering.bind(null, room), gameParameters.answerTime*1000);
 }
 
-function answeringFinished(room) {
+function stopAnswering(room) {
     room.messageMembers('stopAnswering');
-    submissionStarted(room);
+    startSubmission(room);
 }
 
-function submissionStarted(room) {
+function startSubmission(room) {
     room.messageMembers('startSubmission');
-    var submissionTimer = setTimeout(submissionFinished.bind(null, room), 2000);
+    setTimeout(stopSubmission.bind(null, room), gameParameters.answerTime*1000);
 }
 
-function submissionFinished(room) {
+function stopSubmission(room) {
     room.messageMembers('stopSubmission');
 }
