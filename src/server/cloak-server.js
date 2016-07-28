@@ -14,11 +14,8 @@ module.exports = function(expressServer) {
         },
         room: {
             init: refreshListener,
-            newMember: refreshRoomUsers,
-            memberLeaves: function (user){
-                setNextLeader(this);
-                refreshRoomUsers.bind(this)();
-            },
+            newMember: newMember,
+            memberLeaves: memberLeaves,
             close: refreshListener
         },
         messages: {
@@ -35,6 +32,33 @@ module.exports = function(expressServer) {
     });
     cloak.run();
 };
+
+function newMember() {
+    refreshRoomUsers.bind(this)();
+    var members = this.getMembers();
+    for(var i = 0; i < members.length; i++) {
+        if(members[i].id === this.data.creator.id) {
+            if(this.getMembers().length >= gameParameters.minUserNo){
+                members[i].message('enableStart');
+            } else {
+                members[i].message('disableStart');
+            }
+        }
+    }
+}
+
+function memberLeaves() {
+    setNextLeader(this);
+    refreshRoomUsers.bind(this)();
+    var members = this.getMembers();
+    if(this.getMembers().length >= gameParameters.minUserNo)
+        return;
+    for(var i = 0; i < members.length; i++) {
+        if(members[i].id === this.data.creator.id) {
+            members[i].message('disableStart');
+        }
+    }
+}
 
 function setUsername(name, user) {
     user.name = name;
@@ -72,6 +96,12 @@ function joinRoom(id, user) {
     var room = cloak.getRoom(id);
     room.addMember(user);
     refreshListener();
+}
+
+function isCreator(user, room) {
+    if(room.data.creator.id === user.id)
+        return true;
+    return false;
 }
 
 function refreshListener() {

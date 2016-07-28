@@ -9,6 +9,7 @@ export const START_ANSWERING = 'START_ANSWERING';
 export const STOP_ANSWERING = 'STOP_ANSWERING';
 export const TIMER_TICK = 'TIMER_TICK';
 export const RESET_TIMER = 'RESET_TIMER';
+export const DISABLE_START = 'DISABLE_START';
 
 export function startGame() {
     return {
@@ -79,5 +80,12 @@ export function timerTick() {
 export function resetTimer() {
 	return {
 		type: RESET_TIMER
+	}
+}
+
+export function disableStart(bool) {
+	return {
+		type: DISABLE_START,
+		payload: bool
 	}
 }

@@ -51,7 +51,7 @@ export class RoomPage extends Component {
                 <h1>{`Room: ${this.props.roomData.name}`}</h1>
                 <UserList users={this.props.roomUsers} />
                 <div className="col-lg-8" >
-                    <button className={`btn btn-success`} id="start-game" disabled={this.disable()}
+                    <button className={`btn btn-success`} id="start-game" disabled={this.props.disableStart}
                             onClick={() => {cloakService.messageStartGame()}}>Start Game</button>
                     <button className={`btn btn-danger`} id="leave-room"
                             onClick={leaveRoom}>Leave Room</button>
@@ -69,7 +69,8 @@ function leaveRoom() {
 const mapStateToProps = (state, ownProps) => ({
     roomUsers: state.room.users,
     roomData: state.room.data,
-    started: state.game.started
+    started: state.game.started,
+    disableStart: state.game.disableStart
 });
 
 const mapDispatchToProps = dispatch => ({
