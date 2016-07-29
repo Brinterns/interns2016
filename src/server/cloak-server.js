@@ -267,6 +267,10 @@ function answeringFinished(room) {
 
 function checkRoom(roomId, user) {
     var room = cloak.getRoom(roomId);
+    if(!room){
+        user.message('allowedToJoin', false);
+        return;
+    }
     var allowedUsers = room.data.userIdList;
     for(var i=0; i<allowedUsers.length; i++) {
         console.log(user.id+' '+allowedUsers[i])
@@ -280,6 +284,9 @@ function checkRoom(roomId, user) {
 
 function removeFromRoomList(roomId, user) {
     var room = cloak.getRoom(roomId);
+    if(!room) {
+        return;
+    }
     room.data.userIdList = room.data.userIdList.filter(function(id){
         return id !== user.id;
     });

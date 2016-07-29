@@ -94,6 +94,7 @@ function configureAndRun(roomId) {
                     messageJoinRoom(roomId);
                     getRoomData(roomId);
                 } else {
+                    cloak.stop();
                     router.navigateToLobby();
                 }
             }
