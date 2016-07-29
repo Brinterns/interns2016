@@ -170,6 +170,7 @@ describe('cloak server', function() {
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue(room);
+            room.data = {userIdList: []};
             lobby.getMembers.and.returnValue([]);
 
             cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
@@ -182,6 +183,7 @@ describe('cloak server', function() {
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue(room);
+            room.data = {userIdList: []};
             lobby.getMembers.and.returnValue([]);
 
             cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
@@ -192,6 +194,7 @@ describe('cloak server', function() {
         it('sets the score of the current user to 0', function() {
             user.data = {name: "name", id: 0};
             rooms = [{id:'1'}];
+            room.data = {userIdList: []};
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue(room);
             lobby.getMembers.and.returnValue([]);
@@ -205,17 +208,11 @@ describe('cloak server', function() {
     describe('refreshRoomUsers ', () => {
         it('the members of the correct room are retrieved', function() {
             room.getMembers.and.returnValue([]);
+            room.data = {};
 
             cloakConfig.room.newMember.bind(room,'')();
 
             expect(room.getMembers).toHaveBeenCalled();
-        });
-        it('the members of the correct room are messaged to refreshRooms', function() {
-            users = ['Raul', 'Jamie'];
-            room.getMembers.and.returnValue(users);
-            cloakConfig.room.newMember.bind(room,'')();
-
-            expect(room.messageMembers).toHaveBeenCalledWith('refreshRoomUsers', users);
         });
     });
 
