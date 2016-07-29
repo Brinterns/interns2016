@@ -11,7 +11,8 @@ import {
     disableVowel,
     startAnswering,
     stopAnswering,
-    disableStart
+    disableStart,
+    resetLetters
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -70,6 +71,9 @@ function configureAndRun(roomId) {
             },
             updateVowel: vowel => {
                 dispatch(getVowel(vowel));
+            },
+            resetLetters: letters => {
+                dispatch(resetLetters(letters));
             },
             disableConsonant: bool => {
                 dispatch(disableConsonant(bool));

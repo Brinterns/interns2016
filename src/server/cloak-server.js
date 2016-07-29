@@ -35,12 +35,17 @@ module.exports = function(expressServer) {
     cloak.run();
 };
 
-function newMember() {
+function newMember(user) {
     refreshRoomUsers.bind(this)();
     var members = this.getMembers();
+    if( this.data.started ) {
+        user.message('startGame');
+        makeLeader(this.data.leaderIndex, this);
+        user.message('resetLetters', this.data.letterList.letters)
+    }
     for(var i = 0; i < members.length; i++) {
         if(members[i].id === this.data.creator.id) {
-            if(this.getMembers().length >= gameParameters.minUserNo){
+            if(this.getMembers().length >= gameParameters.minUserNo && !this.data.started){
                 members[i].message('enableStart');
             } else {
                 members[i].message('disableStart');
@@ -271,9 +276,12 @@ function checkRoom(roomId, user) {
         user.message('allowedToJoin', false);
         return;
     }
+    if(!room.data.started){
+        user.message('allowedToJoin', true);
+        return;
+    }
     var allowedUsers = room.data.userIdList;
     for(var i=0; i<allowedUsers.length; i++) {
-        console.log(user.id+' '+allowedUsers[i])
         if(allowedUsers[i] === user.id){
             user.message('allowedToJoin', true);
             return;

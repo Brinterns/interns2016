@@ -10,6 +10,7 @@ export const STOP_ANSWERING = 'STOP_ANSWERING';
 export const TIMER_TICK = 'TIMER_TICK';
 export const RESET_TIMER = 'RESET_TIMER';
 export const DISABLE_START = 'DISABLE_START';
+export const RESET_LETTERS = 'RESET_LETTERS';
 
 export function startGame() {
     return {
@@ -87,5 +88,13 @@ export function disableStart(bool) {
 	return {
 		type: DISABLE_START,
 		payload: bool
+	}
+}
+
+export function resetLetters(list) {
+	console.log(list);
+	return {
+		type: RESET_LETTERS,
+		payload: list
 	}
 }

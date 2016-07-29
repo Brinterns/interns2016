@@ -19,8 +19,10 @@ export class Game extends Component {
     }
     
     componentWillReceiveProps(nextProps) {
-        if(nextProps.letterList.length-1 >= 0){
-            this.refs[`box${nextProps.letterList.length-1}`].className += ` ${style.flipped}`;
+        for(var i=0; i<9; i++){
+            if(nextProps.letterList[i] !== undefined){
+                this.refs[`box${i}`].className += ` ${style.flipped}`;
+            }
         }
     }
 

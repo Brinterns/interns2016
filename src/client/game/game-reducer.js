@@ -48,6 +48,10 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 letterList: [...state.letterList, action.payload]
             });
+        case actionTypes.RESET_LETTERS:
+            return updateState(state, {
+                letterList: action.payload
+            });  
         case actionTypes.DISABLE_CONSONANT:
             return updateState(state, {
                 disableConsonant: action.payload
