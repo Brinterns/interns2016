@@ -27,7 +27,9 @@ module.exports = function(expressServer) {
             roomDetails: roomDetails,
             startGame: startGame,
             getConsonant: getConsonant,
-            getVowel: getVowel
+            getVowel: getVowel,
+            checkRoom: checkRoom,
+            removeFromRoomList: removeFromRoomList
         }
     });
     cloak.run();
@@ -47,7 +49,7 @@ function newMember() {
     }
 }
 
-function memberLeaves() {
+function memberLeaves(user) {
     setNextLeader(this);
     refreshRoomUsers.bind(this)();
     var members = this.getMembers();
@@ -80,6 +82,7 @@ function setUserUp(arg, user) {
 function createRoom(name, user) {
     var room = cloak.createRoom(name);
     room.data.creator = {id: user.id, name: user.name};
+    room.data.userIdList = [];
     room.data.started = false;
     room.data.letterList = {
         letters: [],
@@ -94,6 +97,7 @@ function createRoom(name, user) {
 function joinRoom(id, user) {
     user.data.score = 0;
     var room = cloak.getRoom(id);
+    room.data.userIdList.push(user.id);
     room.addMember(user);
     refreshListener();
 }
@@ -259,4 +263,24 @@ function checkListLength(user) {
 
 function answeringFinished(room) {
     room.messageMembers('stopAnswering');
+}
+
+function checkRoom(roomId, user) {
+    var room = cloak.getRoom(roomId);
+    var allowedUsers = room.data.userIdList;
+    for(var i=0; i<allowedUsers.length; i++) {
+        console.log(user.id+' '+allowedUsers[i])
+        if(allowedUsers[i] === user.id){
+            user.message('allowedToJoin', true);
+            return;
+        }
+    }
+    user.message('allowedToJoin', false);
+}
+
+function removeFromRoomList(roomId, user) {
+    var room = cloak.getRoom(roomId);
+    room.data.userIdList = room.data.userIdList.filter(function(id){
+        return id !== user.id;
+    });
 }

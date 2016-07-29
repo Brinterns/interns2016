@@ -16,13 +16,14 @@ export class RoomPage extends Component {
             cloakService.messageJoinRoom(this.props.params.data);
             cloakService.getRoomData(this.props.params.data);
         } else {
-            router.navigateToLobby();
+            cloakService.configureAndRun(this.props.params.data);
         }
     }
 
     componentWillUnmount() {
         if(cloakService.isConnected()) {
             this.props.leaveGame();
+            cloakService.messageRemoveFromRoomList(this.props.params.data);
             cloakService.messageLeaveRoom();
         }
     }

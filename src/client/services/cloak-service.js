@@ -1,5 +1,6 @@
 import config from '../config/config';
 import storageService from '../services/storage-service';
+import router from '../services/routing-service';
 import { dispatch } from '../store';
 import {
     startGame,
@@ -27,14 +28,18 @@ export default {
     isConnected,
     messageStartGame,
     messageGetConsonant,
-    messageGetVowel
+    messageGetVowel,
+    messageRemoveFromRoomList
 };
 
-function configureAndRun() {
+function configureAndRun(roomId) {
     cloak.configure({
         serverEvents: {
             begin: () => {
                 cloak.message('setUserUp');
+                if(roomId !== undefined) {
+                    cloak.message('checkRoom', roomId);
+                }
             }
         },
         messages: {
@@ -83,6 +88,14 @@ function configureAndRun() {
             },
             disableStart: () =>{
                 dispatch(disableStart(true));
+            },
+            allowedToJoin: bool =>{
+                if(bool) {
+                    messageJoinRoom(roomId);
+                    getRoomData(roomId);
+                } else {
+                    router.navigateToLobby();
+                }
             }
         },
         initialData: {
@@ -128,4 +141,8 @@ function messageGetConsonant() {
 
 function messageGetVowel() {
     cloak.message('getVowel');
+}
+
+function messageRemoveFromRoomList(roomId) {
+    cloak.message('removeFromRoomList', roomId);
 }
