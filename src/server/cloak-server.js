@@ -41,7 +41,12 @@ function newMember(user) {
     if( this.data.started ) {
         user.message('startGame');
         makeLeader(this.data.leaderIndex, this);
-        user.message('resetLetters', this.data.letterList.letters)
+        user.message('resetLetters', this.data.letterList.letters);
+        if(this.data.answering) {
+            user.message('startAnswering', this.data.answerTime);
+        } else {
+            user.message('stopAnswering');
+        }
     }
     for(var i = 0; i < members.length; i++) {
         if(members[i].id === this.data.creator.id) {
@@ -89,6 +94,7 @@ function createRoom(name, user) {
     room.data.creator = {id: user.id, name: user.name};
     room.data.userIdList = [];
     room.data.started = false;
+    room.data.answering = false;
     room.data.letterList = {
         letters: [],
         consonantNum: 0,
@@ -258,16 +264,25 @@ function checkListLength(user) {
     if(letterList.letters.length >= 9){
         letterList.disableConsonant = true;
         letterList.disableVowel = true;
+        room.data.answerTime = gameParameters.answerTime;
+        room.data.answering = true;
         user.message('disableConsonant', true);
         user.message('disableVowel', true);
         room.messageMembers('startAnswering', gameParameters.answerTime);
-        var answeringTimer = setTimeout(answeringFinished.bind(null, room), gameParameters.answerTime*1000);
+        var timeLeft = setInterval(timeTick.bind(null, room), 1000);
+        var answeringTimer = setTimeout(answeringFinished.bind(null, room, timeLeft), gameParameters.answerTime*1000);
         return;
     }
 }
 
-function answeringFinished(room) {
+function timeTick(room) {
+    room.data.answerTime--;
+}
+
+function answeringFinished(room, timeLeft) {
     room.messageMembers('stopAnswering');
+    room.data.answering = false;
+    clearInterval(timeLeft);
 }
 
 function checkRoom(roomId, user) {
