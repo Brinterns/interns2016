@@ -672,4 +672,52 @@ describe('cloak server', () => {
             expect(room.data.userIdList).toEqual(['FAKEUSER1','FAKEUSER2','FAKEUSER3']);
         })
     });
+
+    describe('checkRoom ', () => {
+        it('blocks the user from joining if the room does not exist', () => {
+            cloak.getRoom.and.returnValue(false);
+
+            cloakConfig.messages.checkRoom('', user);
+
+            expect(user.message).toHaveBeenCalledWith('allowedToJoin', false);
+        });
+
+        it('allows the user to join if the game has not started in the room', () => {
+            cloak.getRoom.and.returnValue({data: {started: false}});
+
+            cloakConfig.messages.checkRoom('', user);
+
+            expect(user.message).toHaveBeenCalledWith('allowedToJoin', true);
+        });
+
+        it('allows the user to join if the game has started and user is in the list of allowedUsers', () => {
+            var room = {
+                data:{
+                    started: true,
+                    userIdList: ['FAKE0', '1234', 'FAKE1', 'FAKE2']
+                }
+            };
+            cloak.getRoom.and.returnValue(room);
+            user.id = '1234';
+
+            cloakConfig.messages.checkRoom('', user);
+
+            expect(user.message).toHaveBeenCalledWith('allowedToJoin', true);
+        });
+
+        it('blocks the user from joining if the game has started and user is not on the list of allowedUsers', () => {
+            var room = {
+                data:{
+                    started: true,
+                    userIdList: ['FAKE0', 'FAKE1', 'FAKE2']
+                }
+            };
+            cloak.getRoom.and.returnValue(room);
+            user.id = '1234';
+
+            cloakConfig.messages.checkRoom('', user);
+
+            expect(user.message).toHaveBeenCalledWith('allowedToJoin', false);
+        });
+    });
 });
