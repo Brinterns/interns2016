@@ -351,6 +351,7 @@ function stopSubmission(room) {
 var finalAnswerList = [];
 
 function submitAnswer(answer, user) {
+    var room = user.getRoom();
     finalAnswerList += answer;
-    user.message('submittedAnswer', finalAnswerList)
+    room.messageMembers('submittedAnswer', finalAnswerList)
 }

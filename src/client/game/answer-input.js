@@ -180,6 +180,9 @@ export class AnswerInput extends Component {
     }
 
     submitAnswer() {
+        this.setState({
+            submitted: true
+        });
         cloakService.messageAnswer(this.state.answerToSubmit);
     }
 
@@ -210,11 +213,11 @@ export class AnswerInput extends Component {
                 {this.props.answering ? answerTimerArea : null}
                 {this.props.submission ? submitTimerArea : null}
                 <div>{this.textBoxes()}</div>
-                {this.props.submission ? submitButton : null}
+                {this.props.submission && !this.state.submitted ? submitButton : null}
             </div>
         );
     }
-};
+}
 
 const mapStateToProps = state => ({
     timerValue: state.game.timerValue,
