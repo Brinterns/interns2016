@@ -60,7 +60,9 @@ function newMember(user) {
 }
 
 function memberLeaves(user) {
-    setNextLeader(this);
+    if(user.id === this.data.leaderId){
+        setNextLeader(this);
+    }
     refreshRoomUsers.bind(this)();
     var members = this.getMembers();
     if(this.getMembers().length >= gameParameters.minUserNo)
@@ -184,6 +186,7 @@ function startGame(arg, user) {
     var roomUsers = room.getMembers();
     var leaderIndex = roomUsers.indexOf(user);
     room.data.leaderIndex = leaderIndex;
+    room.data.leaderId = user.id;
     room.data.started = true;
     room.messageMembers('startGame');
     makeLeader(room.data.leaderIndex, room);
@@ -221,6 +224,7 @@ function setNextLeader(room) {
     nextLeader = nextLeader >= members.length ? 0 : nextLeader;
     makeLeader(nextLeader, room);
     room.data.leaderIndex = nextLeader;
+    room.data.leaderId = members[nextLeader].id;
 }
 
 function getConsonant(arg, user) {
