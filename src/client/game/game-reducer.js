@@ -84,7 +84,8 @@ const game = (state = initialState, action) => {
             });  
         case actionTypes.START_SUBMISSION:
             return updateState(state, {
-                submission: true
+                submission: true,
+                timerValue: action.payload
             });
         case actionTypes.STOP_SUBMISSION:
             return updateState(state, {

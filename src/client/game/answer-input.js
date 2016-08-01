@@ -17,6 +17,7 @@ export class AnswerInput extends Component {
 
     componentWillUnmount() {
         clearInterval(this.answerInputInterval);
+        clearInterval(this.submitInputInterval);
     }
 
     componentDidUpdate() {
@@ -29,8 +30,12 @@ export class AnswerInput extends Component {
         }
 
         if(nextProps.answering) {
-            this.startTimer();
-        }
+            this.startAnsweringTimer();
+        } 
+
+        // if(nextProps.submission) {
+        //     this.startSubmitTimer();
+        // }
     }
 
     handleKeyPress(event) {
@@ -100,6 +105,7 @@ export class AnswerInput extends Component {
                 })
         });
     }
+
     handleFocus(index) {
         this.setState({
             focusIndex: index
@@ -123,24 +129,43 @@ export class AnswerInput extends Component {
         );
     }
 
-    timerTick() {
+    answeringTimerTick() {
         if(this.props.timerValue > 0){
             this.props.timerTick();
         } else {
             clearInterval(this.answerInputInterval);
             this.props.resetTimer();
+            this.startSubmitTimer();
         }
     }
 
+    submissionTimerTick() {
+        if(this.props.timerValue > 0){
+            this.props.timerTick();
+        } else {
+            clearInterval(this.submitInputInterval);
+            this.props.resetTimer();
+        }
+    }
 
-    startTimer() {
-        this.answerInputInterval = setInterval(() => this.timerTick(), 1000);
+    startAnsweringTimer() {
+        this.answerInputInterval = setInterval(() => this.answeringTimerTick(), 1000);
+    }
+
+    startSubmitTimer() {
+        this.submitInputInterval = setInterval(() => this.submissionTimerTick(), 1000);
     }
 
     render() {
-        const timerArea = (
+        const answerTimerArea = (
             <div>
                 <p>Answering Time Left: {this.props.timerValue}</p>
+            </div>
+        );
+
+        const submitTimerArea = (
+            <div>
+                <p>Submission Time Left: {this.props.timerValue + 1}</p>
             </div>
         );
 
@@ -153,7 +178,8 @@ export class AnswerInput extends Component {
         return (
             <div className="col-lg-12 text-center">
                 <h3>ANSWER INPUT</h3>
-                {this.props.answering ? timerArea : null}        
+                {this.props.answering ? answerTimerArea : null}
+                {this.props.submission ? submitTimerArea : null}
                 <div>{this.textBoxes()}</div>
                 {submitButton}
             </div>

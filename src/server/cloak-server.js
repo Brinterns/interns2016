@@ -339,7 +339,7 @@ function stopAnswering(room) {
 }
 
 function startSubmission(room) {
-    room.messageMembers('startSubmission');
+    room.messageMembers('startSubmission', gameParameters.submitTime);
     setTimeout(stopSubmission.bind(null, room), gameParameters.submitTime*1000);
 }
 

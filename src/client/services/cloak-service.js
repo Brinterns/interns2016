@@ -105,8 +105,8 @@ function configureAndRun(roomId) {
                     router.navigateToLobby();
                 }
             },
-            startSubmission: () => {
-                dispatch(startSubmission());
+            startSubmission: time => {
+                dispatch(startSubmission(time));
             },
             stopSubmission: () => {
                 dispatch(stopSubmission());

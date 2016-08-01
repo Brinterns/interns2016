@@ -100,9 +100,10 @@ export function resetLetters(list) {
 	}
 }
 
-export function startSubmission() {
+export function startSubmission(time) {
 	return {
-		type: START_SUBMISSION
+		type: START_SUBMISSION,
+		payload: time
 	}
 }
 
