@@ -9,19 +9,19 @@ var users;
 var rooms;
 var disconnect;
 
-describe('cloak server', function() {
+describe('cloak server', () => {
     var randomConsonant;
     var randomVowel;
-    beforeEach(function() {
+    beforeEach(() => {
         randomConsonant = jasmine.createSpy('randomConsonant');
         randomVowel = jasmine.createSpy('randomVowel');
     });
 
-    beforeEach(function() {
+    beforeEach(() => {
         mockery.enable({ useCleanCache: true });
     });
 
-    beforeEach(function() {
+    beforeEach(() => {
         mockery.registerMock('./random-consonant-picker', randomConsonant);
         mockery.registerAllowable('./cloak-server');
         mockery.registerAllowable('./letter-lists');
@@ -29,47 +29,47 @@ describe('cloak server', function() {
         mockery.registerAllowable('./game-parameters');
     });
 
-    beforeEach(function() {
+    beforeEach(() => {
         cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'getLobby', 'getRooms', 'createRoom', 'getRoom']);
         lobby = jasmine.createSpyObj('lobby', ['getMembers', 'messageMembers', 'removeMember']);
         user = jasmine.createSpyObj('user', ['getRoom', 'message']);
         room = jasmine.createSpyObj('room', ['removeMember', 'addMember', 'messageMembers', 'getMembers']);
     });
 
-    beforeEach(function() {
+    beforeEach(() => {
         cloak.getLobby.and.returnValue(lobby);
 
-        cloak.configure.and.callFake(function(_config_) {
+        cloak.configure.and.callFake(_config_ => {
             cloakConfig = _config_;
         });
 
         mockery.registerMock('cloak', cloak);
     });
 
-    beforeEach(function() {
+    beforeEach(() => {
         require('./cloak-server')({});
     });
 
-    afterEach(function() {
+    afterEach(() => {
         mockery.deregisterAll();
     });
 
-    afterEach(function() {
+    afterEach(() => {
         mockery.disable();
     });
 
     describe('cloak setup tests', () => {
-        it('calls configure', function() {
+        it('calls configure', () => {
             expect(cloak.configure).toHaveBeenCalled();
         });
 
-        it('calls run', function() {
+        it('calls run', () => {
             expect(cloak.run).toHaveBeenCalled();
         });
     });
 
-    describe('newMember', () => {
-        it('on creating a new member, refreshLobby message sent with correct list of users', function() {
+    describe('lobby newMember', () => {
+        it('on creating a new member, refreshLobby message sent with correct list of users', () => {
             users = ['Raul', 'Jamie'];
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
@@ -81,7 +81,7 @@ describe('cloak server', function() {
             expect(lobby.messageMembers).toHaveBeenCalledWith('refreshLobby', users);
         });
 
-        it('on creating a new member, refreshRooms message sent with correct list of rooms', function() {
+        it('on creating a new member, refreshRooms message sent with correct list of rooms', () => {
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});      
@@ -91,10 +91,126 @@ describe('cloak server', function() {
 
             expect(lobby.messageMembers).toHaveBeenCalledWith('refreshRooms', rooms);
         });
+
+    });
+
+    describe('room newMember', () => {
+        it('sends startGame if the game was started in the joined room', () => {
+            users = ['Raul', 'Jamie'];
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});
+            room.getMembers.and.returnValue(users);
+            room.data = {
+                started: true,
+                leaderIndex: 0,
+                leaderId: '',
+                answering: false,
+                creator: {
+                    id: ''
+                },
+                letterList: {
+                    letters: [],
+                    consonantNum: 0,
+                    vowelNum: 0,
+                    disableConsonant: false,
+                    disableVowel: false
+                }
+            };
+
+            cloakConfig.room.newMember.bind(room, user)();
+
+            expect(user.message).toHaveBeenCalledWith('startGame');
+        });
+
+        it('sends resetLetters if the game was started in the joined room', () => {
+            users = ['Raul', 'Jamie'];
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});
+            room.getMembers.and.returnValue(users);
+            room.data = {
+                started: true,
+                leaderIndex: 0,
+                leaderId: '',
+                answering: false,
+                creator: {
+                    id: ''
+                },
+                letterList: {
+                    letters: ['a','b','c'],
+                    consonantNum: 0,
+                    vowelNum: 0,
+                    disableConsonant: false,
+                    disableVowel: false
+                }
+            };
+
+            cloakConfig.room.newMember.bind(room, user)();
+
+            expect(user.message).toHaveBeenCalledWith('resetLetters', ['a','b','c']);
+        });
+
+        it('sends startAnswering if the answering phase was started in the joined room', () => {
+            users = ['Raul', 'Jamie'];
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});
+            room.getMembers.and.returnValue(users);
+            room.data = {
+                started: true,
+                leaderIndex: 0,
+                leaderId: '',
+                answering: true,
+                answerTime: 30,
+                creator: {
+                    id: ''
+                },
+                letterList: {
+                    letters: ['a','b','c'],
+                    consonantNum: 0,
+                    vowelNum: 0,
+                    disableConsonant: false,
+                    disableVowel: false
+                }
+            };
+
+            cloakConfig.room.newMember.bind(room, user)();
+
+            expect(user.message).toHaveBeenCalledWith('startAnswering', 30);
+        });
+
+        it('sends stopAnswering if the game is not in the answering phase in the joined room', () => {
+            users = ['Raul', 'Jamie'];
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});
+            room.getMembers.and.returnValue(users);
+            room.data = {
+                started: true,
+                leaderIndex: 0,
+                leaderId: '',
+                answering: false,
+                creator: {
+                    id: ''
+                },
+                letterList: {
+                    letters: ['a','b','c'],
+                    consonantNum: 0,
+                    vowelNum: 0,
+                    disableConsonant: false,
+                    disableVowel: false
+                }
+            };
+
+            cloakConfig.room.newMember.bind(room, user)();
+
+            expect(user.message).toHaveBeenCalledWith('stopAnswering');
+        });
     });
 
     describe('setUserUp', () => {
-        it('updates user correctly', function() {
+        it('updates user correctly', () => {
             user.data = {name: "name", id: 0};
             lobby.getMembers.and.returnValue([]);
 
@@ -104,7 +220,7 @@ describe('cloak server', function() {
             expect(userData).toEqual(user.data);
         });
 
-        it('sends updateData message', function() {
+        it('sends updateData message', () => {
             user.data = {name: "name", id: 0};
             lobby.getMembers.and.returnValue([]);
 
@@ -115,7 +231,7 @@ describe('cloak server', function() {
         });
     });
 
-    it('setUsername: sets user.name to the passed argument', function() {
+    it('setUsername: sets user.name to the passed argument', () => {
         user.data = {name: "name", id: 0};
         lobby.getMembers.and.returnValue([]);
 
@@ -126,7 +242,7 @@ describe('cloak server', function() {
 
 
     describe('createRoom', () => {
-        it('creates room with the passed argument', function() {
+        it('creates room with the passed argument', () => {
             user = {name: "name", id: 0};
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
@@ -137,7 +253,7 @@ describe('cloak server', function() {
             expect(cloak.createRoom).toHaveBeenCalledWith('TEST_ROOM_NAME');
         });
 
-        it('updates creator', function() {
+        it('updates creator', () => {
             user = {name: "name", id: "12345-abcde"};
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
@@ -150,7 +266,7 @@ describe('cloak server', function() {
             expect(room.data.creator).toEqual(user);
         });
 
-        it('sets room to not started on creation', function() {
+        it('sets room to not started on creation', () => {
             user = {name: "name", id: "12345-abcde"};
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
@@ -162,10 +278,55 @@ describe('cloak server', function() {
 
             expect(room.data.started).toEqual(false);
         });
+
+        it('sets room to not be in answering phase on creation', () => {
+            user = {name: "name", id: "12345-abcde"};
+            room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});
+            cloak.createRoom.and.returnValue(room);
+ 
+            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+
+            expect(room.data.answering).toEqual(false);
+        });
+
+        it('sets list of allowed users to empty on creation', () => {
+            user = {name: "name", id: "12345-abcde"};
+            room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});
+            cloak.createRoom.and.returnValue(room);
+ 
+            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+
+            expect(room.data.userIdList).toEqual([]);
+        });
+
+        it('sets letterList to its initial state on creation of the room', () => {
+            user = {name: "name", id: "12345-abcde"};
+            room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue({data:''});
+            cloak.createRoom.and.returnValue(room);
+ 
+            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+
+            expect(room.data.letterList).toEqual({
+                letters: [],
+                consonantNum: 0,
+                vowelNum: 0,
+                disableConsonant: false,
+                disableVowel: false
+            });
+        });
     });
 
     describe('joinRoom', () => {
-        it('finds the room that has the ID passed as argument', function() {
+        it('finds the room that has the ID passed as argument', () => {
             user.data = {name: "name", id: 0};
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
@@ -178,7 +339,7 @@ describe('cloak server', function() {
             expect(cloak.getRoom).toHaveBeenCalledWith('TEST_ROOM_ID');
         });
 
-        it('makes the current user join the room with the correct ID', function() {
+        it('makes the current user join the room with the correct ID', () => {
             user.data = {name: "name", id: 0};
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
@@ -191,7 +352,7 @@ describe('cloak server', function() {
             expect(room.addMember).toHaveBeenCalledWith(user);
         });
 
-        it('sets the score of the current user to 0', function() {
+        it('sets the score of the current user to 0', () => {
             user.data = {name: "name", id: 0};
             rooms = [{id:'1'}];
             room.data = {userIdList: []};
@@ -203,10 +364,24 @@ describe('cloak server', function() {
             
             expect(user.data.score).toEqual(0);
         });
+
+        it('adds the id of the users to the list of alowed ids', () => {
+            user.data = {name: "name", id: 0};
+            user.id = '1234';
+            rooms = [{id:'1'}];
+            room.data = {userIdList: []};
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue(room);
+            lobby.getMembers.and.returnValue([]);
+
+            cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
+            
+            expect(room.data.userIdList).toEqual(['1234']);
+        });
     });
 
     describe('refreshRoomUsers ', () => {
-        it('the members of the correct room are retrieved', function() {
+        it('the members of the correct room are retrieved', () => {
             room.getMembers.and.returnValue([]);
             room.data = {};
 
@@ -217,7 +392,7 @@ describe('cloak server', function() {
     });
 
     describe('leaveRoom ', () => {
-        it('the correct room is retrieved for the user', function() {
+        it('the correct room is retrieved for the user', () => {
             user.getRoom.and.returnValue(room);
             user.data = {score: 0};
             room.data = {
@@ -229,7 +404,7 @@ describe('cloak server', function() {
 
             expect(user.getRoom).toHaveBeenCalled();
         });
-        it('the correct user is removed from the room', function() {
+        it('the correct user is removed from the room', () => {
             user.getRoom.and.returnValue(room);
             user.data = {score: 0};
             room.data = {
@@ -241,7 +416,7 @@ describe('cloak server', function() {
 
             expect(room.removeMember).toHaveBeenCalledWith(user);
         })
-        it('sets the score of the user user that is removed from the room to undefined', function() {
+        it('sets the score of the user user that is removed from the room to undefined', () => {
             user.getRoom.and.returnValue(room);
             user.data = {score: 0};
             room.data = {
@@ -256,7 +431,7 @@ describe('cloak server', function() {
     });
 
     describe('roomDetails ', () => {
-        it('retrieves the correct room from the server', function() {
+        it('retrieves the correct room from the server', () => {
             let roomDetails = {id: 1, name: 'Room 1', data:{started: false}};
             cloak.getRoom.and.returnValue(roomDetails);
 
@@ -267,7 +442,7 @@ describe('cloak server', function() {
     });
 
     describe('startGame ', () => {
-        it('retrieves the correct room ', function() {
+        it('retrieves the correct room ', () => {
             user.getRoom.and.returnValue(room);
             room.getMembers.and.returnValue([user]);
             room.data = {
@@ -285,8 +460,9 @@ describe('cloak server', function() {
             expect(user.getRoom).toHaveBeenCalled();
         })
 
-        it('finds the index of the correct user in the room', function() {
+        it('initializes the room data correctly', () => {
             user.getRoom.and.returnValue(room);
+            user.id = '1232445';
             room.getMembers.and.returnValue([user]);
             room.data = {
                 leaderIndex: '',
@@ -301,7 +477,8 @@ describe('cloak server', function() {
             cloakConfig.messages.startGame('', user);
 
             expect(room.data).toEqual({
-                    leaderIndex: 0, 
+                    leaderIndex: 0,
+                    leaderId: '1232445',
                     started: true,
                     letterList: {
                         disableConsonant: false,
@@ -310,7 +487,7 @@ describe('cloak server', function() {
             });
         })
 
-        it('calls setLeader with correct room', function() {
+        it('calls setLeader with correct room', () => {
             user.getRoom.and.returnValue(room);
             user.id = '1';
             user.name = 'User 1';
@@ -338,7 +515,7 @@ describe('cloak server', function() {
             expect(room.messageMembers).toHaveBeenCalledWith('setLeader', expectedLeader);
         })
 
-        it('updates the leader index of the correct user in the room', function() {
+        it('updates the leader index of the correct user in the room', () => {
             user.getRoom.and.returnValue(room);
             room.getMembers.and.returnValue(['',user]);
             room.data = {
@@ -357,7 +534,7 @@ describe('cloak server', function() {
         })
     });
     describe('getConsonant', () => {
-        it('sends disableConsonant if there are 6 or more consonants', function(){
+        it('sends disableConsonant if there are 6 or more consonants', () =>{
             user.getRoom.and.returnValue(room);
             room.data = {
                 letterList: {
@@ -370,7 +547,7 @@ describe('cloak server', function() {
             expect(user.message).toHaveBeenCalledWith('disableConsonant', true);
         });
 
-        it('sends updateConsonant if there are less than 6 consonants', function(){
+        it('sends updateConsonant if there are less than 6 consonants', () =>{
             let rndConsonant = 'F';
             randomConsonant.and.returnValue(rndConsonant);
 
@@ -388,7 +565,7 @@ describe('cloak server', function() {
     });
 
     describe('getVowel', () => {
-        it('sends disableVowel if there are 5 or more vowels', function(){
+        it('sends disableVowel if there are 5 or more vowels', () =>{
             user.getRoom.and.returnValue(room);
             room.data = {
                 letterList: {
@@ -401,7 +578,7 @@ describe('cloak server', function() {
             expect(user.message).toHaveBeenCalledWith('disableVowel', true);
         });
 
-        it('sends updateVowel if there are less than 5 vowels', function(){
+        it('sends updateVowel if there are less than 5 vowels', () =>{
             let rndVowel = 'E';
             randomVowel.and.returnValue(rndVowel);
 
@@ -419,7 +596,7 @@ describe('cloak server', function() {
     });
 
     describe('checkListLength', () => {
-        it('sends user disableConsonant message if there are 9 or more letters in the letterList', function() {
+        it('sends user disableConsonant message if there are 9 or more letters in the letterList', () => {
             user.getRoom.and.returnValue(room);
             room.data = {
                 letterList: {
@@ -434,7 +611,7 @@ describe('cloak server', function() {
             expect(user.message).toHaveBeenCalledWith('disableConsonant', true);
         });
 
-        it('sends user disableVowel message if there are 9 or more letters in the letterList', function() {
+        it('sends user disableVowel message if there are 9 or more letters in the letterList', () => {
             user.getRoom.and.returnValue(room);
             room.data = {
                 letterList: {
@@ -449,7 +626,7 @@ describe('cloak server', function() {
             expect(user.message).toHaveBeenCalledWith('disableVowel', true);
         });
 
-        it('sets disableConsonant to true if there are 9 or more letters in the letter list', function() {
+        it('sets disableConsonant to true if there are 9 or more letters in the letter list', () => {
             user.getRoom.and.returnValue(room);
             room.data = {
                 letterList: {
@@ -464,7 +641,7 @@ describe('cloak server', function() {
             expect(room.data.letterList.disableConsonant).toEqual(true);
         });
 
-        it('sets disableVowel to true if there are 9 or more letters in the letter list', function() {
+        it('sets disableVowel to true if there are 9 or more letters in the letter list', () => {
             user.getRoom.and.returnValue(room);
             room.data = {
                 letterList: {
@@ -478,5 +655,21 @@ describe('cloak server', function() {
 
             expect(room.data.letterList.disableVowel).toEqual(true);
         });
+    });
+
+    describe('removeFromRoomList ', () => {
+        it('removes the user from the list if the room with the id given exists', () => {
+            let room = {
+                id: 12,
+                data:{
+                    userIdList: ['FAKEUSER1','FAKEUSER2',5, 'FAKEUSER3']
+                }
+            }
+            cloak.getRoom.and.returnValue(room);
+
+            cloakConfig.messages.removeFromRoomList(12, {id:5});
+
+            expect(room.data.userIdList).toEqual(['FAKEUSER1','FAKEUSER2','FAKEUSER3']);
+        })
     });
 });

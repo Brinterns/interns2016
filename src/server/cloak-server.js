@@ -74,11 +74,6 @@ function memberLeaves(user) {
     }
 }
 
-function setUsername(name, user) {
-    user.name = name;
-    fireLobbyReload();
-}
-
 function setUserUp(arg, user) {
    if(user.data.name !== undefined){
        user.name = user.data.name;
@@ -89,6 +84,11 @@ function setUserUp(arg, user) {
    var newData = {id: user.id, name: user.name};
    user.message('updateData', newData);
    fireLobbyReload();
+}
+
+function setUsername(name, user) {
+    user.name = name;
+    fireLobbyReload();
 }
 
 function createRoom(name, user) {
