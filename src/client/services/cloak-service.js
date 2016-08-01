@@ -30,7 +30,8 @@ export default {
     messageStartGame,
     messageGetConsonant,
     messageGetVowel,
-    messageRemoveFromRoomList
+    messageRemoveFromRoomList,
+    resetScore
 };
 
 function configureAndRun(roomId) {
@@ -150,4 +151,8 @@ function messageGetVowel() {
 
 function messageRemoveFromRoomList(roomId) {
     cloak.message('removeFromRoomList', roomId);
+}
+
+function resetScore() {
+    cloak.message('resetScore');
 }

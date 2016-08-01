@@ -96,7 +96,8 @@ describe('cloak server', () => {
 
     describe('room newMember', () => {
         it('sends startGame if the game was started in the joined room', () => {
-            users = ['Raul', 'Jamie'];
+            users = [{name: 'Raul',data:{}},
+                     {name: 'Jamie',data:{}}];
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
@@ -109,6 +110,7 @@ describe('cloak server', () => {
                 creator: {
                     id: ''
                 },
+                scores: [],
                 letterList: {
                     letters: [],
                     consonantNum: 0,
@@ -124,7 +126,8 @@ describe('cloak server', () => {
         });
 
         it('sends resetLetters if the game was started in the joined room', () => {
-            users = ['Raul', 'Jamie'];
+            users = [{name: 'Raul',data:{}},
+                     {name: 'Jamie',data:{}}];
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
@@ -137,6 +140,7 @@ describe('cloak server', () => {
                 creator: {
                     id: ''
                 },
+                scores: [],
                 letterList: {
                     letters: ['a','b','c'],
                     consonantNum: 0,
@@ -152,7 +156,8 @@ describe('cloak server', () => {
         });
 
         it('sends startAnswering if the answering phase was started in the joined room', () => {
-            users = ['Raul', 'Jamie'];
+            users = [{name: 'Raul',data:{}},
+                     {name: 'Jamie',data:{}}];
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
@@ -163,6 +168,7 @@ describe('cloak server', () => {
                 leaderId: '',
                 answering: true,
                 answerTime: 30,
+                scores: [],
                 creator: {
                     id: ''
                 },
@@ -181,7 +187,8 @@ describe('cloak server', () => {
         });
 
         it('sends stopAnswering if the game is not in the answering phase in the joined room', () => {
-            users = ['Raul', 'Jamie'];
+            users = [{name: 'Raul',data:{}},
+                     {name: 'Jamie',data:{}}];
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
@@ -191,6 +198,7 @@ describe('cloak server', () => {
                 leaderIndex: 0,
                 leaderId: '',
                 answering: false,
+                scores: [],
                 creator: {
                     id: ''
                 },
@@ -331,7 +339,7 @@ describe('cloak server', () => {
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue(room);
-            room.data = {userIdList: []};
+            room.data = {userIdList: [], scores: []};
             lobby.getMembers.and.returnValue([]);
 
             cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
@@ -344,7 +352,7 @@ describe('cloak server', () => {
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue(room);
-            room.data = {userIdList: []};
+            room.data = {userIdList: [], scores: []};
             lobby.getMembers.and.returnValue([]);
 
             cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
@@ -353,23 +361,24 @@ describe('cloak server', () => {
         });
 
         it('sets the score of the current user to 0', () => {
-            user.data = {name: "name", id: 0};
+            user.data = {name: "name", id: '1234'};
+            user.id = '1234'
             rooms = [{id:'1'}];
-            room.data = {userIdList: []};
+            room.data = {userIdList: [], scores: []};
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue(room);
             lobby.getMembers.and.returnValue([]);
 
             cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
             
-            expect(user.data.score).toEqual(0);
+            expect(room.data.scores['1234']).toEqual(0);
         });
 
         it('adds the id of the users to the list of alowed ids', () => {
             user.data = {name: "name", id: 0};
             user.id = '1234';
             rooms = [{id:'1'}];
-            room.data = {userIdList: []};
+            room.data = {userIdList: [], scores: []};
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue(room);
             lobby.getMembers.and.returnValue([]);
@@ -395,8 +404,12 @@ describe('cloak server', () => {
         it('the correct room is retrieved for the user', () => {
             user.getRoom.and.returnValue(room);
             user.data = {score: 0};
+            user.id = 1234;
             room.data = {
-                leaderIndex: 0
+                leaderIndex: 0,
+                scores: { 
+                    1234: 10
+                }
             };
             room.getMembers.and.returnValue(['', user]);
 
@@ -404,29 +417,39 @@ describe('cloak server', () => {
 
             expect(user.getRoom).toHaveBeenCalled();
         });
+
         it('the correct user is removed from the room', () => {
             user.getRoom.and.returnValue(room);
             user.data = {score: 0};
+            user.id = 1234;
             room.data = {
-                leaderIndex: 0
+                leaderIndex: 0,
+                scores: { 
+                    1234: 10
+                }
             };
             room.getMembers.and.returnValue(['', user]);
             
             cloakConfig.messages.leaveRoom('', user);
 
             expect(room.removeMember).toHaveBeenCalledWith(user);
-        })
-        it('sets the score of the user user that is removed from the room to undefined', () => {
+        });
+
+        it('resets the score of the user if he leaves the room', () => {
             user.getRoom.and.returnValue(room);
             user.data = {score: 0};
+            user.id = 1234;
             room.data = {
-                leaderIndex: 0
+                leaderIndex: 0,
+                scores: { 
+                    1234: 10
+                }
             };
             room.getMembers.and.returnValue(['', user]);
             
             cloakConfig.messages.leaveRoom('', user);
 
-            expect(user.data.score).toEqual(undefined);
+            expect(room.data.scores).toEqual({});
         })
     });
 
@@ -662,7 +685,8 @@ describe('cloak server', () => {
             let room = {
                 id: 12,
                 data:{
-                    userIdList: ['FAKEUSER1','FAKEUSER2',5, 'FAKEUSER3']
+                    userIdList: ['FAKEUSER1','FAKEUSER2',5, 'FAKEUSER3'],
+                    scores: []
                 }
             }
             cloak.getRoom.and.returnValue(room);
@@ -670,6 +694,28 @@ describe('cloak server', () => {
             cloakConfig.messages.removeFromRoomList(12, {id:5});
 
             expect(room.data.userIdList).toEqual(['FAKEUSER1','FAKEUSER2','FAKEUSER3']);
+        });
+
+        it('removes the user score from the list of scores if the room with the id given exists', () => {
+            let room = {
+                id: 12,
+                data:{
+                    userIdList: ['FAKEUSER1','FAKEUSER2',5, 'FAKEUSER3'],
+                    scores: {
+                        '1234': 232,
+                        'abc': 0,
+                        'fake': 1
+                    }
+                }
+            }
+            cloak.getRoom.and.returnValue(room);
+
+            cloakConfig.messages.removeFromRoomList(12, {id: '1234'});
+
+            expect(room.data.scores).toEqual({
+                'abc': 0,
+                'fake': 1
+            });
         })
     });
 
@@ -718,6 +764,24 @@ describe('cloak server', () => {
             cloakConfig.messages.checkRoom('', user);
 
             expect(user.message).toHaveBeenCalledWith('allowedToJoin', false);
+        });
+    });
+
+    describe('resetScore', () => {
+        it('sets the score of the user to undefined', () => {
+            rooms = [{id:'1'}];
+            cloak.getRooms.and.returnValue(rooms);
+            cloak.getRoom.and.returnValue(room);
+            room.data = {userIdList: [], scores: []};
+            lobby.getMembers.and.returnValue([]);
+
+            user.data = {
+                score : 400
+            };
+
+            cloakConfig.messages.resetScore('', user);
+
+            expect(user.data.score).toEqual(undefined);
         });
     });
 });

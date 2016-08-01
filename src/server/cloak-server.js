@@ -29,7 +29,8 @@ module.exports = function(expressServer) {
             getConsonant: getConsonant,
             getVowel: getVowel,
             checkRoom: checkRoom,
-            removeFromRoomList: removeFromRoomList
+            removeFromRoomList: removeFromRoomList,
+            resetScore: resetScore
         }
     });
     cloak.run();
@@ -97,6 +98,7 @@ function createRoom(name, user) {
     room.data.userIdList = [];
     room.data.started = false;
     room.data.answering = false;
+    room.data.scores = [];
     room.data.letterList = {
         letters: [],
         consonantNum: 0,
@@ -108,8 +110,8 @@ function createRoom(name, user) {
 }
 
 function joinRoom(id, user) {
-    user.data.score = 0;
     var room = cloak.getRoom(id);
+    room.data.scores[user.id] = 0;
     room.data.userIdList.push(user.id);
     room.addMember(user);
     refreshListener();
@@ -152,6 +154,7 @@ function fireRoomListReload() {
 function refreshRoomUsers(arg) {
     var users = this.getMembers();
     for(var i=0; i<users.length; i++) {
+        users[i].data.score = this.data.scores[users[i].id];
         users[i] = {
             id: users[i].id,
             name: users[i].name,
@@ -162,10 +165,10 @@ function refreshRoomUsers(arg) {
 }
 
 function leaveRoom(arg, user) {
-    user.data.score = undefined;
     var room = user.getRoom();
     var leaderIndex = room.data.leaderIndex;
     var userIndex = room.getMembers().indexOf(user);
+    delete room.data.scores[user.id];
     if(userIndex < leaderIndex) {
         room.data.leaderIndex--;
     }
@@ -317,4 +320,10 @@ function removeFromRoomList(roomId, user) {
     room.data.userIdList = room.data.userIdList.filter(function(id){
         return id !== user.id;
     });
+    delete room.data.scores[user.id];
+}
+
+function resetScore(arg, user) {
+    user.data.score = undefined;
+    refreshListener();
 }
