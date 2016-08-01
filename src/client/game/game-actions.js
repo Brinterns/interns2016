@@ -92,7 +92,6 @@ export function disableStart(bool) {
 }
 
 export function resetLetters(list) {
-	console.log(list);
 	return {
 		type: RESET_LETTERS,
 		payload: list
