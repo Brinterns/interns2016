@@ -30,7 +30,8 @@ module.exports = function(expressServer) {
             getVowel: getVowel,
             checkRoom: checkRoom,
             removeFromRoomList: removeFromRoomList,
-            resetScore: resetScore
+            resetScore: resetScore,
+            submitAnswer: submitAnswer
         }
     });
     cloak.run();
@@ -345,4 +346,11 @@ function startSubmission(room) {
 
 function stopSubmission(room) {
     room.messageMembers('stopSubmission');
+}
+
+var finalAnswerList = [];
+
+function submitAnswer(answer, user) {
+    finalAnswerList += answer;
+    user.message('submittedAnswer', finalAnswerList)
 }

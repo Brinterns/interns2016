@@ -11,10 +11,11 @@ const initialState = {
     letterList: [],
     disableConsonant: false,
     disableVowel: false,
-    answering: false,
     timerValue: null,
     disableStart: true,
-    submission: false
+    answering: false,
+    submission: false,
+    finalAnswers: []
 };
 
 const game = (state = initialState, action) => {
@@ -91,6 +92,10 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 submission: false
             });
+        case actionTypes.SUBMITTED_ANSWER:
+            return updateState(state, {
+                finalAnswers: action.payload
+            })
         default:
             return state;
     }

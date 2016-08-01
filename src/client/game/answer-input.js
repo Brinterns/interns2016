@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { timerTick, resetTimer } from './game-actions';
 
+import cloakService from '../services/cloak-service';
+
 import style from './game.scss';
 
 const SPACE_KEY = 32;
@@ -13,7 +15,8 @@ export class AnswerInput extends Component {
     componentWillMount() {
         this.setState({
             answerList: [''],
-            focusIndex: 0
+            focusIndex: 0,
+            answerToSubmit: ''
         });
     }
 
@@ -34,10 +37,6 @@ export class AnswerInput extends Component {
         if(nextProps.answering) {
             this.startAnsweringTimer();
         } 
-
-        // if(nextProps.submission) {
-        //     this.startSubmitTimer();
-        // }
     }
 
     handleKeyPress(event) {
@@ -100,6 +99,8 @@ export class AnswerInput extends Component {
 
                 this.refs[focusIndex].className = style['answer-boxes-checked'];
 
+                this.setAnswer();
+
                 break;
             }
         }
@@ -133,7 +134,7 @@ export class AnswerInput extends Component {
                         <input maxLength="18" size="30" placeholder="Enter your answer here" ref={index} onFocus={() => this.handleFocus(index)}
                             defaultValue={answer} onChange={(event) => this.handleChange(event, index)} onKeyDown={event => this.handleKeyPress(event)}
                             disabled={!this.props.answering} />
-                        <input type="radio" name="answer" ref={`radio${index}`} />
+                        <input type="radio" name="answer" ref={`radio${index}`} onClick={() => this.setAnswer()}/>
                     </div>
                 );
             })
@@ -167,6 +168,21 @@ export class AnswerInput extends Component {
         this.submitInputInterval = setInterval(() => this.submissionTimerTick(), 1000);
     }
 
+    setAnswer() {
+        const { answerList } = this.state;
+        for(let i=0; i<answerList.length; i++) {
+            if(this.refs[`radio${i}`].checked === true) {
+                this.setState({
+                    answerToSubmit: answerList[i]
+                });
+            }
+        }
+    }
+
+    submitAnswer() {
+        cloakService.messageAnswer(this.state.answerToSubmit);
+    }
+
     render() {
         const answerTimerArea = (
             <div>
@@ -182,13 +198,15 @@ export class AnswerInput extends Component {
 
         const submitButton = (
             <div>
-                <button className="btn btn-success">Ready</button>
+                <button className="btn btn-success" onClick={() => this.submitAnswer()}>Ready</button>
             </div>
         );
+
 
         return (
             <div className="col-lg-12 text-center">
                 <h3>ANSWER INPUT</h3>
+                {this.props.finalAnswers}
                 {this.props.answering ? answerTimerArea : null}
                 {this.props.submission ? submitTimerArea : null}
                 <div>{this.textBoxes()}</div>
@@ -199,7 +217,8 @@ export class AnswerInput extends Component {
 };
 
 const mapStateToProps = state => ({
-    timerValue: state.game.timerValue
+    timerValue: state.game.timerValue,
+    finalAnswers: state.game.finalAnswers
 });
 
 const mapDispatchToProps = dispatch => ({

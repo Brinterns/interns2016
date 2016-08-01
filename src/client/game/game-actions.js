@@ -13,6 +13,8 @@ export const DISABLE_START = 'DISABLE_START';
 export const RESET_LETTERS = 'RESET_LETTERS';
 export const START_SUBMISSION = 'START_SUBMISSION';
 export const STOP_SUBMISSION = 'STOP_SUBMISSION';
+export const SUBMITTED_ANSWER = 'SUBMITTED_ANSWER';
+
 
 export function startGame() {
     return {
@@ -110,5 +112,12 @@ export function startSubmission(time) {
 export function stopSubmission() {
 	return {
 		type: STOP_SUBMISSION
+	}
+}
+
+export function submittedAnswer(finalAnswers) {
+	return {
+		type: SUBMITTED_ANSWER,
+		payload: finalAnswers
 	}
 }

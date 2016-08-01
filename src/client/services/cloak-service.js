@@ -14,7 +14,8 @@ import {
     disableStart,
     resetLetters,
     startSubmission,
-    stopSubmission
+    stopSubmission,
+    submittedAnswer
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -33,7 +34,8 @@ export default {
     messageGetConsonant,
     messageGetVowel,
     messageRemoveFromRoomList,
-    resetScore
+    resetScore,
+    messageAnswer
 };
 
 function configureAndRun(roomId) {
@@ -110,6 +112,9 @@ function configureAndRun(roomId) {
             },
             stopSubmission: () => {
                 dispatch(stopSubmission());
+            },
+            submittedAnswer: finalAnswerList => {
+                dispatch(submittedAnswer(finalAnswerList));
             }
         },
         initialData: {
@@ -163,4 +168,8 @@ function messageRemoveFromRoomList(roomId) {
 
 function resetScore() {
     cloak.message('resetScore');
+}
+
+function messageAnswer(answer) {
+    cloak.message('submitAnswer', answer);
 }
