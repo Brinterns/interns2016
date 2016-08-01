@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { timerTick, resetTimer } from './game-actions';
 
+import style from './game.scss';
+
 const SPACE_KEY = 32;
 const ENTER_KEY = 13;
 const UP_KEY = 38;
@@ -88,7 +90,16 @@ export class AnswerInput extends Component {
             }
             case SPACE_KEY: {
                 event.preventDefault();
-                
+                const { focusIndex, answerList } = this.state;
+
+                this.refs[`radio${focusIndex}`].checked = true;
+
+                for(let i=0; i<answerList.length; i++) {
+                    this.refs[i].className = '';
+                }
+
+                this.refs[focusIndex].className = style['answer-boxes-checked'];
+
                 break;
             }
         }
@@ -122,7 +133,7 @@ export class AnswerInput extends Component {
                         <input maxLength="18" size="30" placeholder="Enter your answer here" ref={index} onFocus={() => this.handleFocus(index)}
                             defaultValue={answer} onChange={(event) => this.handleChange(event, index)} onKeyDown={event => this.handleKeyPress(event)}
                             disabled={!this.props.answering} />
-                        <input type="radio" name="answer" />
+                        <input type="radio" name="answer" ref={`radio${index}`} />
                     </div>
                 );
             })
@@ -171,7 +182,7 @@ export class AnswerInput extends Component {
 
         const submitButton = (
             <div>
-                <button className="btn btn-success">{this.props.submission.toString()}</button>
+                <button className="btn btn-success">Ready</button>
             </div>
         );
 
@@ -181,7 +192,7 @@ export class AnswerInput extends Component {
                 {this.props.answering ? answerTimerArea : null}
                 {this.props.submission ? submitTimerArea : null}
                 <div>{this.textBoxes()}</div>
-                {submitButton}
+                {this.props.submission ? submitButton : null}
             </div>
         );
     }
