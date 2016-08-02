@@ -348,12 +348,18 @@ function submissionTimeTick(room) {
     room.data.submitTime--;
 }
 
+var submissionTimers = {};
+
 function startSubmission(room) {
     room.data.submitTime = gameParameters.submitTime;
     room.data.submitting = true;
     room.messageMembers('startSubmission', gameParameters.submitTime);
     var timeLeft = setInterval(submissionTimeTick.bind(null, room), 1000);
-    var answeringTimer = setTimeout(submissionFinished.bind(null, room, timeLeft), gameParameters.submitTime*1000);
+    var submissionTimer = setTimeout(submissionFinished.bind(null, room, timeLeft), gameParameters.submitTime*1000);
+    submissionTimers[room.id] = {
+        timeLeft: timeLeft,
+        timer: submissionTimer
+    }
 }
 
 function submissionFinished(room, timeLeft) {
@@ -370,5 +376,9 @@ function submitAnswer(answer, user) {
     }
     var finalAnswerArr = Object.keys(finalAnswerList).reduce((array, letter) => {
         array.push(finalAnswerList[letter]); return array}, []);
-    room.messageMembers('submittedAnswer', finalAnswerArr)
+    room.messageMembers('submittedAnswer', finalAnswerArr);
+    if(finalAnswerArr.length === room.getMembers().length) {
+        clearTimeout(submissionTimers[room.id].timer);
+        submissionFinished(room, submissionTimers[room.id].timeLeft);
+    }
 }
