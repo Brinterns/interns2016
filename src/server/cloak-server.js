@@ -107,6 +107,7 @@ function createRoom(name, user) {
         disableConsonant: false,
         disableVowel: false
     };
+    room.data.finalAnswerList = {};
     fireRoomListReload();
 }
 
@@ -231,6 +232,42 @@ function setNextLeader(room) {
     room.data.leaderId = members[nextLeader].id;
 }
 
+function checkRoom(roomId, user) {
+    var room = cloak.getRoom(roomId);
+    if(!room){
+        user.message('allowedToJoin', false);
+        return;
+    }
+    if(!room.data.started){
+        user.message('allowedToJoin', true);
+        return;
+    }
+    var allowedUsers = room.data.userIdList;
+    for(var i=0; i<allowedUsers.length; i++) {
+        if(allowedUsers[i] === user.id){
+            user.message('allowedToJoin', true);
+            return;
+        }
+    }
+    user.message('allowedToJoin', false);
+}
+
+function removeFromRoomList(roomId, user) {
+    var room = cloak.getRoom(roomId);
+    if(!room) {
+        return;
+    }
+    room.data.userIdList = room.data.userIdList.filter(function(id){
+        return id !== user.id;
+    });
+    delete room.data.scores[user.id];
+}
+
+function resetScore(arg, user) {
+    user.data.score = undefined;
+    refreshListener();
+}
+
 function getConsonant(arg, user) {
     var room = user.getRoom();
     var letterList = room.data.letterList;
@@ -247,6 +284,7 @@ function getConsonant(arg, user) {
         user.message('disableConsonant', true);
     }
 }
+
 
 function getVowel(arg, user) {
     var room = user.getRoom();
@@ -291,52 +329,13 @@ function answeringFinished(room, timeLeft) {
     room.messageMembers('stopAnswering');
     room.data.answering = false;
     clearInterval(timeLeft);
+    startSubmission(room);
 }
 
-function checkRoom(roomId, user) {
-    var room = cloak.getRoom(roomId);
-    if(!room){
-        user.message('allowedToJoin', false);
-        return;
-    }
-    if(!room.data.started){
-        user.message('allowedToJoin', true);
-        return;
-    }
-    var allowedUsers = room.data.userIdList;
-    for(var i=0; i<allowedUsers.length; i++) {
-        if(allowedUsers[i] === user.id){
-            user.message('allowedToJoin', true);
-            return;
-        }
-    }
-    user.message('allowedToJoin', false);
-}
-
-function removeFromRoomList(roomId, user) {
-    var room = cloak.getRoom(roomId);
-    if(!room) {
-        return;
-    }
-    room.data.userIdList = room.data.userIdList.filter(function(id){
-        return id !== user.id;
-    });
-    delete room.data.scores[user.id];
-}
-
-function resetScore(arg, user) {
-    user.data.score = undefined;
-    refreshListener();
-}
 
 function startAnswering(room) {
     room.messageMembers('startAnswering', gameParameters.answerTime);
     setTimeout(stopAnswering.bind(null, room), gameParameters.answerTime*1000);
-}
-
-function stopAnswering(room) {
-    room.messageMembers('stopAnswering');
-    startSubmission(room);
 }
 
 function startSubmission(room) {
@@ -348,10 +347,13 @@ function stopSubmission(room) {
     room.messageMembers('stopSubmission');
 }
 
-var finalAnswerList = [];
-
 function submitAnswer(answer, user) {
     var room = user.getRoom();
-    finalAnswerList += answer;
-    room.messageMembers('submittedAnswer', finalAnswerList)
+    var finalAnswerList = room.data.finalAnswerList;
+    if(finalAnswerList[user.id] === undefined) {
+        finalAnswerList[user.id] = answer;
+    }
+    var finalAnswerArr = Object.keys(finalAnswerList).reduce((array, letter) => {
+        array.push(finalAnswerList[letter]); return array}, []);
+    room.messageMembers('submittedAnswer', finalAnswerArr)
 }

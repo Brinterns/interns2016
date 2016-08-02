@@ -1,6 +1,6 @@
-var answerTime = 30; //answer time length in seconds
+var answerTime = 10; //answer time length in seconds
 var minUserNo = 2;
-var submitTime = 15;
+var submitTime = 10;
 
 module.exports = { 
 	answerTime,
