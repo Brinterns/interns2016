@@ -9,7 +9,7 @@ var data;
 describe('<RoomPage />', () => {
 
     beforeEach(() => {
-        window.cloak = jasmine.createSpyObj('cloak', ['connected', 'message']);
+        window.cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'connected', 'message']);
     });
 
     it('contains "Start Game" button', () => {

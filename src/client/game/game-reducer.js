@@ -12,14 +12,16 @@ const initialState = {
     disableConsonant: false,
     disableVowel: false,
     answering: false,
-    timerValue: null
+    timerValue: null,
+    disableStart: true
 };
 
 const game = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.START_GAME: 
         	return updateState(state, {
-        		started: true
+        		started: true,
+                disableStart: true
         	});
         case actionTypes.LEAVE_GAME:
             return updateState(state, {
@@ -46,6 +48,10 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 letterList: [...state.letterList, action.payload]
             });
+        case actionTypes.RESET_LETTERS:
+            return updateState(state, {
+                letterList: action.payload
+            });  
         case actionTypes.DISABLE_CONSONANT:
             return updateState(state, {
                 disableConsonant: action.payload
@@ -70,7 +76,11 @@ const game = (state = initialState, action) => {
         case actionTypes.RESET_TIMER:
             return updateState(state, {
                 timerValue: null
-            });        
+            });
+        case actionTypes.DISABLE_START:
+            return updateState(state, {
+                disableStart: action.payload
+            });  
         default:
             return state;
     }

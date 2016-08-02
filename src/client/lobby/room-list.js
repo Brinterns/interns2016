@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import router from '../services/routing-service';
-import storageService from '../services/storage-service';
 
 import style from '../common/common.scss';
 
@@ -34,6 +33,5 @@ function getColour(room) {
 }
 
 function joinRoom(room) {
-    storageService.setRoom(JSON.stringify(room));
     router.navigateToRoom(`${room.id}`);
 }

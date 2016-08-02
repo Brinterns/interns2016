@@ -11,6 +11,8 @@ export class Lobby extends Component {
     componentWillMount() {
         if(!cloakService.isConnected()){
             cloakService.configureAndRun();
+        } else {
+            cloakService.resetScore();
         }
     }
 

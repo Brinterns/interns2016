@@ -16,33 +16,16 @@ export class RoomPage extends Component {
             cloakService.messageJoinRoom(this.props.params.data);
             cloakService.getRoomData(this.props.params.data);
         } else {
-            router.navigateToLobby();
+            cloakService.configureAndRun(this.props.params.data);
         }
     }
 
     componentWillUnmount() {
         if(cloakService.isConnected()) {
             this.props.leaveGame();
+            cloakService.messageRemoveFromRoomList(this.props.params.data);
             cloakService.messageLeaveRoom();
         }
-    }
-
-    disable() {
-        if(this.enoughPlayers()){
-            return !this.isCreator();
-        }
-        return true;
-    }
-
-    enoughPlayers() {
-        return this.props.roomUsers.length >= 2 ? true : false;
-    }
-
-    isCreator() {
-        var room = storageService.getRoom();
-        var creatorId = room.data.creator.id;
-        var userId = storageService.getUser().id;
-        return JSON.stringify(creatorId) === JSON.stringify(userId);
     }
 
     render() {
@@ -51,7 +34,7 @@ export class RoomPage extends Component {
                 <h1>{`Room: ${this.props.roomData.name}`}</h1>
                 <UserList users={this.props.roomUsers} />
                 <div className="col-lg-8" >
-                    <button className={`btn btn-success`} id="start-game" disabled={this.disable()}
+                    <button className={`btn btn-success`} id="start-game" disabled={this.props.disableStart}
                             onClick={() => {cloakService.messageStartGame()}}>Start Game</button>
                     <button className={`btn btn-danger`} id="leave-room"
                             onClick={leaveRoom}>Leave Room</button>
@@ -69,7 +52,8 @@ function leaveRoom() {
 const mapStateToProps = (state, ownProps) => ({
     roomUsers: state.room.users,
     roomData: state.room.data,
-    started: state.game.started
+    started: state.game.started,
+    disableStart: state.game.disableStart
 });
 
 const mapDispatchToProps = dispatch => ({

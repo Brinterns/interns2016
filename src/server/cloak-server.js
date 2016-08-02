@@ -14,11 +14,8 @@ module.exports = function(expressServer) {
         },
         room: {
             init: refreshListener,
-            newMember: refreshRoomUsers,
-            memberLeaves: function (user){
-                setNextLeader(this);
-                refreshRoomUsers.bind(this)();
-            },
+            newMember: newMember,
+            memberLeaves: memberLeaves,
             close: refreshListener
         },
         messages: {
@@ -30,15 +27,52 @@ module.exports = function(expressServer) {
             roomDetails: roomDetails,
             startGame: startGame,
             getConsonant: getConsonant,
-            getVowel: getVowel
+            getVowel: getVowel,
+            checkRoom: checkRoom,
+            removeFromRoomList: removeFromRoomList,
+            resetScore: resetScore
         }
     });
     cloak.run();
 };
 
-function setUsername(name, user) {
-    user.name = name;
-    fireLobbyReload();
+function newMember(user) {
+    refreshRoomUsers.bind(this)();
+    var members = this.getMembers();
+    if( this.data.started ) {
+        user.message('startGame');
+        makeLeader(this.data.leaderIndex, this);
+        user.message('resetLetters', this.data.letterList.letters);
+        if(this.data.answering) {
+            user.message('startAnswering', this.data.answerTime);
+        } else {
+            user.message('stopAnswering');
+        }
+    }
+    for(var i = 0; i < members.length; i++) {
+        if(members[i].id === this.data.creator.id) {
+            if(this.getMembers().length >= gameParameters.minUserNo && !this.data.started){
+                members[i].message('enableStart');
+            } else {
+                members[i].message('disableStart');
+            }
+        }
+    }
+}
+
+function memberLeaves(user) {
+    if(user.id === this.data.leaderId){
+        setNextLeader(this);
+    }
+    refreshRoomUsers.bind(this)();
+    var members = this.getMembers();
+    if(this.getMembers().length >= gameParameters.minUserNo)
+        return;
+    for(var i = 0; i < members.length; i++) {
+        if(members[i].id === this.data.creator.id) {
+            members[i].message('disableStart');
+        }
+    }
 }
 
 function setUserUp(arg, user) {
@@ -53,10 +87,18 @@ function setUserUp(arg, user) {
    fireLobbyReload();
 }
 
+function setUsername(name, user) {
+    user.name = name;
+    fireLobbyReload();
+}
+
 function createRoom(name, user) {
     var room = cloak.createRoom(name);
     room.data.creator = {id: user.id, name: user.name};
+    room.data.userIdList = [];
     room.data.started = false;
+    room.data.answering = false;
+    room.data.scores = [];
     room.data.letterList = {
         letters: [],
         consonantNum: 0,
@@ -68,10 +110,17 @@ function createRoom(name, user) {
 }
 
 function joinRoom(id, user) {
-    user.data.score = 0;
     var room = cloak.getRoom(id);
+    room.data.scores[user.id] = 0;
+    room.data.userIdList.push(user.id);
     room.addMember(user);
     refreshListener();
+}
+
+function isCreator(user, room) {
+    if(room.data.creator.id === user.id)
+        return true;
+    return false;
 }
 
 function refreshListener() {
@@ -105,6 +154,7 @@ function fireRoomListReload() {
 function refreshRoomUsers(arg) {
     var users = this.getMembers();
     for(var i=0; i<users.length; i++) {
+        users[i].data.score = this.data.scores[users[i].id];
         users[i] = {
             id: users[i].id,
             name: users[i].name,
@@ -115,10 +165,10 @@ function refreshRoomUsers(arg) {
 }
 
 function leaveRoom(arg, user) {
-    user.data.score = undefined;
     var room = user.getRoom();
     var leaderIndex = room.data.leaderIndex;
     var userIndex = room.getMembers().indexOf(user);
+    delete room.data.scores[user.id];
     if(userIndex < leaderIndex) {
         room.data.leaderIndex--;
     }
@@ -139,6 +189,7 @@ function startGame(arg, user) {
     var roomUsers = room.getMembers();
     var leaderIndex = roomUsers.indexOf(user);
     room.data.leaderIndex = leaderIndex;
+    room.data.leaderId = user.id;
     room.data.started = true;
     room.messageMembers('startGame');
     makeLeader(room.data.leaderIndex, room);
@@ -176,6 +227,7 @@ function setNextLeader(room) {
     nextLeader = nextLeader >= members.length ? 0 : nextLeader;
     makeLeader(nextLeader, room);
     room.data.leaderIndex = nextLeader;
+    room.data.leaderId = members[nextLeader].id;
 }
 
 function getConsonant(arg, user) {
@@ -219,14 +271,59 @@ function checkListLength(user) {
     if(letterList.letters.length >= 9){
         letterList.disableConsonant = true;
         letterList.disableVowel = true;
+        room.data.answerTime = gameParameters.answerTime;
+        room.data.answering = true;
         user.message('disableConsonant', true);
         user.message('disableVowel', true);
         room.messageMembers('startAnswering', gameParameters.answerTime);
-        var answeringTimer = setTimeout(answeringFinished.bind(null, room), gameParameters.answerTime*1000);
+        var timeLeft = setInterval(timeTick.bind(null, room), 1000);
+        var answeringTimer = setTimeout(answeringFinished.bind(null, room, timeLeft), gameParameters.answerTime*1000);
         return;
     }
 }
 
-function answeringFinished(room) {
+function timeTick(room) {
+    room.data.answerTime--;
+}
+
+function answeringFinished(room, timeLeft) {
     room.messageMembers('stopAnswering');
+    room.data.answering = false;
+    clearInterval(timeLeft);
+}
+
+function checkRoom(roomId, user) {
+    var room = cloak.getRoom(roomId);
+    if(!room){
+        user.message('allowedToJoin', false);
+        return;
+    }
+    if(!room.data.started){
+        user.message('allowedToJoin', true);
+        return;
+    }
+    var allowedUsers = room.data.userIdList;
+    for(var i=0; i<allowedUsers.length; i++) {
+        if(allowedUsers[i] === user.id){
+            user.message('allowedToJoin', true);
+            return;
+        }
+    }
+    user.message('allowedToJoin', false);
+}
+
+function removeFromRoomList(roomId, user) {
+    var room = cloak.getRoom(roomId);
+    if(!room) {
+        return;
+    }
+    room.data.userIdList = room.data.userIdList.filter(function(id){
+        return id !== user.id;
+    });
+    delete room.data.scores[user.id];
+}
+
+function resetScore(arg, user) {
+    user.data.score = undefined;
+    refreshListener();
 }

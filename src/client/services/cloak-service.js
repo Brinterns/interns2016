@@ -1,5 +1,6 @@
 import config from '../config/config';
 import storageService from '../services/storage-service';
+import router from '../services/routing-service';
 import { dispatch } from '../store';
 import {
     startGame,
@@ -9,7 +10,9 @@ import {
     disableConsonant, 
     disableVowel,
     startAnswering,
-    stopAnswering
+    stopAnswering,
+    disableStart,
+    resetLetters
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -26,14 +29,19 @@ export default {
     isConnected,
     messageStartGame,
     messageGetConsonant,
-    messageGetVowel
+    messageGetVowel,
+    messageRemoveFromRoomList,
+    resetScore
 };
 
-function configureAndRun() {
+function configureAndRun(roomId) {
     cloak.configure({
         serverEvents: {
             begin: () => {
                 cloak.message('setUserUp');
+                if(roomId !== undefined) {
+                    cloak.message('checkRoom', roomId);
+                }
             }
         },
         messages: {
@@ -65,6 +73,9 @@ function configureAndRun() {
             updateVowel: vowel => {
                 dispatch(getVowel(vowel));
             },
+            resetLetters: letters => {
+                dispatch(resetLetters(letters));
+            },
             disableConsonant: bool => {
                 dispatch(disableConsonant(bool));
             },
@@ -76,6 +87,21 @@ function configureAndRun() {
             },
             stopAnswering: () => {
                 dispatch(stopAnswering());
+            },
+            enableStart: () =>{
+                dispatch(disableStart(false));
+            },
+            disableStart: () =>{
+                dispatch(disableStart(true));
+            },
+            allowedToJoin: bool =>{
+                if(bool) {
+                    messageJoinRoom(roomId);
+                    getRoomData(roomId);
+                } else {
+                    cloak.stop();
+                    router.navigateToLobby();
+                }
             }
         },
         initialData: {
@@ -121,4 +147,12 @@ function messageGetConsonant() {
 
 function messageGetVowel() {
     cloak.message('getVowel');
+}
+
+function messageRemoveFromRoomList(roomId) {
+    cloak.message('removeFromRoomList', roomId);
+}
+
+function resetScore() {
+    cloak.message('resetScore');
 }
