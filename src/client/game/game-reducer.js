@@ -11,7 +11,8 @@ const initialState = {
     letterList: [],
     disableConsonant: false,
     disableVowel: false,
-    timerValue: null,
+    answerTimerValue: null,
+    submissionTimerValue: null,
     disableStart: true,
     answering: false,
     submission: false,
@@ -65,19 +66,27 @@ const game = (state = initialState, action) => {
         case actionTypes.START_ANSWERING:
             return updateState(state, {
                 answering: true,
-                timerValue: action.payload
+                answerTimerValue: action.payload
             });
         case actionTypes.STOP_ANSWERING:
             return updateState(state, {
                 answering: false
             });
-        case actionTypes.TIMER_TICK:
+        case actionTypes.ANSWER_TIMER_TICK:
             return updateState(state, {
-                timerValue: state.timerValue-1
+                answerTimerValue: state.answerTimerValue-1
             });
-        case actionTypes.RESET_TIMER:
+        case actionTypes.SUBMISSION_TIMER_TICK:
             return updateState(state, {
-                timerValue: null
+                submissionTimerValue: state.submissionTimerValue-1
+            });
+        case actionTypes.RESET_ANSWER_TIMER:
+            return updateState(state, {
+                answerTimerValue: null
+            });
+        case actionTypes.RESET_SUBMISSION_TIMER:
+            return updateState(state, {
+                submissionTimerValue: null
             });
         case actionTypes.DISABLE_START:
             return updateState(state, {
@@ -86,7 +95,7 @@ const game = (state = initialState, action) => {
         case actionTypes.START_SUBMISSION:
             return updateState(state, {
                 submission: true,
-                timerValue: action.payload
+                submissionTimerValue: action.payload
             });
         case actionTypes.STOP_SUBMISSION:
             return updateState(state, {

@@ -48,6 +48,12 @@ function newMember(user) {
             user.message('startAnswering', this.data.answerTime);
         } else {
             user.message('stopAnswering');
+            if(this.data.submitting) {
+                user.message('startSubmission', this.data.submitTime);
+            }
+            else {
+                user.message('stopSubmission');
+            }
         }
     }
     for(var i = 0; i < members.length; i++) {
@@ -99,6 +105,7 @@ function createRoom(name, user) {
     room.data.userIdList = [];
     room.data.started = false;
     room.data.answering = false;
+    room.data.submitting = false;
     room.data.scores = [];
     room.data.letterList = {
         letters: [],
@@ -310,19 +317,23 @@ function checkListLength(user) {
     if(letterList.letters.length >= 9){
         letterList.disableConsonant = true;
         letterList.disableVowel = true;
-        room.data.answerTime = gameParameters.answerTime;
-        room.data.answering = true;
         user.message('disableConsonant', true);
         user.message('disableVowel', true);
-        room.messageMembers('startAnswering', gameParameters.answerTime);
-        var timeLeft = setInterval(timeTick.bind(null, room), 1000);
-        var answeringTimer = setTimeout(answeringFinished.bind(null, room, timeLeft), gameParameters.answerTime*1000);
+        startAnswering(room);
         return;
     }
 }
 
-function timeTick(room) {
+function answerTimeTick(room) {
     room.data.answerTime--;
+}
+
+function startAnswering(room) {
+    room.data.answerTime = gameParameters.answerTime;
+    room.data.answering = true;
+    room.messageMembers('startAnswering', gameParameters.answerTime);
+    var timeLeft = setInterval(answerTimeTick.bind(null, room), 1000);
+    var answeringTimer = setTimeout(answeringFinished.bind(null, room, timeLeft), gameParameters.answerTime*1000);
 }
 
 function answeringFinished(room, timeLeft) {
@@ -333,18 +344,22 @@ function answeringFinished(room, timeLeft) {
 }
 
 
-function startAnswering(room) {
-    room.messageMembers('startAnswering', gameParameters.answerTime);
-    setTimeout(stopAnswering.bind(null, room), gameParameters.answerTime*1000);
+function submissionTimeTick(room) {
+    room.data.submitTime--;
 }
 
 function startSubmission(room) {
+    room.data.submitTime = gameParameters.submitTime;
+    room.data.submitting = true;
     room.messageMembers('startSubmission', gameParameters.submitTime);
-    setTimeout(stopSubmission.bind(null, room), gameParameters.submitTime*1000);
+    var timeLeft = setInterval(submissionTimeTick.bind(null, room), 1000);
+    var answeringTimer = setTimeout(submissionFinished.bind(null, room, timeLeft), gameParameters.submitTime*1000);
 }
 
-function stopSubmission(room) {
+function submissionFinished(room, timeLeft) {
     room.messageMembers('stopSubmission');
+    room.data.submitting = false;
+    clearInterval(timeLeft);
 }
 
 function submitAnswer(answer, user) {

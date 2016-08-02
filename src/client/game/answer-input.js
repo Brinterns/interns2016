@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { timerTick, resetTimer } from './game-actions';
+import { answerTimerTick, submissionTimerTick, resetAnswerTimer, resetSubmissionTimer } from './game-actions';
 
 import cloakService from '../services/cloak-service';
 
@@ -30,13 +30,19 @@ export class AnswerInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.answering === nextProps.answering) {
+        if(this.props.answering === nextProps.answering && this.props.submission === nextProps.submission) {
             return;
         }
 
         if(nextProps.answering) {
             this.startAnsweringTimer();
+            return;
         } 
+
+        if(nextProps.submission) {
+            this.startSubmitTimer();
+            return;
+        }
     }
 
     handleKeyPress(event) {
@@ -142,21 +148,20 @@ export class AnswerInput extends Component {
     }
 
     answeringTimerTick() {
-        if(this.props.timerValue > 0){
-            this.props.timerTick();
+        if(this.props.answerTimerValue > 0){
+            this.props.answerTimerTick();
         } else {
             clearInterval(this.answerInputInterval);
-            this.props.resetTimer();
-            this.startSubmitTimer();
+            this.props.resetAnswerTimer();
         }
     }
 
     submissionTimerTick() {
-        if(this.props.timerValue > 0){
-            this.props.timerTick();
+        if(this.props.submissionTimerValue > 0){
+            this.props.submissionTimerTick();
         } else {
             clearInterval(this.submitInputInterval);
-            this.props.resetTimer();
+            this.props.resetSubmissionTimer();
         }
     }
 
@@ -189,13 +194,13 @@ export class AnswerInput extends Component {
     render() {
         const answerTimerArea = (
             <div>
-                <p>Answering Time Left: {this.props.timerValue}</p>
+                <p>Answering Time Left: {this.props.answerTimerValue}</p>
             </div>
         );
 
         const submitTimerArea = (
             <div>
-                <p>Submission Time Left: {this.props.timerValue + 1}</p>
+                <p>Submission Time Left: {this.props.submissionTimerValue}</p>
             </div>
         );
 
@@ -220,16 +225,23 @@ export class AnswerInput extends Component {
 }
 
 const mapStateToProps = state => ({
-    timerValue: state.game.timerValue,
+    answerTimerValue: state.game.answerTimerValue,
+    submissionTimerValue: state.game.submissionTimerValue,
     finalAnswers: state.game.finalAnswers
 });
 
 const mapDispatchToProps = dispatch => ({
-    timerTick() {
-        dispatch(timerTick());
+    answerTimerTick() {
+        dispatch(answerTimerTick());
     },
-    resetTimer() {
-        dispatch(resetTimer());
+    submissionTimerTick() {
+        dispatch(submissionTimerTick());
+    },
+    resetAnswerTimer() {
+        dispatch(resetAnswerTimer());
+    },
+    resetSubmissionTimer() {
+        dispatch(resetSubmissionTimer());
     }
 });
 
