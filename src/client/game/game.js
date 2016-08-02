@@ -9,6 +9,8 @@ import storageService from '../services/storage-service';
 
 import style from './game.scss';
 
+const numLetters = 9;
+
 export class Game extends Component {
     isLeader() {
         let userId = storageService.getUser().id;
@@ -19,7 +21,7 @@ export class Game extends Component {
     }
     
     componentWillReceiveProps(nextProps) {
-        for(var i=0; i<9; i++){
+        for(var i=0; i<numLetters; i++){
             if(nextProps.letterList[i] !== undefined){
                 this.refs[`box${i}`].className += ` ${style.flipped}`;
             }
@@ -49,7 +51,7 @@ export class Game extends Component {
         );
 
         let letterBoxes = [];
-        for(let i = 0; i < 9; i++) {
+        for(let i = 0; i < numLetters; i++) {
             letterBoxes.push(letterBox(this.props.letterList[i], i));
         }
 
