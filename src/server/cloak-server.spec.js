@@ -95,6 +95,30 @@ describe('cloak server', () => {
     });
 
     describe('room newMember', () => {
+
+        function makeRoom(answering, letters = [], answerTime) {
+            var roomDataObj = {
+                started: true,
+                leaderIndex: 0,
+                leaderId: '',
+                answering: answering,
+                answerTime: answerTime,
+                creator: {
+                    id: ''
+                },
+                scores: [],
+                letterList: {
+                    letters: letters,
+                    consonantNum: 0,
+                    vowelNum: 0,
+                    disableConsonant: false,
+                    disableVowel: false
+                }
+            }
+
+            return roomDataObj;
+        }
+
         it('sends startGame if the game was started in the joined room', () => {
             users = [{name: 'Raul',data:{}},
                      {name: 'Jamie',data:{}}];
@@ -102,23 +126,7 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             room.getMembers.and.returnValue(users);
-            room.data = {
-                started: true,
-                leaderIndex: 0,
-                leaderId: '',
-                answering: false,
-                creator: {
-                    id: ''
-                },
-                scores: [],
-                letterList: {
-                    letters: [],
-                    consonantNum: 0,
-                    vowelNum: 0,
-                    disableConsonant: false,
-                    disableVowel: false
-                }
-            };
+            room.data = makeRoom(false, []);
 
             cloakConfig.room.newMember.bind(room, user)();
 
@@ -132,23 +140,7 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             room.getMembers.and.returnValue(users);
-            room.data = {
-                started: true,
-                leaderIndex: 0,
-                leaderId: '',
-                answering: false,
-                creator: {
-                    id: ''
-                },
-                scores: [],
-                letterList: {
-                    letters: ['a','b','c'],
-                    consonantNum: 0,
-                    vowelNum: 0,
-                    disableConsonant: false,
-                    disableVowel: false
-                }
-            };
+            room.data = makeRoom(false, ['a', 'b', 'c']);
 
             cloakConfig.room.newMember.bind(room, user)();
 
@@ -162,25 +154,8 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             room.getMembers.and.returnValue(users);
-            room.data = {
-                started: true,
-                leaderIndex: 0,
-                leaderId: '',
-                answering: true,
-                answerTime: 30,
-                scores: [],
-                creator: {
-                    id: ''
-                },
-                letterList: {
-                    letters: ['a','b','c'],
-                    consonantNum: 0,
-                    vowelNum: 0,
-                    disableConsonant: false,
-                    disableVowel: false
-                }
-            };
-
+            room.data = makeRoom(true, ['a','b','c'], 30);
+            
             cloakConfig.room.newMember.bind(room, user)();
 
             expect(user.message).toHaveBeenCalledWith('startAnswering', 30);
@@ -193,23 +168,7 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             room.getMembers.and.returnValue(users);
-            room.data = {
-                started: true,
-                leaderIndex: 0,
-                leaderId: '',
-                answering: false,
-                scores: [],
-                creator: {
-                    id: ''
-                },
-                letterList: {
-                    letters: ['a','b','c'],
-                    consonantNum: 0,
-                    vowelNum: 0,
-                    disableConsonant: false,
-                    disableVowel: false
-                }
-            };
+            room.data = makeRoom(false, ['a','b','c']);
 
             cloakConfig.room.newMember.bind(room, user)();
 
