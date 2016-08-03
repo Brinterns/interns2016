@@ -32,7 +32,8 @@ module.exports = function(expressServer) {
             checkRoom: checkRoom,
             removeFromRoomList: removeFromRoomList,
             resetScore: resetScore,
-            submitAnswer: submitAnswer
+            submitAnswer: submitAnswer,
+            possibleAnswers: possibleAnswers
         }
     });
     cloak.run();
@@ -115,6 +116,7 @@ function createRoom(name, user) {
         disableConsonant: false,
         disableVowel: false
     };
+    room.data.possibleAnswers = {};
     room.data.finalAnswerList = {};
     fireRoomListReload();
 }
@@ -369,8 +371,9 @@ function submissionFinished(room, timeLeft) {
     clearInterval(timeLeft);
 }
 
-function submitAnswer(answer, user) {
+function submitAnswer(index, user) {
     var room = user.getRoom();
+    var answer = room.data.possibleAnswers[user.id][index];
     var finalAnswerList = room.data.finalAnswerList;
     
 
@@ -445,4 +448,9 @@ function scoreRound(answers, room) {
         room.data.scores[members[i].id] += results[members[i].id] === undefined ? 0 : results[members[i].id].score;
     }
     refreshRoomUsers.bind(room)();
+}
+
+function possibleAnswers(answerList, user) {
+    var room = user.getRoom();
+    room.data.possibleAnswers[user.id] = answerList;
 }

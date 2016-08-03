@@ -35,7 +35,8 @@ export default {
     messageGetVowel,
     messageRemoveFromRoomList,
     resetScore,
-    messageAnswer
+    messageAnswers,
+    messageAnswerToSubmit
 };
 
 function configureAndRun(roomId) {
@@ -170,6 +171,10 @@ function resetScore() {
     cloak.message('resetScore');
 }
 
-function messageAnswer(answer) {
-    cloak.message('submitAnswer', answer);
+function messageAnswers(answerList) {
+    cloak.message('possibleAnswers', answerList);
+}
+
+function messageAnswerToSubmit(index) {
+    cloak.message('submitAnswer', index);
 }
