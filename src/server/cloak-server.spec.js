@@ -31,11 +31,11 @@ describe('cloak server', () => {
     });
 
     beforeEach(() => {
-        mockery.registerMock('./random-consonant-picker', randomConsonant);
         mockery.registerAllowable('./cloak-server');
-        mockery.registerAllowable('./letter-lists');
-        mockery.registerMock('./random-vowel-picker', randomVowel);
-        mockery.registerMock('./game-parameters', gameParameters);
+        mockery.registerAllowable('./game-parameters');
+        mockery.registerAllowable('./letters/letter-lists');
+        mockery.registerMock('./letters/random-consonant-picker', randomConsonant);
+        mockery.registerMock('./letters/random-vowel-picker', randomVowel);
     });
 
     beforeEach(() => {

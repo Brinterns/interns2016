@@ -1,7 +1,8 @@
 var cloak = require('cloak');
-var randomConsonant = require('./random-consonant-picker');
-var randomVowel = require('./random-vowel-picker');
+var randomConsonant = require('./letters/random-consonant-picker');
+var randomVowel = require('./letters/random-vowel-picker');
 var gameParameters = require('./game-parameters');
+var solver = require('./validation/cntdn');
 
 module.exports = function(expressServer) {
     cloak.configure({
@@ -371,12 +372,27 @@ function submissionFinished(room, timeLeft) {
 function submitAnswer(answer, user) {
     var room = user.getRoom();
     var finalAnswerList = room.data.finalAnswerList;
+    
+
+    var result = [];
+    solver.solve_letters('rapenitet', function(word) { result.push(word); });
+
+    console.log(result);
+
+    result.sort(function(a, b) {
+        return b.length - a.length;
+    });
+
+    console.log(result);
+
     if(finalAnswerList[user.id] === undefined) {
         finalAnswerList[user.id] = answer;
     }
     var finalAnswerArr = Object.keys(finalAnswerList).reduce((array, userId) => {
         array.push(finalAnswerList[userId]); return array}, []);
+
     room.messageMembers('submittedAnswer', finalAnswerArr);
+
     if(finalAnswerArr.length === room.getMembers().length) {
         clearTimeout(submissionTimers[room.id].timer);
         submissionFinished(room, submissionTimers[room.id].timeLeft);
