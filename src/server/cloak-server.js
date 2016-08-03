@@ -386,11 +386,11 @@ function submitAnswer(answer, user) {
         var answersToScore = Object.keys(finalAnswerList).map((id)=>[id, finalAnswerList[id]]);
         clearTimeout(submissionTimers[room.id].timer);
         submissionFinished(room, submissionTimers[room.id].timeLeft);
-        validateAnswers(answersToScore, room.data.letterList.letters);
+        validateAnswers(answersToScore, room.data.letterList.letters, room);
     }
 }
 
-function validateAnswers(answers, letters) {
+function validateAnswers(answers, letters, room) {
     answers.sort(function(a, b) {
         return b[1].length - a[1].length;
     });
@@ -411,6 +411,11 @@ function validateAnswers(answers, letters) {
         }
     }
 
+
+    scoreRound(answers, room);
+}
+
+function scoreRound(answers, room) {
     var bestLength = -1;
     for(var i=0; i<answers.length; i++) {
         if(answers[i].score > 0) {
@@ -426,4 +431,18 @@ function validateAnswers(answers, letters) {
     var bestAnswers = answers.filter(function(answer) {
         return (answer.score === bestLength && answer.score > 0);
     });
+
+    var results = {};
+    bestAnswers.map(function(answer){
+        return results[answer[0]] = {
+            word: answer[1],
+            score: answer.score
+        }
+    });
+
+    var members = room.getMembers();
+    for(var i=0; i<members.length; i++) {
+        room.data.scores[members[i].id] += results[members[i].id] === undefined ? 0 : results[members[i].id].score;
+    }
+    refreshRoomUsers.bind(room)();
 }
