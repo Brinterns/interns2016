@@ -34,6 +34,8 @@ describe('cloak server', () => {
         mockery.registerAllowable('./cloak-server');
         mockery.registerAllowable('./game-parameters');
         mockery.registerAllowable('./letters/letter-lists');
+        mockery.registerAllowable('./validation/cntdn');
+        mockery.registerAllowable('./dictionary');
         mockery.registerMock('./letters/random-consonant-picker', randomConsonant);
         mockery.registerMock('./letters/random-vowel-picker', randomVowel);
     });

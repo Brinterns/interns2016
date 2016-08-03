@@ -279,7 +279,7 @@ function resetScore(arg, user) {
 function getConsonant(arg, user) {
     var room = user.getRoom();
     var letterList = room.data.letterList;
-    if(letterList.letters.length >= 9){
+    if(letterList.letters.length >= gameParameters.numLetters){
         return;
     }
     if(letterList.consonantNum < 6) {
@@ -297,7 +297,7 @@ function getConsonant(arg, user) {
 function getVowel(arg, user) {
     var room = user.getRoom();
     var letterList = room.data.letterList;
-    if(letterList.letters.length >= 9){
+    if(letterList.letters.length >= gameParameters.numLetters){
         return;
     }
 
@@ -315,7 +315,7 @@ function getVowel(arg, user) {
 function checkListLength(user) {
     var room = user.getRoom();
     var letterList = room.data.letterList;
-    if(letterList.letters.length >= 9){
+    if(letterList.letters.length >= gameParameters.numLetters){
         letterList.disableConsonant = true;
         letterList.disableVowel = true;
         user.message('disableConsonant', true);
@@ -374,17 +374,6 @@ function submitAnswer(answer, user) {
     var finalAnswerList = room.data.finalAnswerList;
     
 
-    var result = [];
-    solver.solve_letters('rapenitet', function(word) { result.push(word); });
-
-    console.log(result);
-
-    result.sort(function(a, b) {
-        return b.length - a.length;
-    });
-
-    console.log(result);
-
     if(finalAnswerList[user.id] === undefined) {
         finalAnswerList[user.id] = answer;
     }
@@ -394,7 +383,47 @@ function submitAnswer(answer, user) {
     room.messageMembers('submittedAnswer', finalAnswerArr);
 
     if(finalAnswerArr.length === room.getMembers().length) {
+        var answersToScore = Object.keys(finalAnswerList).map((id)=>[id, finalAnswerList[id]]);
         clearTimeout(submissionTimers[room.id].timer);
         submissionFinished(room, submissionTimers[room.id].timeLeft);
+        validateAnswers(answersToScore, room.data.letterList.letters);
     }
+}
+
+function validateAnswers(answers, letters) {
+    answers.sort(function(a, b) {
+        return b[1].length - a[1].length;
+    });
+
+    var result = [];
+    solver.solve_letters(letters.join('').toLowerCase(), function(word) { result.push(word); });
+
+    result.sort(function(a, b) {
+        return b.length - a.length;
+    });
+
+    for(var i=0; i<answers.length; i++) {
+        if(result.indexOf(answers[i][1].toLowerCase()) !== -1) {
+            answers[i].score = (answers[i][1].length === gameParameters.numLetters ? 2*answers[i][1].length : answers[i][1].length); 
+        }
+        else {
+            answers[i].score = 0;
+        }
+    }
+
+    var bestLength = -1;
+    for(var i=0; i<answers.length; i++) {
+        if(answers[i].score > 0) {
+            bestLength = answers[i][1].length;
+            break;
+        }
+    }
+
+    if(bestLength === -1) {
+        return;
+    }
+
+    var bestAnswers = answers.filter(function(answer) {
+        return (answer.score === bestLength && answer.score > 0);
+    });
 }
