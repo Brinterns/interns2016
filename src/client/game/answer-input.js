@@ -214,7 +214,6 @@ export class AnswerInput extends Component {
         return (
             <div className="col-lg-12 text-center">
                 <h3>ANSWER INPUT</h3>
-                {`Final Answers: ${this.props.finalAnswers}`}
                 {this.props.answering ? answerTimerArea : null}
                 {this.props.submission ? submitTimerArea : null}
                 <div>{this.textBoxes()}</div>
