@@ -374,8 +374,8 @@ function submitAnswer(answer, user) {
     if(finalAnswerList[user.id] === undefined) {
         finalAnswerList[user.id] = answer;
     }
-    var finalAnswerArr = Object.keys(finalAnswerList).reduce((array, letter) => {
-        array.push(finalAnswerList[letter]); return array}, []);
+    var finalAnswerArr = Object.keys(finalAnswerList).reduce((array, userId) => {
+        array.push(finalAnswerList[userId]); return array}, []);
     room.messageMembers('submittedAnswer', finalAnswerArr);
     if(finalAnswerArr.length === room.getMembers().length) {
         clearTimeout(submissionTimers[room.id].timer);
