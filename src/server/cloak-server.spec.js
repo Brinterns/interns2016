@@ -852,4 +852,21 @@ describe('cloak server', () => {
             });
         });
     });
+
+    describe('possibleAnswers', () => {
+        it('changes the room.data.possibleAnswers of a user to given answer list', () => {
+            let fakeAnswerList = ['fakeAnswer1', 'fakeAnswer2'];
+            user.getRoom.and.returnValue(room);
+            room.data = {
+                possibleAnswers: {}
+            }
+            user.id = 'fakeId';
+
+            cloakConfig.messages.possibleAnswers(fakeAnswerList, user);
+
+            expect(room.data.possibleAnswers).toEqual({
+                'fakeId' : ['fakeAnswer1', 'fakeAnswer2'] 
+            });
+        });
+    });
 });
