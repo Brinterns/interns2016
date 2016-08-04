@@ -14,6 +14,7 @@ let users;
 let rooms;
 let disconnect;
 let letterList;
+let solver;
 
 describe('cloak server', () => {
     let randomConsonant;
@@ -24,6 +25,7 @@ describe('cloak server', () => {
     beforeEach(() => {
         randomConsonant = jasmine.createSpy('randomConsonant');
         randomVowel = jasmine.createSpy('randomVowel');
+        solver = jasmine.createSpyObj('solver', ['solve_letters']);
         jasmine.clock().install();
     });
 
@@ -34,8 +36,8 @@ describe('cloak server', () => {
     beforeEach(() => {
         mockery.registerAllowable('./cloak-server');
         mockery.registerAllowable('./letters/letter-lists');
-        mockery.registerAllowable('./validation/cntdn');
         mockery.registerAllowable('./dictionary');
+        mockery.registerMock('./validation/cntdn', solver);
         mockery.registerMock('./game-parameters', gameParameters);
         mockery.registerMock('./letters/random-consonant-picker', randomConsonant);
         mockery.registerMock('./letters/random-vowel-picker', randomVowel);
@@ -810,6 +812,12 @@ describe('cloak server', () => {
     describe('submitAnswer ', () =>{
         beforeEach( () => {
             room.data = {
+                letterList:{
+                    letters: ['W', 'O', 'R', 'D', 'E', 'F', 'G', 'H'],
+                    vowelNum: 4,
+                    disableConsonant: false,
+                    disableVowel: false
+                },
                 finalAnswerList: {},
                 possibleAnswers: {
                     fakeId: ['fakeAnswer', 'fakeAnswer1']
@@ -849,6 +857,120 @@ describe('cloak server', () => {
 
             expect(room.data.finalAnswerList).toEqual({
                 'fakeId': 'fakeAnswer1'
+            });
+        });
+
+        it('submitting all answers calls the solver to return list of all valid possible answers', () => {
+            user.id = 'fakeId1';
+            room.data.possibleAnswers = {
+                'fakeId1': ['word1']
+            }
+            room.data.finalAnswerList = {
+                'fakeId1': 'word1',
+                'fakeId2': 'word24'
+            };
+            room.getMembers.and.returnValue([
+                {id: 'fakeId1', name:'fake1'},
+                {id: 'fakeId2', name:'fake2'}
+            ]);
+            solver.solve_letters.and.returnValue([]);
+
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            cloakConfig.messages.submitAnswer(0, user);
+
+            expect(solver.solve_letters).toHaveBeenCalled();
+        });
+
+        it('changes the score of only the best answer out of all answers', () => {
+            user.id = 'fakeId1';
+            room.data.possibleAnswers = {
+                'fakeId1': ['word']
+            }
+            room.data.finalAnswerList = {
+                'fakeId1': 'word1',
+                'fakeId2': 'word24'
+            };
+            room.data.scores = {
+                'fakeId1': 6,
+                'fakeId2': 4
+            }
+            room.getMembers.and.returnValue([
+                {id: 'fakeId1', name:'fake1', data: {}},
+                {id: 'fakeId2', name:'fake2', data: {}}
+            ]);
+            solver.solve_letters.and.returnValue(['word1']);
+
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            cloakConfig.messages.submitAnswer(0, user);
+            expect(room.data.scores).toEqual({
+                'fakeId1': 11,
+                'fakeId2': 4
+            });
+        });
+
+        it('gives double points for the users who answers a word with all 9 letters', () => {
+            user.id = 'fakeId1';
+            room.data.possibleAnswers = {
+                'fakeId1': ['word']
+            }
+            room.data.finalAnswerList = {
+                'fakeId1': 'verylongw',
+                'fakeId2': 'word24',
+                'fakeId3': 'fakelonga'
+            };
+            room.data.scores = {
+                'fakeId1': 6,
+                'fakeId2': 4,
+                'fakeId3': 7
+            }
+            room.getMembers.and.returnValue([
+                {id: 'fakeId1', name:'fake1', data: {}},
+                {id: 'fakeId2', name:'fake2', data: {}},
+                {id: 'fakeId3', name:'fake3', data: {}}
+            ]);
+            solver.solve_letters.and.returnValue(['verylongw','fakelonga']);
+
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            cloakConfig.messages.submitAnswer(0, user);
+            expect(room.data.scores).toEqual({
+                'fakeId1': 24,
+                'fakeId2': 4,
+                'fakeId3': 25
+            });
+        });
+
+        it('maintains all scores the same if no one answered correctly', () => {
+            user.id = 'fakeId1';
+            room.data.possibleAnswers = {
+                'fakeId1': ['word']
+            }
+            room.data.finalAnswerList = {
+                'fakeId1': 'verylongw',
+                'fakeId2': 'word24',
+                'fakeId3': 'fakelonga'
+            };
+            room.data.scores = {
+                'fakeId1': 6,
+                'fakeId2': 4,
+                'fakeId3': 7
+            }
+            room.getMembers.and.returnValue([
+                {id: 'fakeId1', name:'fake1', data: {}},
+                {id: 'fakeId2', name:'fake2', data: {}},
+                {id: 'fakeId3', name:'fake3', data: {}}
+            ]);
+            solver.solve_letters.and.returnValue([]);
+
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            cloakConfig.messages.submitAnswer(0, user);
+            expect(room.data.scores).toEqual({
+                'fakeId1': 6,
+                'fakeId2': 4,
+                'fakeId3': 7
             });
         });
     });

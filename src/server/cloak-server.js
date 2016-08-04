@@ -398,8 +398,7 @@ function validateAnswers(answers, letters, room) {
         return b[1].length - a[1].length;
     });
 
-    var result = [];
-    solver.solve_letters(letters.join('').toLowerCase(), function(word) { result.push(word); });
+    var result = solver.solve_letters(letters.join('').toLowerCase());
 
     result.sort(function(a, b) {
         return b.length - a.length;
@@ -413,7 +412,6 @@ function validateAnswers(answers, letters, room) {
             answers[i].score = 0;
         }
     }
-
 
     scoreRound(answers, room);
 }
@@ -432,10 +430,11 @@ function scoreRound(answers, room) {
     }
 
     var bestAnswers = answers.filter(function(answer) {
-        return (answer.score === bestLength && answer.score > 0);
+        return ((answer.score === bestLength || answer.score === 2 * bestLength) && answer.score > 0);
     });
 
     var results = {};
+
     bestAnswers.map(function(answer){
         return results[answer[0]] = {
             word: answer[1],
@@ -444,9 +443,11 @@ function scoreRound(answers, room) {
     });
 
     var members = room.getMembers();
+
     for(var i=0; i<members.length; i++) {
         room.data.scores[members[i].id] += results[members[i].id] === undefined ? 0 : results[members[i].id].score;
     }
+
     refreshRoomUsers.bind(room)();
 }
 

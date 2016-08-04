@@ -28,8 +28,10 @@ function _recurse_solve_letters(letters, node, used_letter, cb, answer) {
     }
 }
 
-function solve_letters(letters, cb) {
-    _recurse_solve_letters(letters, dictionary.dictionary, {}, cb, '');
+function solve_letters(letters) {
+    var result = [];
+    _recurse_solve_letters(letters, dictionary.dictionary, {}, function(word) { result.push(word); }, '');
+    return result;
 }
 
 function sufficient_letters(word, letters) {
