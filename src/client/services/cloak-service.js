@@ -12,7 +12,10 @@ import {
     startAnswering,
     stopAnswering,
     disableStart,
-    resetLetters
+    resetLetters,
+    startSubmission,
+    stopSubmission,
+    submittedAnswer
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -31,7 +34,8 @@ export default {
     messageGetConsonant,
     messageGetVowel,
     messageRemoveFromRoomList,
-    resetScore
+    resetScore,
+    messageAnswer
 };
 
 function configureAndRun(roomId) {
@@ -102,6 +106,15 @@ function configureAndRun(roomId) {
                     cloak.stop();
                     router.navigateToLobby();
                 }
+            },
+            startSubmission: time => {
+                dispatch(startSubmission(time));
+            },
+            stopSubmission: () => {
+                dispatch(stopSubmission());
+            },
+            submittedAnswer: finalAnswerList => {
+                dispatch(submittedAnswer(finalAnswerList));
             }
         },
         initialData: {
@@ -155,4 +168,8 @@ function messageRemoveFromRoomList(roomId) {
 
 function resetScore() {
     cloak.message('resetScore');
+}
+
+function messageAnswer(answer) {
+    cloak.message('submitAnswer', answer);
 }

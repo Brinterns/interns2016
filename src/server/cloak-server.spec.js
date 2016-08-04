@@ -1,20 +1,29 @@
-var mockery = require('mockery');
+let mockery = require('mockery');
 
-var cloak;
-var cloakConfig;
-var lobby;
-var user;
-var room;
-var users;
-var rooms;
-var disconnect;
+let gameParameters = {
+    answerTime : 10,
+    submitTime : 10
+};
+let cloak;
+let cloakConfig;
+let lobby;
+let user;
+let room;
+let users;
+let rooms;
+let disconnect;
+let letterList;
 
 describe('cloak server', () => {
-    var randomConsonant;
-    var randomVowel;
+    let randomConsonant;
+    let randomVowel;
+    let setIntervalSpy; 
+    let setTimeoutSpy; 
+
     beforeEach(() => {
         randomConsonant = jasmine.createSpy('randomConsonant');
         randomVowel = jasmine.createSpy('randomVowel');
+        jasmine.clock().install();
     });
 
     beforeEach(() => {
@@ -26,7 +35,7 @@ describe('cloak server', () => {
         mockery.registerAllowable('./cloak-server');
         mockery.registerAllowable('./letter-lists');
         mockery.registerMock('./random-vowel-picker', randomVowel);
-        mockery.registerAllowable('./game-parameters');
+        mockery.registerMock('./game-parameters', gameParameters);
     });
 
     beforeEach(() => {
@@ -56,6 +65,7 @@ describe('cloak server', () => {
 
     afterEach(() => {
         mockery.disable();
+        jasmine.clock().uninstall();
     });
 
     describe('cloak setup tests', () => {
@@ -154,11 +164,11 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             room.getMembers.and.returnValue(users);
-            room.data = makeRoom(true, ['a','b','c'], 30);
+            room.data = makeRoom(true, ['a','b','c'], gameParameters.answerTime);
             
             cloakConfig.room.newMember.bind(room, user)();
 
-            expect(user.message).toHaveBeenCalledWith('startAnswering', 30);
+            expect(user.message).toHaveBeenCalledWith('startAnswering', gameParameters.answerTime);
         });
 
         it('sends stopAnswering if the game is not in the answering phase in the joined room', () => {
@@ -206,7 +216,6 @@ describe('cloak server', () => {
 
         expect(user.name).toEqual('TEST_USERNAME');
     });
-
 
     describe('createRoom', () => {
         it('creates room with the passed argument', () => {
@@ -515,6 +524,7 @@ describe('cloak server', () => {
             expect(room.data.leaderIndex).toEqual(1);
         })
     });
+
     describe('getConsonant', () => {
         it('sends disableConsonant if there are 6 or more consonants', () =>{
             user.getRoom.and.returnValue(room);
@@ -578,64 +588,114 @@ describe('cloak server', () => {
     });
 
     describe('checkListLength', () => {
-        it('sends user disableConsonant message if there are 9 or more letters in the letterList', () => {
-            user.getRoom.and.returnValue(room);
+        beforeEach(() => {
             room.data = {
                 letterList: {
                     letters: ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
                     vowelNum: 4,
                     disableConsonant: false,
                     disableVowel: false
-                }
+                },
+                answerTime: gameParameters.answerTime,
+                submitTime: gameParameters.submitTime
             }
+            user.getRoom.and.returnValue(room);
+        });
+                
+        it('sends user disableConsonant message if there are 9 or more letters in the letterList', () => {
             cloakConfig.messages.getVowel('', user);
 
             expect(user.message).toHaveBeenCalledWith('disableConsonant', true);
         });
 
         it('sends user disableVowel message if there are 9 or more letters in the letterList', () => {
-            user.getRoom.and.returnValue(room);
-            room.data = {
-                letterList: {
-                    letters: ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
-                    vowelNum: 4,
-                    disableConsonant: false,
-                    disableVowel: false
-                }
-            }
             cloakConfig.messages.getVowel('', user);
 
             expect(user.message).toHaveBeenCalledWith('disableVowel', true);
         });
 
         it('sets disableConsonant to true if there are 9 or more letters in the letter list', () => {
-            user.getRoom.and.returnValue(room);
-            room.data = {
-                letterList: {
-                    letters: ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
-                    vowelNum: 4,
-                    disableConsonant: false,
-                    disableVowel: false
-                }
-            }
             cloakConfig.messages.getVowel('', user);
 
             expect(room.data.letterList.disableConsonant).toEqual(true);
         });
 
         it('sets disableVowel to true if there are 9 or more letters in the letter list', () => {
-            user.getRoom.and.returnValue(room);
-            room.data = {
-                letterList: {
-                    letters: ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
-                    vowelNum: 4,
-                    disableConsonant: false,
-                    disableVowel: false
-                }
-            }
             cloakConfig.messages.getVowel('', user);
 
             expect(room.data.letterList.disableVowel).toEqual(true);
+        });
+
+        it('calls startAnswering if there are 9 or more letters in the letter list', () => {
+            cloakConfig.messages.getVowel('', user);
+
+            expect(room.messageMembers).toHaveBeenCalledWith('startAnswering', gameParameters.answerTime);
+        });
+
+        it('startAnswering sets room.data.answering to true', () => {
+            cloakConfig.messages.getVowel('', user);
+
+            expect(room.data.answering).toEqual(true);
+        });
+
+        it('startAnswering updates room data after every interval tick', () => {
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(1001);
+
+            expect(room.data.answerTime).toEqual(gameParameters.answerTime - 1);
+        });
+
+        it('startAnswering sends stopAnswering message after timeout', () => {
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+
+            expect(room.messageMembers).toHaveBeenCalledWith('stopAnswering');
+        });
+
+        it('answeringFinished sets room.data.answering to false', () => {
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+
+            expect(room.data.answering).toEqual(false);
+        });
+
+        it('answeringFinished sends startSubmission message', () => {
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+
+            expect(room.messageMembers).toHaveBeenCalledWith('startSubmission', gameParameters.submitTime);
+        });
+
+        it('startSubmission sets room.data.submitting to true', () => {
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+
+            expect(room.data.submitting).toEqual(true);
+        });
+
+        it('submitTime is updated to be in sync after every time tick', () => {
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+
+            jasmine.clock().tick(1000);
+
+            expect(room.data.submitTime).toEqual(gameParameters.submitTime - 1);
+        });
+
+        it('submissionFinished sends stopSubmission after the submitTime expires', () => {
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(gameParameters.submitTime * 1000);
+
+            expect(room.messageMembers).toHaveBeenCalledWith('stopSubmission');
+        });
+
+        it('submissionFinished sets room.data.submitting to false after the submitTime expires', () => {
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(gameParameters.submitTime * 1000);
+
+            expect(room.data.submitting).toEqual(false);
         });
     });
 
@@ -741,6 +801,51 @@ describe('cloak server', () => {
             cloakConfig.messages.resetScore('', user);
 
             expect(user.data.score).toEqual(undefined);
+        });
+    });
+
+    describe('submitAnswer ', () =>{
+        beforeEach( () => {
+            room.data = {
+                finalAnswerList: {}
+            };
+            user.id = 'fakeId'
+            user.getRoom.and.returnValue(room);
+            room.getMembers.and.returnValue([]);
+        });
+
+        it('gets the correct room', () => {
+            cloakConfig.messages.submitAnswer('', user);
+
+            expect(user.getRoom).toHaveBeenCalled();
+        });
+
+        it('updates the answer of the user if the answer is undefined', () => {
+            cloakConfig.messages.submitAnswer('fakeAnswer', user);
+
+            expect(room.data.finalAnswerList).toEqual({
+                'fakeId':'fakeAnswer'
+            });
+        });
+
+        it('sends the submittedAnswer message to all users with the correct answer array', () => {
+            cloakConfig.messages.submitAnswer('fakeAnswer', user);
+
+            expect(room.messageMembers).toHaveBeenCalledWith('submittedAnswer', ['fakeAnswer']);
+        });
+
+        it('does not change the answer of the users if the answer is not undefined', () => {
+            room.data = {
+                finalAnswerList: {
+                    'fakeId': 'fakeAnswer1'
+                }
+            };
+
+            cloakConfig.messages.submitAnswer('fakeAnswer', user);
+
+            expect(room.data.finalAnswerList).toEqual({
+                'fakeId': 'fakeAnswer1'
+            });
         });
     });
 });

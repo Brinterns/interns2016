@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { timerTick, resetTimer } from './game-actions';
+import { answerTimerTick, submissionTimerTick, resetAnswerTimer, resetSubmissionTimer } from './game-actions';
+
+import cloakService from '../services/cloak-service';
+
+import style from './game.scss';
 
 const SPACE_KEY = 32;
 const ENTER_KEY = 13;
@@ -11,12 +15,14 @@ export class AnswerInput extends Component {
     componentWillMount() {
         this.setState({
             answerList: [''],
-            focusIndex: 0
+            focusIndex: 0,
+            answerToSubmit: ''
         });
     }
 
     componentWillUnmount() {
         clearInterval(this.answerInputInterval);
+        clearInterval(this.submitInputInterval);
     }
 
     componentDidUpdate() {
@@ -24,12 +30,18 @@ export class AnswerInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.answering === nextProps.answering) {
+        if(this.props.answering === nextProps.answering && this.props.submission === nextProps.submission) {
             return;
         }
 
         if(nextProps.answering) {
-            this.startTimer();
+            this.startAnsweringTimer();
+            return;
+        } 
+
+        if(nextProps.submission) {
+            this.startSubmitTimer();
+            return;
         }
     }
 
@@ -83,7 +95,18 @@ export class AnswerInput extends Component {
             }
             case SPACE_KEY: {
                 event.preventDefault();
-                
+                const { focusIndex, answerList } = this.state;
+
+                this.refs[`radio${focusIndex}`].checked = true;
+
+                for(let i=0; i<answerList.length; i++) {
+                    this.refs[i].className = '';
+                }
+
+                this.refs[focusIndex].className = style['answer-boxes-checked'];
+
+                this.setAnswer();
+
                 break;
             }
         }
@@ -100,6 +123,7 @@ export class AnswerInput extends Component {
                 })
         });
     }
+
     handleFocus(index) {
         this.setState({
             focusIndex: index
@@ -116,54 +140,107 @@ export class AnswerInput extends Component {
                         <input maxLength="18" size="30" placeholder="Enter your answer here" ref={index} onFocus={() => this.handleFocus(index)}
                             defaultValue={answer} onChange={(event) => this.handleChange(event, index)} onKeyDown={event => this.handleKeyPress(event)}
                             disabled={!this.props.answering} />
-                        <input type="radio" name="answer" />
+                        <input type="radio" name="answer" ref={`radio${index}`} onClick={() => this.setAnswer()}/>
                     </div>
                 );
             })
         );
     }
 
-    timerTick() {
-        if(this.props.timerValue > 0){
-            this.props.timerTick();
+    answeringTimerTick() {
+        if(this.props.answerTimerValue > 0){
+            this.props.answerTimerTick();
         } else {
             clearInterval(this.answerInputInterval);
-            this.props.resetTimer();
+            this.props.resetAnswerTimer();
         }
     }
 
+    submissionTimerTick() {
+        if(this.props.submissionTimerValue > 0){
+            this.props.submissionTimerTick();
+        } else {
+            clearInterval(this.submitInputInterval);
+            this.props.resetSubmissionTimer();
+        }
+    }
 
-    startTimer() {
-        this.answerInputInterval = setInterval(() => this.timerTick(), 1000);
+    startAnsweringTimer() {
+        this.answerInputInterval = setInterval(() => this.answeringTimerTick(), 1000);
+    }
+
+    startSubmitTimer() {
+        this.submitInputInterval = setInterval(() => this.submissionTimerTick(), 1000);
+    }
+
+    setAnswer() {
+        const { answerList } = this.state;
+        for(let i=0; i<answerList.length; i++) {
+            if(this.refs[`radio${i}`].checked === true) {
+                this.setState({
+                    answerToSubmit: answerList[i]
+                });
+            }
+        }
+    }
+
+    submitAnswer() {
+        this.setState({
+            submitted: true
+        });
+        cloakService.messageAnswer(this.state.answerToSubmit);
     }
 
     render() {
-        const timerArea = (
+        const answerTimerArea = (
             <div>
-                <p>Answering Time Left: {this.props.timerValue}</p>
+                <p>Answering Time Left: {this.props.answerTimerValue}</p>
             </div>
         );
+
+        const submitTimerArea = (
+            <div>
+                <p>Submission Time Left: {this.props.submissionTimerValue}</p>
+            </div>
+        );
+
+        const submitButton = (
+            <div>
+                <button className="btn btn-success" onClick={() => this.submitAnswer()}>Ready</button>
+            </div>
+        );
+
 
         return (
             <div className="col-lg-12 text-center">
                 <h3>ANSWER INPUT</h3>
-                {this.props.answering ? timerArea : null}        
+                {this.props.answering ? answerTimerArea : null}
+                {this.props.submission ? submitTimerArea : null}
                 <div>{this.textBoxes()}</div>
+                {this.props.submission && !this.state.submitted ? submitButton : null}
             </div>
         );
     }
-};
+}
 
 const mapStateToProps = state => ({
-    timerValue: state.game.timerValue
+    answerTimerValue: state.game.answerTimerValue,
+    submissionTimerValue: state.game.submissionTimerValue,
+    finalAnswers: state.game.finalAnswers
 });
 
 const mapDispatchToProps = dispatch => ({
-    timerTick() {
-        dispatch(timerTick());
+    answerTimerTick() {
+        dispatch(answerTimerTick());
     },
-    resetTimer() {
-        dispatch(resetTimer());
+    submissionTimerTick() {
+        dispatch(submissionTimerTick());
+    },
+    resetAnswerTimer() {
+        dispatch(resetAnswerTimer());
+    },
+    resetSubmissionTimer() {
+        dispatch(resetSubmissionTimer());
     }
 });
 
