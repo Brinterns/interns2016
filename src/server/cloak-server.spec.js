@@ -1,8 +1,9 @@
 let mockery = require('mockery');
 
 let gameParameters = {
-    answerTime : 10,
-    submitTime : 10
+    answerTime : 20,
+    submitTime : 10,
+    numLetters : 9
 };
 let cloak;
 let cloakConfig;
@@ -32,10 +33,10 @@ describe('cloak server', () => {
 
     beforeEach(() => {
         mockery.registerAllowable('./cloak-server');
-        mockery.registerAllowable('./game-parameters');
         mockery.registerAllowable('./letters/letter-lists');
         mockery.registerAllowable('./validation/cntdn');
         mockery.registerAllowable('./dictionary');
+        mockery.registerMock('./game-parameters', gameParameters);
         mockery.registerMock('./letters/random-consonant-picker', randomConsonant);
         mockery.registerMock('./letters/random-vowel-picker', randomVowel);
     });
@@ -809,7 +810,10 @@ describe('cloak server', () => {
     describe('submitAnswer ', () =>{
         beforeEach( () => {
             room.data = {
-                finalAnswerList: {}
+                finalAnswerList: {},
+                possibleAnswers: {
+                    fakeId: ['fakeAnswer', 'fakeAnswer1']
+                }
             };
             user.id = 'fakeId'
             user.getRoom.and.returnValue(room);
@@ -817,13 +821,13 @@ describe('cloak server', () => {
         });
 
         it('gets the correct room', () => {
-            cloakConfig.messages.submitAnswer('', user);
+            cloakConfig.messages.submitAnswer(0, user);
 
             expect(user.getRoom).toHaveBeenCalled();
         });
 
         it('updates the answer of the user if the answer is undefined', () => {
-            cloakConfig.messages.submitAnswer('fakeAnswer', user);
+            cloakConfig.messages.submitAnswer(0, user);
 
             expect(room.data.finalAnswerList).toEqual({
                 'fakeId':'fakeAnswer'
@@ -831,19 +835,17 @@ describe('cloak server', () => {
         });
 
         it('sends the submittedAnswer message to all users with the correct answer array', () => {
-            cloakConfig.messages.submitAnswer('fakeAnswer', user);
+            cloakConfig.messages.submitAnswer(0, user);
 
             expect(room.messageMembers).toHaveBeenCalledWith('submittedAnswer', ['fakeAnswer']);
         });
 
         it('does not change the answer of the users if the answer is not undefined', () => {
-            room.data = {
-                finalAnswerList: {
-                    'fakeId': 'fakeAnswer1'
-                }
+            room.data.finalAnswerList = {
+                'fakeId': 'fakeAnswer1'
             };
 
-            cloakConfig.messages.submitAnswer('fakeAnswer', user);
+            cloakConfig.messages.submitAnswer(1, user);
 
             expect(room.data.finalAnswerList).toEqual({
                 'fakeId': 'fakeAnswer1'
