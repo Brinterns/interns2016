@@ -2,7 +2,7 @@ var cloak = require('cloak');
 var randomConsonant = require('./letters/random-consonant-picker');
 var randomVowel = require('./letters/random-vowel-picker');
 var gameParameters = require('./game-parameters');
-var solver = require('./validation/cntdn');
+var solver = require('./vendor/validation/cntdn');
 
 module.exports = function(expressServer) {
     cloak.configure({
