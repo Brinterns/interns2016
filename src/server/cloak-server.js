@@ -123,7 +123,7 @@ function createRoom(name, user) {
 
 function joinRoom(id, user) {
     var room = cloak.getRoom(id);
-    room.data.scores[user.id] = 0;
+    room.data.scores[user.id] = room.data.scores[user.id] === undefined ? 0 : room.data.scores[user.id];
     room.data.userIdList.push(user.id);
     room.addMember(user);
     refreshListener();
