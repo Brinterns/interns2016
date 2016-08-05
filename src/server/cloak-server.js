@@ -373,7 +373,7 @@ function submissionFinished(room, timeLeft) {
 
 function submitAnswer(index, user) {
     var room = user.getRoom();
-    var answer = room.data.possibleAnswers[user.id][index];
+    var answer = room.data.possibleAnswers[user.id] === undefined ? '' : room.data.possibleAnswers[user.id][index];
     var finalAnswerList = room.data.finalAnswerList;
     
 
