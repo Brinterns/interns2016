@@ -10,13 +10,15 @@ export default function RoomList(props) {
             <h2>Rooms Available</h2>
             <div className="col-lg-12 pre-scrollable list-group">
                 {props.roomList.map( room => {
-                    return (
-                        <button className={`list-group-item list-group-item-${getColour(room)} ${style.space}`} key={room.id}
-                                disabled={room.data.started} onClick={()=>joinRoom(room)}>
-                            {room.name}
-                            <span className='badge'>{room.users.length}</span>
-                        </button>
-                    );
+                    if(!room.data.started){
+                        return (
+                            <button className={`list-group-item list-group-item-${getColour(room)} ${style.space}`} key={room.id}
+                                    disabled={room.data.started} onClick={()=>joinRoom(room)}>
+                                {room.name}
+                                <span className='badge'>{room.users.length}</span>
+                            </button>
+                        );
+                    }
                 })}
             </div>
         </div>
