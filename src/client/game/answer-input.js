@@ -20,6 +20,12 @@ export class AnswerInput extends Component {
         });
     }
 
+    componentDidMount() {
+        this.refs['radio0'].checked = true;
+        this.refs['0'].className = style['answer-boxes-checked'];
+        this.setAnswer();
+    }
+
     componentWillUnmount() {
         clearInterval(this.answerInputInterval);
         clearInterval(this.submitInputInterval);
