@@ -20,6 +20,12 @@ export class AnswerInput extends Component {
         });
     }
 
+    componentDidMount() {
+        this.refs['radio0'].checked = true;
+        this.refs['0'].className = style['answer-boxes-checked'];
+        this.setAnswer();
+    }
+
     componentWillUnmount() {
         clearInterval(this.answerInputInterval);
         clearInterval(this.submitInputInterval);
@@ -153,6 +159,7 @@ export class AnswerInput extends Component {
         } else {
             clearInterval(this.answerInputInterval);
             this.props.resetAnswerTimer();
+            cloakService.messageAnswers(this.state.answerList);
         }
     }
 
@@ -178,7 +185,7 @@ export class AnswerInput extends Component {
         for(let i=0; i<answerList.length; i++) {
             if(this.refs[`radio${i}`].checked === true) {
                 this.setState({
-                    answerToSubmit: answerList[i]
+                    answerToSubmit: i
                 });
             }
         }
@@ -188,7 +195,7 @@ export class AnswerInput extends Component {
         this.setState({
             submitted: true
         });
-        cloakService.messageAnswer(this.state.answerToSubmit);
+        cloakService.messageAnswerToSubmit(this.state.answerToSubmit);
     }
 
     render() {

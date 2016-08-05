@@ -1,7 +1,8 @@
 var cloak = require('cloak');
-var randomConsonant = require('./random-consonant-picker');
-var randomVowel = require('./random-vowel-picker');
+var randomConsonant = require('./letters/random-consonant-picker');
+var randomVowel = require('./letters/random-vowel-picker');
 var gameParameters = require('./game-parameters');
+var solver = require('./vendor/validation/cntdn');
 
 module.exports = function(expressServer) {
     cloak.configure({
@@ -31,7 +32,8 @@ module.exports = function(expressServer) {
             checkRoom: checkRoom,
             removeFromRoomList: removeFromRoomList,
             resetScore: resetScore,
-            submitAnswer: submitAnswer
+            submitAnswer: submitAnswer,
+            possibleAnswers: possibleAnswers
         }
     });
     cloak.run();
@@ -114,13 +116,14 @@ function createRoom(name, user) {
         disableConsonant: false,
         disableVowel: false
     };
+    room.data.possibleAnswers = {};
     room.data.finalAnswerList = {};
     fireRoomListReload();
 }
 
 function joinRoom(id, user) {
     var room = cloak.getRoom(id);
-    room.data.scores[user.id] = 0;
+    room.data.scores[user.id] = room.data.scores[user.id] === undefined ? 0 : room.data.scores[user.id];
     room.data.userIdList.push(user.id);
     room.addMember(user);
     refreshListener();
@@ -278,7 +281,7 @@ function resetScore(arg, user) {
 function getConsonant(arg, user) {
     var room = user.getRoom();
     var letterList = room.data.letterList;
-    if(letterList.letters.length >= 9){
+    if(letterList.letters.length >= gameParameters.numLetters){
         return;
     }
     if(letterList.consonantNum < 6) {
@@ -296,7 +299,7 @@ function getConsonant(arg, user) {
 function getVowel(arg, user) {
     var room = user.getRoom();
     var letterList = room.data.letterList;
-    if(letterList.letters.length >= 9){
+    if(letterList.letters.length >= gameParameters.numLetters){
         return;
     }
 
@@ -314,7 +317,7 @@ function getVowel(arg, user) {
 function checkListLength(user) {
     var room = user.getRoom();
     var letterList = room.data.letterList;
-    if(letterList.letters.length >= 9){
+    if(letterList.letters.length >= gameParameters.numLetters){
         letterList.disableConsonant = true;
         letterList.disableVowel = true;
         user.message('disableConsonant', true);
@@ -368,17 +371,87 @@ function submissionFinished(room, timeLeft) {
     clearInterval(timeLeft);
 }
 
-function submitAnswer(answer, user) {
+function submitAnswer(index, user) {
     var room = user.getRoom();
+    var answer = room.data.possibleAnswers[user.id] === undefined ? '' : room.data.possibleAnswers[user.id][index];
     var finalAnswerList = room.data.finalAnswerList;
+    
+
     if(finalAnswerList[user.id] === undefined) {
         finalAnswerList[user.id] = answer;
     }
     var finalAnswerArr = Object.keys(finalAnswerList).reduce((array, userId) => {
         array.push(finalAnswerList[userId]); return array}, []);
+
     room.messageMembers('submittedAnswer', finalAnswerArr);
+
     if(finalAnswerArr.length === room.getMembers().length) {
+        var answersToScore = Object.keys(finalAnswerList).map((id)=>[id, finalAnswerList[id]]);
         clearTimeout(submissionTimers[room.id].timer);
         submissionFinished(room, submissionTimers[room.id].timeLeft);
+        validateAnswers(answersToScore, room.data.letterList.letters, room);
     }
+}
+
+function validateAnswers(answers, letters, room) {
+    answers.sort(function(a, b) {
+        return b[1].length - a[1].length;
+    });
+
+    var result = solver.solve_letters(letters.join('').toLowerCase());
+
+    result.sort(function(a, b) {
+        return b.length - a.length;
+    });
+
+    for(var i=0; i<answers.length; i++) {
+        if(result.indexOf(answers[i][1].toLowerCase()) !== -1) {
+            answers[i].score = (answers[i][1].length === gameParameters.numLetters ? 2*answers[i][1].length : answers[i][1].length); 
+        }
+        else {
+            answers[i].score = 0;
+        }
+    }
+
+    scoreRound(answers, room);
+}
+
+function scoreRound(answers, room) {
+    var bestLength = -1;
+    for(var i=0; i<answers.length; i++) {
+        if(answers[i].score > 0) {
+            bestLength = answers[i][1].length;
+            break;
+        }
+    }
+
+    if(bestLength === -1) {
+        return;
+    }
+
+    var bestAnswers = answers.filter(function(answer) {
+        return ((answer.score === bestLength || answer.score === 2 * bestLength) && answer.score > 0);
+    });
+
+    var results = {};
+
+    bestAnswers.map(function(answer){
+        return results[answer[0]] = {
+            word: answer[1],
+            score: answer.score
+        }
+    });
+
+    var members = room.getMembers();
+
+    for(var i=0; i<members.length; i++) {
+        room.data.scores[members[i].id] += results[members[i].id] === undefined ? 0 : results[members[i].id].score;
+    }
+
+    refreshRoomUsers.bind(room)();
+}
+
+function possibleAnswers(answerList, user) {
+    var room = user.getRoom();
+    room.data.possibleAnswers[user.id] = answerList;
 }
