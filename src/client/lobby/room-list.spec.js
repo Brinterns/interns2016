@@ -13,10 +13,10 @@ describe('<RoomList />', () => {
 
     });
 
-    it('contains "Rooms Available" heading', () => {
+    it('contains "Rooms" heading', () => {
         const wrapper = shallow(<RoomList roomList={mockList}/>);
-        
-        expect(wrapper.find('h2').text()).toEqual('Rooms Available');
+
+        expect(wrapper.find('h2').text()).toEqual('Rooms');
     });
 
     it('renders the rooms in which a game has not started', () => {

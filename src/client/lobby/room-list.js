@@ -7,7 +7,7 @@ import style from '../common/common.scss';
 export default function RoomList(props) {
     return (
         <div className="col-lg-4 text-center">
-            <h2>Rooms Available</h2>
+            <h2>Rooms</h2>
             <div className="col-lg-12 pre-scrollable list-group">
                 {props.roomList.map( room => {
                     if(!room.data.started){

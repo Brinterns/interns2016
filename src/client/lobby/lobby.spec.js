@@ -10,6 +10,6 @@ describe('<Lobby />', () => {
 
     it('contains "Lobby" heading', () => {
         const wrapper = shallow(<Lobby />);
-        expect(wrapper.find('h1').text()).toEqual('Lobby');
+        expect(wrapper.find('h1').text()).toEqual('LobbyUsername: ');
     });
 });

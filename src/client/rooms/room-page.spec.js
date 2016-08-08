@@ -12,23 +12,23 @@ describe('<RoomPage />', () => {
         window.cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'connected', 'message']);
     });
 
-    it('contains "Start Game" button', () => {
+    it('contains "Start" button', () => {
         data = '';
         const wrapper = mount(
             <Provider store={store}>
                 <RoomPage params={{data: data}}/>
             </Provider>
         );
-        expect(wrapper.find('#start-game').text()).toEqual('Start Game');
+        expect(wrapper.find('#start-game').text()).toEqual('Start');
     });
 
-    it('contains "Leave Room" button', () => {
+    it('contains "Leave" button', () => {
         data = '';
         const wrapper = mount(
             <Provider store={store}>
                 <RoomPage params={{data: data}}/>
             </Provider>
         );
-        expect(wrapper.find('#leave-room').text()).toEqual('Leave Room');
+        expect(wrapper.find('#leave-room').text()).toEqual('Leave');
     });
 });
