@@ -842,12 +842,6 @@ describe('cloak server', () => {
             });
         });
 
-        it('sends the submittedAnswer message to all users with the correct answer array', () => {
-            cloakConfig.messages.submitAnswer(0, user);
-
-            expect(room.messageMembers).toHaveBeenCalledWith('submittedAnswer', ['fakeAnswer']);
-        });
-
         it('does not change the answer of the users if the answer is not undefined', () => {
             room.data.finalAnswerList = {
                 'fakeId': 'fakeAnswer1'

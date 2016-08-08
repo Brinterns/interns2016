@@ -373,6 +373,7 @@ function submissionFinished(room, timeLeft) {
 }
 
 function submitAnswer(index, user) {
+    user.message('stopSubmission');
     var room = user.getRoom();
     var answer = room.data.possibleAnswers[user.id] === undefined ? '' : room.data.possibleAnswers[user.id][index];
     var finalAnswerList = room.data.finalAnswerList;
@@ -388,10 +389,10 @@ function submitAnswer(index, user) {
         submissionFinished(room, submissionTimers[room.id].timeLeft);
         validateAnswers(answersToScore, room.data.letterList.letters, room);
     }
-    user.message('stopSubmission');
 }
 
 function validateAnswers(answers, letters, room) {
+    console.log(answers);
     answers.sort(function(a, b) {
         return b[1].length - a[1].length;
     });
