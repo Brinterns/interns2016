@@ -388,6 +388,7 @@ function submitAnswer(index, user) {
         submissionFinished(room, submissionTimers[room.id].timeLeft);
         validateAnswers(answersToScore, room.data.letterList.letters, room);
     }
+    user.message('stopSubmission');
 }
 
 function validateAnswers(answers, letters, room) {
