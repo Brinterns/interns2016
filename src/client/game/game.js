@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import AnswerInput from './answer-input';
+import RoundResults from './round-results';
 
 import cloakService from '../services/cloak-service';
 
@@ -63,7 +64,9 @@ export class Game extends Component {
                 <div>
                     {letterBoxes}
                 </div>
-                <AnswerInput answering={this.props.answering} submission={this.props.submission}/>
+                {this.props.roundResults ? <RoundResults /> : 
+                    <AnswerInput answering={this.props.answering} submission={this.props.submission}/>
+                }
             </div>
         );
     }
@@ -76,7 +79,8 @@ const mapStateToProps = state => ({
     disableConsonant: state.game.disableConsonant,
     disableVowel: state.game.disableVowel,
     answering: state.game.answering,
-    submission: state.game.submission
+    submission: state.game.submission,
+    roundResults: state.game.roundResults
 });
 
 export default connect(

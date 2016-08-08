@@ -204,6 +204,7 @@ function startGame(arg, user) {
     room.data.leaderId = user.id;
     room.data.started = true;
     room.messageMembers('startGame');
+    room.messageMembers('roundStarted');
     makeLeader(room.data.leaderIndex, room);
     fireRoomListReload();
 }
@@ -375,15 +376,11 @@ function submitAnswer(index, user) {
     var room = user.getRoom();
     var answer = room.data.possibleAnswers[user.id] === undefined ? '' : room.data.possibleAnswers[user.id][index];
     var finalAnswerList = room.data.finalAnswerList;
-    
-
     if(finalAnswerList[user.id] === undefined) {
         finalAnswerList[user.id] = answer;
     }
     var finalAnswerArr = Object.keys(finalAnswerList).reduce((array, userId) => {
         array.push(finalAnswerList[userId]); return array}, []);
-
-    room.messageMembers('submittedAnswer', finalAnswerArr);
 
     if(finalAnswerArr.length === room.getMembers().length) {
         var answersToScore = Object.keys(finalAnswerList).map((id)=>[id, finalAnswerList[id]]);
@@ -447,8 +444,31 @@ function scoreRound(answers, room) {
     for(var i=0; i<members.length; i++) {
         room.data.scores[members[i].id] += results[members[i].id] === undefined ? 0 : results[members[i].id].score;
     }
-
+    
     refreshRoomUsers.bind(room)();
+    room.messageMembers('roundEnded');
+    sendChosenWordList(room, answers);
+
+    room.data.roundEnded = true;
+}
+
+function sendChosenWordList(room, answers){
+    var toSend = {};
+    var roomMembers = room.getMembers(true);
+
+    for(var i=0; i<answers.length; i++) {
+        for(var j=0; j<roomMembers.length; j++) {
+            if(roomMembers[j].id === answers[i][0]) {
+                toSend[answers[i][0]] = {
+                    name: roomMembers[j].name,
+                    word: answers[i][1],
+                    score: answers[i].score
+                };
+                break;
+            }
+        }
+    }
+    room.messageMembers('submittedAnswers', toSend);
 }
 
 function possibleAnswers(answerList, user) {
