@@ -392,7 +392,6 @@ function submitAnswer(index, user) {
 }
 
 function validateAnswers(answers, letters, room) {
-    console.log(answers);
     answers.sort(function(a, b) {
         return b[1].length - a[1].length;
     });

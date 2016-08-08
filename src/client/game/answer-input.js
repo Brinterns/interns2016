@@ -22,6 +22,7 @@ export class AnswerInput extends Component {
 
     componentDidMount() {
         this.refs[`radio${this.state.answerToSubmit}`].checked = true;
+        this.refs[this.state.answerToSubmit].className = style['answer-boxes-checked'];
     }
 
     componentWillUnmount() {
