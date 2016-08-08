@@ -36,7 +36,7 @@ function sort(users) {
     users = Array.from(users);
     users.sort((user1, user2) => {
         let score = 0-(user1.data.score-user2.data.score);
-        if(user1.score !== undefined && user2.data.score !== undefined && score !== 0) {
+        if(user1.data.score !== undefined && user2.data.score !== undefined && score !== 0) {
             return score;
         }
 
