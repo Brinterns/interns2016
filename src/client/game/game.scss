@@ -47,6 +47,12 @@
   outline: none;
 }
 
-.result.name{
+.result-name {
+  display: inline-block;
   font-weight: bold;
+  vertical-align: middle;
+}
+
+.result-crown {
+  font-size: 200%;
 }

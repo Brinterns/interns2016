@@ -16,40 +16,41 @@ export class RoundResults extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if(Object.keys(nextProps.finalAnswers).length > 1) { 
-			let sortedKeys = Object.keys(nextProps.finalAnswers);
-			sortedKeys.sort((a,b) => {
-				nextProps.finalAnswers[a].score - nextProps.finalAnswers[b].score
-			});
+		let sortedKeys = Object.keys(nextProps.finalAnswers);
+		sortedKeys.sort((a,b) => {
+			return nextProps.finalAnswers[a].score - nextProps.finalAnswers[b].score;
+			// if (nextProps.finalAnswers[a].score < nextProps.finalAnswers[b].score)
+	  //   		return -1;
+	  // 		if (nextProps.finalAnswers[a].score > nextProps.finalAnswers[b].score)
+	  //   		return 1;
+			// return 0;
+		});
 
-			let winners = sortedKeys.reduce((result, id) => {
-				if(nextProps.finalAnswers[id].score === nextProps.finalAnswers[sortedKeys[0]].score && nextProps.finalAnswers[id].score !== 0)
-					result[id] = nextProps.finalAnswers[id];
-				return result;
-			}, {});
+		sortedKeys.reverse();
 
-			let plebs = sortedKeys.reduce((result, id) => {
-				if(nextProps.finalAnswers[id].score !== nextProps.finalAnswers[sortedKeys[0]].score && nextProps.finalAnswers[id].score !== 0)
-					result[id] = nextProps.finalAnswers[id];
-				return result;
-			}, {});
+		let winners = sortedKeys.reduce((result, id) => {
+			if(nextProps.finalAnswers[id].score === nextProps.finalAnswers[sortedKeys[0]].score)
+				result[id] = nextProps.finalAnswers[id];
+			return result;
+		}, {});
 
-			let losers = sortedKeys.reduce((result, id) => {
-				if(nextProps.finalAnswers[id].score === 0 )
-					result[id] = nextProps.finalAnswers[id];
-				return result;
-			}, {});
+		let plebs = sortedKeys.reduce((result, id) => {
+			if(nextProps.finalAnswers[id].score !== nextProps.finalAnswers[sortedKeys[0]].score && nextProps.finalAnswers[id].score !== 0)
+				result[id] = nextProps.finalAnswers[id];
+			return result;
+		}, {});
 
-			this.setState({
-				winners: winners,
-				plebs: plebs,
-				losers: losers
-			});
+		let losers = sortedKeys.reduce((result, id) => {
+			if(nextProps.finalAnswers[id].score === 0 )
+				result[id] = nextProps.finalAnswers[id];
+			return result;
+		}, {});
 
-			console.log(winners);
-			console.log(plebs);
-			console.log(losers);
-		}
+		this.setState({
+			winners: winners,
+			plebs: plebs,
+			losers: losers
+		});
 	}
 
 	listElem(data, type) {
@@ -65,7 +66,7 @@ export class RoundResults extends Component {
 			}
 			case 'plebs': {
 				buttonType = 'info';
-				crown = '\u262D';
+				crown = '  ';
 				break;
 			}
 			case 'losers': {
@@ -84,8 +85,9 @@ export class RoundResults extends Component {
 			id === userId ? pointer = 'YOU' : null;
 			return(
 		        <li className={`list-group-item list-group-item-${buttonType} ${style.space}`}>
-		            <div className={`col-lg-2`}>{pointer}</div>
-		            <div className={`col-lg-4 ${gameStyle['result-name']}`}>{data[id].name + ' ' + crown}</div>
+		            <div className={`col-lg-1`}>{pointer}</div>
+		            <div className={`col-lg-1 ${gameStyle['result-crown']}`}>{crown}</div>
+		            <div className={`col-lg-4 ${gameStyle['result-name']}`}>{data[id].name}</div>
 		            <div className={`col-lg-4`}>{data[id].word}</div>
 		            <div className={`col-lg-2`}>{data[id].score}</div>
 		        </li>
