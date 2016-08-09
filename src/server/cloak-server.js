@@ -470,7 +470,10 @@ function sendChosenWordList(room, answers){
             }
         }
     }
-    room.messageMembers('submittedAnswers', toSend);
+    
+    if(roomMembers.length === Object.keys(toSend).length){
+        room.messageMembers('submittedAnswers', toSend);
+    }
 }
 
 function possibleAnswers(answerList, user) {
