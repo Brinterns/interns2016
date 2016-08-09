@@ -12,7 +12,8 @@
     "dev": "gulp dev",
     "start": "npm run build && node dist/server",
     "test": "gulp test",
-    "test:server": "gulp test:server"
+    "test:server": "gulp test:server",
+    "test:client": "gulp test:client"
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",

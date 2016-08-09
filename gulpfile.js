@@ -33,6 +33,7 @@ gulp.task('dev', gulp.series(
 ));
 
 gulp.task('test', test());
+gulp.task('test:client', testClient)
 gulp.task('test:server', testServer)
 
 function clean() {
