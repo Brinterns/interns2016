@@ -22,6 +22,41 @@ describe('<RoomCreator />', () => {
         expect(wrapper.find('#room-name-button').text()).toEqual('Create Room');
     });
 
+    it('changes the state when handleChange is called', () => {
+        wrapper = mount(<RoomCreator />);
+        let component = wrapper.instance();
+
+        component.handleChange({
+            target: {value: 'testingUser'}
+        }, 'username');
+
+        expect(wrapper.state()).toEqual({username: 'testingUser'});
+    });
+
+    it('sends the setUsername message when the set username button listener is called', () => {
+        wrapper = mount(<RoomCreator />);
+        let component = wrapper.instance();
+
+        component.handleChange({
+            target:{value: 'testingUser'}
+        }, 'username')
+        component.setUsername();
+
+        expect(cloak.message).toHaveBeenCalledWith('setUsername', 'testingUser');
+    });
+
+    it('stores the new username in local storage when setUsername is called', () => {
+        wrapper = mount(<RoomCreator />);
+        let component = wrapper.instance();
+
+        component.handleChange({
+            target:{value: 'testingUser'}
+        }, 'username')
+        component.setUsername();
+
+        expect(localStorage.name).toEqual('testingUser');
+    });
+
     it('sends the createRoom message when the create room button listener is called', () => {
         wrapper = mount(<RoomCreator />);
         let component = wrapper.instance();
