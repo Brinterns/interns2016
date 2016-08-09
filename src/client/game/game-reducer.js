@@ -16,6 +16,7 @@ const initialState = {
     disableStart: true,
     answering: false,
     submission: false,
+    roundResults: false,
     finalAnswers: []
 };
 
@@ -101,9 +102,17 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 submission: false
             });
-        case actionTypes.SUBMITTED_ANSWER:
+        case actionTypes.SUBMITTED_ANSWERS:
             return updateState(state, {
                 finalAnswers: action.payload
+            });
+        case actionTypes.ROUND_STARTED:
+            return updateState(state, {
+                roundResults: false
+            })
+        case actionTypes.ROUND_ENDED: 
+            return updateState(state, {
+                roundResults: true
             })
         default:
             return state;

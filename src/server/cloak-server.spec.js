@@ -842,12 +842,6 @@ describe('cloak server', () => {
             });
         });
 
-        it('sends the submittedAnswer message to all users with the correct answer array', () => {
-            cloakConfig.messages.submitAnswer(0, user);
-
-            expect(room.messageMembers).toHaveBeenCalledWith('submittedAnswer', ['fakeAnswer']);
-        });
-
         it('does not change the answer of the users if the answer is not undefined', () => {
             room.data.finalAnswerList = {
                 'fakeId': 'fakeAnswer1'
@@ -971,6 +965,56 @@ describe('cloak server', () => {
                 'fakeId1': 6,
                 'fakeId2': 4,
                 'fakeId3': 7
+            });
+        });
+
+        it('makes the round end if all users submitted an answer', () => {
+            user.id = 'fakeId1';
+            room.data.possibleAnswers = {
+                'fakeId1': ['word']
+            }
+            room.data.finalAnswerList = {
+                'fakeId1': 'word1',
+            };
+            room.data.scores = {
+                'fakeId1': 6,
+            }
+            room.getMembers.and.returnValue([
+                {id: 'fakeId1', name:'fake1', data: {}}
+            ]);
+            solver.solve_letters.and.returnValue(['word1']);
+
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            cloakConfig.messages.submitAnswer(0, user);
+            expect(room.data.roundEnded).toEqual(true);
+        });
+
+        it('sends a list of all the answers submitted by the users to everyone in the room', () => {
+            user.id = 'fakeId1';
+            room.data.possibleAnswers = {
+                'fakeId1': ['word']
+            }
+            room.data.finalAnswerList = {
+                'fakeId1': 'word1',
+            };
+            room.data.scores = {
+                'fakeId1': 6,
+            }
+            room.getMembers.and.returnValue([
+                {id: 'fakeId1', name:'fake1', data: {}}
+            ]);
+            solver.solve_letters.and.returnValue(['word1']);
+
+            cloakConfig.messages.getVowel('', user);
+            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            cloakConfig.messages.submitAnswer(0, user);
+            expect(room.messageMembers).toHaveBeenCalledWith('submittedAnswers',{
+                fakeId1: {
+                    name: 'fake1',
+                    word: 'word1',
+                    score: 5
+                }
             });
         });
     });

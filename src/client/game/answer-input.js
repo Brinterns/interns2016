@@ -16,14 +16,13 @@ export class AnswerInput extends Component {
         this.setState({
             answerList: [''],
             focusIndex: 0,
-            answerToSubmit: ''
+            answerToSubmit: 0
         });
     }
 
     componentDidMount() {
-        this.refs['radio0'].checked = true;
-        this.refs['0'].className = style['answer-boxes-checked'];
-        this.setAnswer();
+        this.refs[`radio${this.state.answerToSubmit}`].checked = true;
+        this.refs[this.state.answerToSubmit].className = style['answer-boxes-checked'];
     }
 
     componentWillUnmount() {
@@ -46,6 +45,7 @@ export class AnswerInput extends Component {
         } 
 
         if(nextProps.submission) {
+            cloakService.messageAnswers(this.state.answerList);
             this.startSubmitTimer();
             return;
         }
@@ -159,7 +159,6 @@ export class AnswerInput extends Component {
         } else {
             clearInterval(this.answerInputInterval);
             this.props.resetAnswerTimer();
-            cloakService.messageAnswers(this.state.answerList);
         }
     }
 
@@ -167,6 +166,7 @@ export class AnswerInput extends Component {
         if(this.props.submissionTimerValue > 0){
             this.props.submissionTimerTick();
         } else {
+            this.submitAnswer();
             clearInterval(this.submitInputInterval);
             this.props.resetSubmissionTimer();
         }
@@ -192,9 +192,6 @@ export class AnswerInput extends Component {
     }
 
     submitAnswer() {
-        this.setState({
-            submitted: true
-        });
         cloakService.messageAnswerToSubmit(this.state.answerToSubmit);
     }
 
@@ -224,7 +221,7 @@ export class AnswerInput extends Component {
                 {this.props.answering ? answerTimerArea : null}
                 {this.props.submission ? submitTimerArea : null}
                 <div>{this.textBoxes()}</div>
-                {this.props.submission && !this.state.submitted ? submitButton : null}
+                {this.props.submission ? submitButton : null}
             </div>
         );
     }
@@ -232,8 +229,7 @@ export class AnswerInput extends Component {
 
 const mapStateToProps = state => ({
     answerTimerValue: state.game.answerTimerValue,
-    submissionTimerValue: state.game.submissionTimerValue,
-    finalAnswers: state.game.finalAnswers
+    submissionTimerValue: state.game.submissionTimerValue
 });
 
 const mapDispatchToProps = dispatch => ({

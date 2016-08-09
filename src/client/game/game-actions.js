@@ -15,7 +15,9 @@ export const DISABLE_START = 'DISABLE_START';
 export const RESET_LETTERS = 'RESET_LETTERS';
 export const START_SUBMISSION = 'START_SUBMISSION';
 export const STOP_SUBMISSION = 'STOP_SUBMISSION';
-export const SUBMITTED_ANSWER = 'SUBMITTED_ANSWER';
+export const SUBMITTED_ANSWERS = 'SUBMITTED_ANSWERS';
+export const ROUND_ENDED = 'ROUND_ENDED';
+export const ROUND_STARTED = 'ROUND_STARTED';
 
 export function startGame() {
     return {
@@ -128,9 +130,21 @@ export function stopSubmission() {
 	}
 }
 
-export function submittedAnswer(finalAnswers) {
+export function submittedAnswers(finalAnswers) {
 	return {
-		type: SUBMITTED_ANSWER,
+		type: SUBMITTED_ANSWERS,
 		payload: finalAnswers
+	}
+}
+
+export function roundEnded(){
+	return {
+		type: ROUND_ENDED
+	}
+}
+
+export function roundStarted(){
+	return {
+		type: ROUND_STARTED
 	}
 }
