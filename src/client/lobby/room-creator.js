@@ -10,10 +10,6 @@ import style from './lobby.scss';
 const ENTER_KEY = 13;
 
 export default class RoomCreator extends Component {
-    setUsername() {
-        cloakService.messageSetUsername(this.state.username);
-        storageService.storeName(this.state.username);
-    }
 
     createRoom() {
         cloakService.messageCreateRoom(this.state.roomname);

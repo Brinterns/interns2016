@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import RoomCreator from './room-creator';
 
@@ -10,62 +10,62 @@ describe('<RoomCreator />', () => {
         wrapper = shallow(<RoomCreator />);
     });
 
-    it('contains "Create Room & Set Username" heading', () => {
-        expect(wrapper.find('h2').text()).toEqual('Create Room & Set Username');
+    it('contains "Controls', () => {
+        expect(wrapper.find('h2').text()).toEqual('Controls');
     });
 
-    it('renders "Set Username" button', () => {
-        expect(wrapper.find('#user-name-button').text()).toEqual('Set Username');
-    });
-
-    it('renders "Create Room" button', () => {
-        expect(wrapper.find('#room-name-button').text()).toEqual('Create Room');
+    it('renders "Create', () => {
+        expect(wrapper.find('#room-name-button').text()).toEqual('Create');
     });
 
     it('changes the state when handleChange is called', () => {
-        wrapper = mount(<RoomCreator />);
+        wrapper = shallow(<RoomCreator />);
         let component = wrapper.instance();
 
         component.handleChange({
-            target: {value: 'testingUser'}
-        }, 'username');
+            target: {value: 'testingRoom'}
+        });
 
-        expect(wrapper.state()).toEqual({username: 'testingUser'});
-    });
-
-    it('sends the setUsername message when the set username button listener is called', () => {
-        wrapper = mount(<RoomCreator />);
-        let component = wrapper.instance();
-
-        component.handleChange({
-            target:{value: 'testingUser'}
-        }, 'username')
-        component.setUsername();
-
-        expect(cloak.message).toHaveBeenCalledWith('setUsername', 'testingUser');
-    });
-
-    it('stores the new username in local storage when setUsername is called', () => {
-        wrapper = mount(<RoomCreator />);
-        let component = wrapper.instance();
-
-        component.handleChange({
-            target:{value: 'testingUser'}
-        }, 'username')
-        component.setUsername();
-
-        expect(localStorage.name).toEqual('testingUser');
+        expect(wrapper.state()).toEqual({roomname: 'testingRoom'});
     });
 
     it('sends the createRoom message when the create room button listener is called', () => {
-        wrapper = mount(<RoomCreator />);
+        wrapper = shallow(<RoomCreator />);
         let component = wrapper.instance();
 
         component.handleChange({
-            target:{value: 'testRoom'}
-        }, 'roomname')
+            target:{value: 'testingRoom'}
+        });
         component.createRoom();
 
-        expect(cloak.message).toHaveBeenCalledWith('createRoom', 'testRoom');
+        expect(cloak.message).toHaveBeenCalledWith('createRoom', 'testingRoom');
+    });
+
+    it('sends the createRoom message when the key pressed is enter', () => {
+        wrapper = shallow(<RoomCreator />);
+        let component = wrapper.instance();
+
+        component.handleChange({
+            target:{value: 'testingRoom'}
+        });
+        component.handleEnterPress({
+            which: 13
+        });
+
+        expect(cloak.message).toHaveBeenCalledWith('createRoom', 'testingRoom');
+    });
+
+    it('does not send the createRoom message when the key pressed is not enter', () => {
+        wrapper = shallow(<RoomCreator />);
+        let component = wrapper.instance();
+
+        component.handleChange({
+            target:{value: 'testingRoom'}
+        });
+        component.handleEnterPress({
+            which: 0
+        });
+
+        expect(cloak.message).not.toHaveBeenCalledWith();
     });
 });

@@ -12,10 +12,10 @@ describe('<UserList />', () => {
         ];
     });
 
-    it('contains "User List" heading', () => {
+    it('contains "Users" heading', () => {
         const wrapper = shallow(<UserList users={mockList} />);
 
-        expect(wrapper.find('h2').text()).toEqual('User List');
+        expect(wrapper.find('h2').text()).toEqual('Users');
     });
 
     it('renders the list of users in lobby correctly', () => {

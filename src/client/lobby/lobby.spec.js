@@ -4,12 +4,35 @@ import { shallow } from 'enzyme';
 import { Lobby } from './lobby';
 
 describe('<Lobby />', () => {
+	let wrapper;
     beforeEach(() => {
-        window.cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'connected']);
+        window.cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'connected', 'message']);
+        wrapper = shallow(<Lobby />);
     });
 
     it('contains "Lobby" heading', () => {
-        const wrapper = shallow(<Lobby />);
         expect(wrapper.find('h1').text()).toEqual('LobbyUsername: ');
+    });
+
+    it('sends the setUsername message when the set username button listener is called', () => {
+        wrapper = shallow(<Lobby />);
+        let component = wrapper.instance();
+
+        component.handleChange({
+            target:{value: 'testingUser'}
+        }, 'username')
+
+        expect(cloak.message).toHaveBeenCalledWith('setUsername', 'testingUser');
+    });
+
+    it('stores the new username in local storage when setUsername is called', () => {
+        wrapper = shallow(<Lobby />);
+        let component = wrapper.instance();
+
+        component.handleChange({
+            target:{value: 'testingUser'}
+        }, 'username')
+
+        expect(localStorage.name).toEqual('testingUser');
     });
 });
