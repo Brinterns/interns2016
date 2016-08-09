@@ -5,22 +5,20 @@ import UserList from './user-list';
 
 describe('<UserList />', () => {
     let mockList;
+    let wrapper;
     beforeEach(() => {
         mockList = [
             { id: 0, name: 'Jamie', data: {} },
             { id: 1, name: 'Raul', data: {} }
         ];
+        wrapper = shallow(<UserList users={mockList} />);
     });
 
     it('contains "Users" heading', () => {
-        const wrapper = shallow(<UserList users={mockList} />);
-
         expect(wrapper.find('h2').text()).toEqual('Users');
     });
 
     it('renders the list of users in lobby correctly', () => {
-        const wrapper = shallow(<UserList users={mockList} />);
-
         wrapper.find('li').forEach((current, index) => {
             expect(current.text()).toEqual(mockList[index].name);
         });
@@ -29,7 +27,7 @@ describe('<UserList />', () => {
     it('renders a score if applicable', () => {
         mockList[0].data.score = 1;
 
-        const wrapper = mount(<UserList users={[mockList[0]]} />);
+        wrapper = mount(<UserList users={[mockList[0]]} />);
 
         wrapper.find('.badge').forEach((span, index) => {
             expect(span.text()).toEqual('1');
@@ -43,7 +41,7 @@ describe('<UserList />', () => {
         mockList.push({ id: 3, name: 'Jamie', data: { score: 24 } });
         mockList.push({ id: 4, name: 'Jamie', data: { score: 15 } });
 
-        const wrapper = mount(<UserList users={mockList} />);
+        wrapper = mount(<UserList users={mockList} />);
 
         let prev;
         wrapper.find('.badge').forEach((span, index) => {
@@ -65,7 +63,7 @@ describe('<UserList />', () => {
         mockList.push({ id: 3, name: 'User2', data: { score: 0 } });
         mockList.push({ id: 4, name: 'AAA', data: { score: 0 } });
         
-        const wrapper = mount(<UserList users={mockList} />);
+        wrapper = mount(<UserList users={mockList} />);
 
         let prev;
         wrapper.find('li').forEach((current, index) => {

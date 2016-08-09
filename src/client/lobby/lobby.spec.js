@@ -15,7 +15,6 @@ describe('<Lobby />', () => {
     });
 
     it('sends the setUsername message when the set username button listener is called', () => {
-        wrapper = shallow(<Lobby />);
         let component = wrapper.instance();
 
         component.handleChange({
@@ -26,7 +25,6 @@ describe('<Lobby />', () => {
     });
 
     it('stores the new username in local storage when setUsername is called', () => {
-        wrapper = shallow(<Lobby />);
         let component = wrapper.instance();
 
         component.handleChange({

@@ -19,7 +19,6 @@ describe('<RoomCreator />', () => {
     });
 
     it('changes the state when handleChange is called', () => {
-        wrapper = shallow(<RoomCreator />);
         let component = wrapper.instance();
 
         component.handleChange({
@@ -30,7 +29,6 @@ describe('<RoomCreator />', () => {
     });
 
     it('sends the createRoom message when the create room button listener is called', () => {
-        wrapper = shallow(<RoomCreator />);
         let component = wrapper.instance();
 
         component.handleChange({
@@ -42,7 +40,6 @@ describe('<RoomCreator />', () => {
     });
 
     it('sends the createRoom message when the key pressed is enter', () => {
-        wrapper = shallow(<RoomCreator />);
         let component = wrapper.instance();
 
         component.handleChange({
@@ -56,7 +53,6 @@ describe('<RoomCreator />', () => {
     });
 
     it('does not send the createRoom message when the key pressed is not enter', () => {
-        wrapper = shallow(<RoomCreator />);
         let component = wrapper.instance();
 
         component.handleChange({
