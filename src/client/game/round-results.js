@@ -19,11 +19,6 @@ export class RoundResults extends Component {
 		let sortedKeys = Object.keys(nextProps.finalAnswers);
 		sortedKeys.sort((a,b) => {
 			return nextProps.finalAnswers[a].score - nextProps.finalAnswers[b].score;
-			// if (nextProps.finalAnswers[a].score < nextProps.finalAnswers[b].score)
-	  //   		return -1;
-	  // 		if (nextProps.finalAnswers[a].score > nextProps.finalAnswers[b].score)
-	  //   		return 1;
-			// return 0;
 		});
 
 		sortedKeys.reverse();
@@ -61,7 +56,7 @@ export class RoundResults extends Component {
 		switch (type) {
 			case 'winners': {
 				buttonType = 'success';
-				crown = '\u265A';
+				crown = '\u2618';
 				break;
 			}
 			case 'plebs': {
@@ -71,7 +66,7 @@ export class RoundResults extends Component {
 			}
 			case 'losers': {
 				buttonType = 'danger';
-				crown = '\u262D';
+				crown = '\u267F';
 				break;
 			}
 			default: {
