@@ -35,7 +35,7 @@ export class Lobby extends Component {
                     <h1>
                         Lobby
                         <label className={style['set-username-label']}>
-                            <label>{'Username: '}</label> 
+                            <label>Username:</label> 
                             <input className={style['set-username-input']} type="text" value={this.getUsername()}
                                 onChange={(event) => this.handleChange(event)} />
                         </label>
