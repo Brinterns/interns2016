@@ -3,6 +3,8 @@ import { shallow } from 'enzyme';
 
 import RoomCreator from './room-creator';
 
+const ENTER_KEY = 13;
+
 describe('<RoomCreator />', () => {
     let wrapper;
     beforeEach(() => {
@@ -18,10 +20,10 @@ describe('<RoomCreator />', () => {
         expect(wrapper.find('#room-name-button').text()).toEqual('Create');
     });
 
-    it('changes the state when handleChange is called', () => {
+    it('changes the state when handleRoomname is called', () => {
         let component = wrapper.instance();
 
-        component.handleChange({
+        component.handleRoomname({
             target: {value: 'testingRoom'}
         });
 
@@ -31,7 +33,7 @@ describe('<RoomCreator />', () => {
     it('sends the createRoom message when the create room button listener is called', () => {
         let component = wrapper.instance();
 
-        component.handleChange({
+        component.handleRoomname({
             target:{value: 'testingRoom'}
         });
         component.createRoom();
@@ -42,11 +44,11 @@ describe('<RoomCreator />', () => {
     it('sends the createRoom message when the key pressed is enter', () => {
         let component = wrapper.instance();
 
-        component.handleChange({
+        component.handleRoomname({
             target:{value: 'testingRoom'}
         });
         component.handleEnterPress({
-            which: 13
+            which: ENTER_KEY
         });
 
         expect(cloak.message).toHaveBeenCalledWith('createRoom', 'testingRoom');
@@ -55,7 +57,7 @@ describe('<RoomCreator />', () => {
     it('does not send the createRoom message when the key pressed is not enter', () => {
         let component = wrapper.instance();
 
-        component.handleChange({
+        component.handleRoomname({
             target:{value: 'testingRoom'}
         });
         component.handleEnterPress({

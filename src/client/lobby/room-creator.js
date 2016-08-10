@@ -15,7 +15,7 @@ export default class RoomCreator extends Component {
         cloakService.messageCreateRoom(this.state.roomname);
     }
 
-    handleChange(event) {
+    handleRoomname(event) {
         this.setState({
             roomname: event.target.value
         });
@@ -33,7 +33,7 @@ export default class RoomCreator extends Component {
                 <h2>Controls</h2>
                 <div className="col-lg-12 list-group">
                     <div className="row">
-                        <input className={style['room-creator-input']} type="text" onChange={(event) => this.handleChange(event)} 
+                        <input className={style['room-creator-input']} type="text" onChange={(event) => this.handleRoomname(event)} 
                          onKeyDown={event => this.handleEnterPress(event)}/>
                         <button className={`btn btn-success`} id="room-name-button"
                             onClick={() => this.createRoom()}>Create</button>
