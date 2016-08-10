@@ -3,6 +3,7 @@ var randomConsonant = require('./letters/random-consonant-picker');
 var randomVowel = require('./letters/random-vowel-picker');
 var gameParameters = require('./game-parameters');
 var solver = require('./vendor/validation/cntdn');
+var roomDataService = require('./services/room-data-service');
 
 module.exports = function(expressServer) {
     cloak.configure({
@@ -103,21 +104,7 @@ function setUsername(name, user) {
 
 function createRoom(name, user) {
     var room = cloak.createRoom(name);
-    room.data.creator = {id: user.id, name: user.name};
-    room.data.userIdList = [];
-    room.data.started = false;
-    room.data.answering = false;
-    room.data.submitting = false;
-    room.data.scores = [];
-    room.data.letterList = {
-        letters: [],
-        consonantNum: 0,
-        vowelNum: 0,
-        disableConsonant: false,
-        disableVowel: false
-    };
-    room.data.possibleAnswers = {};
-    room.data.finalAnswerList = {};
+    room.data = roomDataService.initialRoomData(user);
     fireRoomListReload();
 }
 
@@ -486,17 +473,7 @@ function startRoundResetTimer(room) {
 
 function resetRound(room) {
     setNextLeader(room);
-    room.data.answering = false;
-    room.data.submitting = false;
-    room.data.letterList = {
-        letters: [],
-        consonantNum: 0,
-        vowelNum: 0,
-        disableConsonant: false,
-        disableVowel: false
-    };
-    room.data.possibleAnswers = {};
-    room.data.finalAnswerList = {};
+    room.data = roomDataService.newRoundData(room.data);
     room.messageMembers('resetRound');
 }
 
