@@ -11,7 +11,7 @@ describe('<Lobby />', () => {
     });
 
     it('contains "Lobby" heading', () => {
-        expect(wrapper.find('h1').text()).toEqual('LobbyUsername: ');
+        expect(wrapper.find('h1').text()).toEqual('LobbyUsername:');
     });
 
     it('sends the setUsername message when the set username button listener is called', () => {
