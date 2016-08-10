@@ -18,7 +18,8 @@ import {
     submittedAnswers,
     roundEnded,
     roundStarted,
-    resetRound
+    resetRound,
+    resetFinished
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -128,6 +129,9 @@ function configureAndRun(roomId) {
             },
             resetRound: () => {
                 dispatch(resetRound());
+            },
+            resetFinished: () => {
+                dispatch(resetFinished());
             }
         },
         initialData: {

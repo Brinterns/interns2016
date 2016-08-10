@@ -475,6 +475,9 @@ function resetRound(room) {
     setNextLeader(room);
     room.data = roomDataService.newRoundData(room.data);
     room.messageMembers('resetRound');
+    var answeringTimer = setTimeout(function() {
+        room.messageMembers('resetFinished');
+    },2000);
 }
 
 function possibleAnswers(answerList, user) {

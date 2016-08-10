@@ -118,8 +118,6 @@ const game = (state = initialState, action) => {
         case actionTypes.RESET_ROUND: 
             return updateState(state, {
                 letterList: [],
-                disableConsonant: false,
-                disableVowel: false,
                 answerTimerValue: null,
                 submissionTimerValue: null,
                 disableStart: true,
@@ -129,6 +127,13 @@ const game = (state = initialState, action) => {
                 finalAnswers: [],
                 resetRound: true
             })
+        case actionTypes.RESET_FINISHED: {
+            return updateState(state, {
+                resetRound: false,
+                disableConsonant: false,
+                disableVowel: false
+            })
+        }
         default:
             return state;
     }
