@@ -229,7 +229,7 @@ export class AnswerInput extends Component {
 
 const mapStateToProps = state => ({
     answerTimerValue: state.game.answerTimerValue,
-    submissionTimerValue: state.game.submissionTimerValue,
+    submissionTimerValue: state.game.submissionTimerValue
 });
 
 const mapDispatchToProps = dispatch => ({
