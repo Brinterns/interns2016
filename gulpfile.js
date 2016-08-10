@@ -58,6 +58,7 @@ function buildClient() {
         gulp.parallel(
             buildClientIndex,
             buildClientCssVendors,
+            buildClientFonts,
             buildClientJsVendors,
             buildClientWebpack
         )
@@ -96,11 +97,17 @@ function buildClientIndex() {
 
 function buildClientCssVendors() {
     return gulp.src([
-        require.resolve('bootstrap/dist/css/bootstrap.min.css')
+        require.resolve('bootstrap/dist/css/bootstrap.min.css'),
+        path.resolve('./node_modules/font-awesome/css/font-awesome.min.css')
     ])
         .pipe(removeSourceMappingURLs())
         .pipe($.concat('vendors.css'))
         .pipe(gulp.dest(locationConfig.client.dist.css));
+}
+
+function buildClientFonts() {
+    return gulp.src(locationConfig.client.fonts)
+        .pipe(gulp.dest(locationConfig.client.dist.fonts));
 }
 
 function buildClientJsVendors() {
