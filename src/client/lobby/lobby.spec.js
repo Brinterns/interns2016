@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import { Lobby } from './lobby';
 
 describe('<Lobby />', () => {
-	let wrapper;
+    let wrapper;
     beforeEach(() => {
         window.cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'connected', 'message']);
         wrapper = shallow(<Lobby />);
