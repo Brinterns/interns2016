@@ -18,6 +18,7 @@ export const STOP_SUBMISSION = 'STOP_SUBMISSION';
 export const SUBMITTED_ANSWERS = 'SUBMITTED_ANSWERS';
 export const ROUND_ENDED = 'ROUND_ENDED';
 export const ROUND_STARTED = 'ROUND_STARTED';
+export const RESET_ROUND = 'RESET_ROUND';
 
 export function startGame() {
     return {
@@ -137,14 +138,20 @@ export function submittedAnswers(finalAnswers) {
 	}
 }
 
-export function roundEnded(){
+export function roundEnded() {
 	return {
 		type: ROUND_ENDED
 	}
 }
 
-export function roundStarted(){
+export function roundStarted() {
 	return {
 		type: ROUND_STARTED
+	}
+}
+
+export function resetRound() {
+	return{
+		type: RESET_ROUND
 	}
 }

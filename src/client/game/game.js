@@ -27,6 +27,19 @@ export class Game extends Component {
                 this.refs[`box${i}`].className += ` ${style.flipped}`;
             }
         }
+
+        console.log(nextProps);
+        if(nextProps.resetRound) {
+            this.resetLetterBoxes();
+        }
+    }
+
+    resetLetterBoxes() {
+        if(this.props.letterList === []) {
+            for(let i=0; i<numLetters; i++) {
+                this.refs[`box${i}`].className = style.card;
+            }
+        }
     }
 
     render() {

@@ -477,6 +477,27 @@ function sendChosenWordList(room, answers){
     if(roomMembers.length === Object.keys(toSend).length){
         room.messageMembers('submittedAnswers', toSend);
     }
+    startRoundResetTimer(room);
+}
+
+function startRoundResetTimer(room) {
+    var roundResetTimer = setTimeout(resetRound.bind(null, room), 7000);
+}
+
+function resetRound(room) {
+    setNextLeader(room);
+    room.data.answering = false;
+    room.data.submitting = false;
+    room.data.letterList = {
+        letters: [],
+        consonantNum: 0,
+        vowelNum: 0,
+        disableConsonant: false,
+        disableVowel: false
+    };
+    room.data.possibleAnswers = {};
+    room.data.finalAnswerList = {};
+    room.messageMembers('resetRound');
 }
 
 function possibleAnswers(answerList, user) {
