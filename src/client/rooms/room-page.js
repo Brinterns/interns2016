@@ -35,9 +35,9 @@ export class RoomPage extends Component {
                 <UserList users={this.props.roomUsers} />
                 <div className="col-lg-8" >
                     <button className={`btn btn-success`} id="start-game" disabled={this.props.disableStart}
-                            onClick={() => {cloakService.messageStartGame()}}>Start Game</button>
+                            onClick={() => {cloakService.messageStartGame()}}>Start</button>
                     <button className={`btn btn-danger`} id="leave-room"
-                            onClick={leaveRoom}>Leave Room</button>
+                            onClick={leaveRoom}>Leave</button>
                 </div>
                 {this.props.started ? <Game /> : null}
             </div>

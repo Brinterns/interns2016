@@ -143,7 +143,7 @@ export class AnswerInput extends Component {
                 let focus = index === focusIndex;
                 return (
                     <div className="row radio radio-info">
-                        <input maxLength="18" size="30" placeholder="Enter your answer here" ref={index} onFocus={() => this.handleFocus(index)}
+                        <input maxLength="18" size="30" placeholder="Answer here" ref={index} onFocus={() => this.handleFocus(index)}
                             defaultValue={answer} onChange={(event) => this.handleChange(event, index)} onKeyDown={event => this.handleKeyPress(event)}
                             disabled={!this.props.answering} />
                         <input type="radio" name="answer" ref={`radio${index}`} onClick={() => this.setAnswer()}/>
@@ -217,7 +217,7 @@ export class AnswerInput extends Component {
 
         return (
             <div className="col-lg-12 text-center">
-                <h3>ANSWER INPUT</h3>
+                <h3>Answer</h3>
                 {this.props.answering ? answerTimerArea : null}
                 {this.props.submission ? submitTimerArea : null}
                 <div>{this.textBoxes()}</div>

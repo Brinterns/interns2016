@@ -377,6 +377,7 @@ function submitAnswer(index, user) {
     var room = user.getRoom();
     var answer = room.data.possibleAnswers[user.id] === undefined ? '' : room.data.possibleAnswers[user.id][index];
     var finalAnswerList = room.data.finalAnswerList;
+    
     if(finalAnswerList[user.id] === undefined) {
         finalAnswerList[user.id] = answer;
     }
