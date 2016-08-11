@@ -56,17 +56,17 @@ export class RoundResults extends Component {
 		switch (type) {
 			case 'winners': {
 				buttonType = 'success';
-				crown = '\u2618';
+				crown = <i className="fa fa-trophy"></i>;
 				break;
 			}
 			case 'plebs': {
 				buttonType = 'info';
-				crown = '  ';
+				crown = '';
 				break;
 			}
 			case 'losers': {
 				buttonType = 'danger';
-				crown = '\u267F';
+				crown = <i className="fa fa-internet-explorer"></i>;
 				break;
 			}
 			default: {

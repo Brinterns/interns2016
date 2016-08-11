@@ -34,7 +34,6 @@ export class Lobby extends Component {
                 <div className="text-center">
                     <h1>
                         Lobby
-                        <i className="fa fa-internet-explorer" ></i>
                         <label className={style['set-username-label']}>
                             <label>Username:</label> 
                             <input className={style['set-username-input']} type="text" value={this.getUsername()}
