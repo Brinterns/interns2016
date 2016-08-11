@@ -26,10 +26,12 @@ module.exports = {
             dest: clientSrcConfig
         },
         index: path.join(clientSrc, 'index.html'),
+        fonts: path.join(root, 'node_modules/font-awesome/fonts/**/*'),
         dist: {
             location: clientDist,
             js: path.join(clientDist, 'js'),
-            css: path.join(clientDist, 'css')
+            css: path.join(clientDist, 'css'),
+            fonts: path.join(clientDist, 'fonts')
         }
     },
     server: {
