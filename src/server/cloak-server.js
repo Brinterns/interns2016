@@ -40,33 +40,42 @@ module.exports = function(expressServer) {
     cloak.run();
 };
 
-function newMember(user) {
-    refreshRoomUsers.bind(this)();
-    var members = this.getMembers();
-    if( this.data.started ) {
-        user.message('startGame');
-        makeLeader(this.data.leaderIndex, this);
-        user.message('resetLetters', this.data.letterList.letters);
-        if(this.data.answering) {
-            user.message('startAnswering', this.data.answerTime);
-        } else {
-            user.message('stopAnswering');
-            if(this.data.submitting) {
-                user.message('startSubmission', this.data.submitTime);
-            }
-            else {
-                user.message('stopSubmission');
-            }
+function gameStartedRefresh(user, room) {
+    user.message('startGame');
+    makeLeader(room.data.leaderIndex, room);
+    user.message('resetLetters', room.data.letterList.letters);
+    if(room.data.answering) {
+        user.message('startAnswering', room.data.answerTime);
+    } else {
+        user.message('stopAnswering');
+        if(room.data.submitting) {
+            user.message('startSubmission', room.data.submitTime);
+        }
+        else {
+            user.message('stopSubmission');
         }
     }
+}
+
+function gameNotStartedRefresh(room) {
+    var members = room.getMembers();
     for(var i = 0; i < members.length; i++) {
-        if(members[i].id === this.data.creator.id) {
-            if(this.getMembers().length >= gameParameters.minUserNo && !this.data.started){
+        if(members[i].id === room.data.creator.id) {
+            if(members.length >= gameParameters.minUserNo && !room.data.started){
                 members[i].message('enableStart');
             } else {
                 members[i].message('disableStart');
             }
         }
+    }
+}
+
+function newMember(user) {
+    refreshRoomUsers.bind(this)();
+    if( this.data.started ) {
+        gameStartedRefresh(user, this);
+    } else {
+        gameNotStartedRefresh(this);
     }
 }
 
@@ -364,7 +373,6 @@ function submitAnswer(index, user) {
     var room = user.getRoom();
     var answer = room.data.possibleAnswers[user.id] === undefined ? '' : room.data.possibleAnswers[user.id][index];
     var finalAnswerList = room.data.finalAnswerList;
-
     if(finalAnswerList[user.id] === undefined) {
         finalAnswerList[user.id] = answer;
     }
