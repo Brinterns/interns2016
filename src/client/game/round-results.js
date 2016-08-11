@@ -18,10 +18,8 @@ export class RoundResults extends Component {
 	componentWillReceiveProps(nextProps) {
 		let sortedKeys = Object.keys(nextProps.finalAnswers);
 		sortedKeys.sort((a,b) => {
-			return nextProps.finalAnswers[a].score - nextProps.finalAnswers[b].score;
+			return nextProps.finalAnswers[b].score - nextProps.finalAnswers[a].score;
 		});
-
-		sortedKeys.reverse();
 
 		let winners = sortedKeys.reduce((result, id) => {
 			if(nextProps.finalAnswers[id].score === nextProps.finalAnswers[sortedKeys[0]].score && nextProps.finalAnswers[id].score !== 0)
