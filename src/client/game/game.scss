@@ -47,12 +47,23 @@
   outline: none;
 }
 
-.result-name {
-  display: inline-block;
-  font-weight: bold;
-  vertical-align: middle;
+.result-pointer {
+  margin-top: 7.5px;
 }
 
 .result-crown {
   font-size: 200%;
+}
+
+.result-name {
+  margin-top: 7.5px;
+  font-weight: bold;
+}
+
+.result-word {
+  margin-top: 7.5px;
+}
+
+.result-score {
+  margin-top: 7.5px;
 }

@@ -78,11 +78,21 @@ export class RoundResults extends Component {
 			id === userId ? pointer = 'YOU' : null;
 			return(
 		        <li className={`list-group-item list-group-item-${buttonType} ${style.space}`}>
-		            <div className={`col-lg-1`}>{pointer}</div>
-		            <div className={`col-lg-1 ${gameStyle['result-crown']}`}>{crown}</div>
-		            <div className={`col-lg-4 ${gameStyle['result-name']}`}>{data[id].name}</div>
-		            <div className={`col-lg-4`}>{data[id].word}</div>
-		            <div className={`col-lg-2`}>{data[id].score}</div>
+		            <div className={`col-lg-1 ${gameStyle['result-pointer']}`}>
+		            	{pointer}
+		            </div>
+		            <div className={`col-lg-1 ${gameStyle['result-crown']}`}>
+		            	{crown}
+		            </div>
+		            <div className={`col-lg-4 ${gameStyle['result-name']}`}>
+		            	{data[id].name}
+		            </div>
+		            <div className={`col-lg-4 ${gameStyle['result-word']}`}>
+		            	{data[id].word}
+	            	</div>
+		            <div className={`col-lg-2 ${gameStyle['result-score']}`}>
+	            		{data[id].score}
+            		</div>
 		        </li>
 			)
 		});

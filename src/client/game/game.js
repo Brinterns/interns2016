@@ -20,12 +20,22 @@ export class Game extends Component {
         }
         return false;
     }
-    
+
     componentWillReceiveProps(nextProps) {
         for(var i=0; i<numLetters; i++){
             if(nextProps.letterList[i] !== undefined){
-                this.refs[`box${i}`].className += ` ${style.flipped}`;
+                this.refs[`box${i}`].className += this.refs[`box${i}`].className.includes(style.flipped) ? '' : ` ${style.flipped}` ;
             }
+        }
+
+        if(nextProps.resetRound !== this.props.resetRound && nextProps.resetRound) {
+            this.resetLetterBoxes();
+        }
+    }
+
+    resetLetterBoxes() {
+        for(let i=0; i<numLetters; i++) {
+            this.refs[`box${i}`].className = style.card;
         }
     }
 
@@ -44,7 +54,7 @@ export class Game extends Component {
                 <div className={style.card} ref={`box${index}`}>
                     <div className={`${style.face} ${style.front}`}>
                     </div>
-                    <div className={`${style.face} ${style.back}`}>
+                    <div ref={`card${index}`} className={`${style.face} ${style.back}`}>
                         {letter}
                     </div>
                 </div>
@@ -64,7 +74,7 @@ export class Game extends Component {
                 <div>
                     {letterBoxes}
                 </div>
-                {this.props.roundResults ? <RoundResults /> : 
+                {this.props.roundResults ? <RoundResults /> :
                     <AnswerInput answering={this.props.answering} submission={this.props.submission}/>
                 }
             </div>
@@ -80,7 +90,8 @@ const mapStateToProps = state => ({
     disableVowel: state.game.disableVowel,
     answering: state.game.answering,
     submission: state.game.submission,
-    roundResults: state.game.roundResults
+    roundResults: state.game.roundResults,
+    resetRound: state.game.resetRound
 });
 
 export default connect(

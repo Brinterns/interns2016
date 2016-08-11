@@ -3,6 +3,7 @@ var randomConsonant = require('./letters/random-consonant-picker');
 var randomVowel = require('./letters/random-vowel-picker');
 var gameParameters = require('./game-parameters');
 var solver = require('./vendor/validation/cntdn');
+var roomDataService = require('./services/room-data-service');
 
 module.exports = function(expressServer) {
     cloak.configure({
@@ -39,33 +40,49 @@ module.exports = function(expressServer) {
     cloak.run();
 };
 
-function newMember(user) {
-    refreshRoomUsers.bind(this)();
-    var members = this.getMembers();
-    if( this.data.started ) {
-        user.message('startGame');
-        makeLeader(this.data.leaderIndex, this);
-        user.message('resetLetters', this.data.letterList.letters);
-        if(this.data.answering) {
-            user.message('startAnswering', this.data.answerTime);
-        } else {
-            user.message('stopAnswering');
-            if(this.data.submitting) {
-                user.message('startSubmission', this.data.submitTime);
-            }
-            else {
-                user.message('stopSubmission');
-            }
-        }
+function gameStartedRefresh(user, room) {
+    user.message('startGame');
+    makeLeader(room.data.leaderIndex, room);
+    user.message('resetLetters', room.data.letterList.letters);
+    if(room.data.answering) {
+        user.message('startAnswering', room.data.answerTime);
+    } else {
+        user.message('stopAnswering');
     }
+
+    if(room.data.submitting) {
+        user.message('startSubmission', room.data.submitTime);
+    }
+    else {
+        user.message('stopSubmission');
+    }
+
+    if(room.data.roundEnded) {
+        user.message('roundEnded');
+        user.message('submittedAnswers', room.data.roundResults);
+    }
+
+}
+
+function gameNotStartedRefresh(room) {
+    var members = room.getMembers();
     for(var i = 0; i < members.length; i++) {
-        if(members[i].id === this.data.creator.id) {
-            if(this.getMembers().length >= gameParameters.minUserNo && !this.data.started){
+        if(members[i].id === room.data.creator.id) {
+            if(members.length >= gameParameters.minUserNo && !room.data.started){
                 members[i].message('enableStart');
             } else {
                 members[i].message('disableStart');
             }
         }
+    }
+}
+
+function newMember(user) {
+    refreshRoomUsers.bind(this)();
+    if( this.data.started ) {
+        gameStartedRefresh(user, this);
+    } else {
+        gameNotStartedRefresh(this);
     }
 }
 
@@ -103,21 +120,7 @@ function setUsername(name, user) {
 
 function createRoom(name, user) {
     var room = cloak.createRoom(name);
-    room.data.creator = {id: user.id, name: user.name};
-    room.data.userIdList = [];
-    room.data.started = false;
-    room.data.answering = false;
-    room.data.submitting = false;
-    room.data.scores = [];
-    room.data.letterList = {
-        letters: [],
-        consonantNum: 0,
-        vowelNum: 0,
-        disableConsonant: false,
-        disableVowel: false
-    };
-    room.data.possibleAnswers = {};
-    room.data.finalAnswerList = {};
+    room.data = roomDataService.initialRoomData(user);
     fireRoomListReload();
 }
 
@@ -367,6 +370,7 @@ function startSubmission(room) {
 }
 
 function submissionFinished(room, timeLeft) {
+    room.data.roundEnded = true;
     room.messageMembers('stopSubmission');
     room.data.submitting = false;
     clearInterval(timeLeft);
@@ -377,7 +381,6 @@ function submitAnswer(index, user) {
     var room = user.getRoom();
     var answer = room.data.possibleAnswers[user.id] === undefined ? '' : room.data.possibleAnswers[user.id][index];
     var finalAnswerList = room.data.finalAnswerList;
-
     if(finalAnswerList[user.id] === undefined) {
         finalAnswerList[user.id] = answer;
     }
@@ -427,7 +430,6 @@ function scoreRound(answers, room) {
     if(bestLength === -1) {
         room.messageMembers('roundEnded');
         sendChosenWordList(room, answers);
-        room.data.roundEnded = true;
         return;
     }
 
@@ -453,8 +455,12 @@ function scoreRound(answers, room) {
     refreshRoomUsers.bind(room)();
     room.messageMembers('roundEnded');
     sendChosenWordList(room, answers);
+}
 
-    room.data.roundEnded = true;
+function allAnswersScored(roomMembers, answers) {
+    var numAnswers = Object.keys(answers).length;
+
+    return (roomMembers.length === numAnswers)
 }
 
 function sendChosenWordList(room, answers){
@@ -473,10 +479,25 @@ function sendChosenWordList(room, answers){
             }
         }
     }
+    room.data.roundResults = toSend;
 
-    if(roomMembers.length === Object.keys(toSend).length){
+    if(allAnswersScored(roomMembers, toSend)) {
         room.messageMembers('submittedAnswers', toSend);
     }
+    startRoundResetTimer(room);
+}
+
+function startRoundResetTimer(room) {
+    var roundResetTimer = setTimeout(nextRound.bind(null, room), 7000);
+}
+
+function nextRound(room) {
+    setNextLeader(room);
+    room.data = roomDataService.newRoundData(room.data);
+    room.messageMembers('resetRound');
+    var answeringTimer = setTimeout(function() {
+        room.messageMembers('resetFinished');
+    },2000);
 }
 
 function possibleAnswers(answerList, user) {

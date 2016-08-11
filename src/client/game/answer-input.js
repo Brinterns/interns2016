@@ -42,7 +42,7 @@ export class AnswerInput extends Component {
         if(nextProps.answering) {
             this.startAnsweringTimer();
             return;
-        } 
+        }
 
         if(nextProps.submission) {
             cloakService.messageAnswers(this.state.answerList);
