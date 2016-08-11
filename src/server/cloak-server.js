@@ -231,7 +231,7 @@ function makeLeader(leaderIndex, room) {
     room.messageMembers('setLeader', leader);
 }
 
-function setNextLeader(room) {    
+function setNextLeader(room) {
     var members = room.getMembers();
     if(members.length === 0)
         return;
@@ -377,7 +377,7 @@ function submitAnswer(index, user) {
     var room = user.getRoom();
     var answer = room.data.possibleAnswers[user.id] === undefined ? '' : room.data.possibleAnswers[user.id][index];
     var finalAnswerList = room.data.finalAnswerList;
-    
+
     if(finalAnswerList[user.id] === undefined) {
         finalAnswerList[user.id] = answer;
     }
@@ -405,7 +405,7 @@ function validateAnswers(answers, letters, room) {
 
     for(var i=0; i<answers.length; i++) {
         if(result.indexOf(answers[i][1].toLowerCase()) !== -1) {
-            answers[i].score = (answers[i][1].length === gameParameters.numLetters ? 2*answers[i][1].length : answers[i][1].length); 
+            answers[i].score = (answers[i][1].length === gameParameters.numLetters ? 2*answers[i][1].length : answers[i][1].length);
         }
         else {
             answers[i].score = 0;
@@ -425,6 +425,9 @@ function scoreRound(answers, room) {
     }
 
     if(bestLength === -1) {
+        room.messageMembers('roundEnded');
+        sendChosenWordList(room, answers);
+        room.data.roundEnded = true;
         return;
     }
 
@@ -446,7 +449,7 @@ function scoreRound(answers, room) {
     for(var i=0; i<members.length; i++) {
         room.data.scores[members[i].id] += results[members[i].id] === undefined ? 0 : results[members[i].id].score;
     }
-    
+
     refreshRoomUsers.bind(room)();
     room.messageMembers('roundEnded');
     sendChosenWordList(room, answers);
@@ -470,7 +473,7 @@ function sendChosenWordList(room, answers){
             }
         }
     }
-    
+
     if(roomMembers.length === Object.keys(toSend).length){
         room.messageMembers('submittedAnswers', toSend);
     }

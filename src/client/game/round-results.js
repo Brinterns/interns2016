@@ -24,7 +24,7 @@ export class RoundResults extends Component {
 		sortedKeys.reverse();
 
 		let winners = sortedKeys.reduce((result, id) => {
-			if(nextProps.finalAnswers[id].score === nextProps.finalAnswers[sortedKeys[0]].score)
+			if(nextProps.finalAnswers[id].score === nextProps.finalAnswers[sortedKeys[0]].score && nextProps.finalAnswers[id].score !== 0)
 				result[id] = nextProps.finalAnswers[id];
 			return result;
 		}, {});
@@ -101,7 +101,7 @@ export class RoundResults extends Component {
 				{plebsData}
 				<br></br>
 				{losersData}
-			</div> 
+			</div>
 		);
 	}
 }
