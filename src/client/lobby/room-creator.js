@@ -30,7 +30,8 @@ export default class RoomCreator extends Component {
     render() {
         return (
             <div className="col-lg-4 text-center">
-                <h2>Controls</h2>
+                        <i className="fa fa-cogs"></i>
+                <h2>Controls </h2>
                 <div className="col-lg-12 list-group">
                     <div className="row">
                         <input className={style['room-creator-input']} placeholder="Room Name"type="text" 
