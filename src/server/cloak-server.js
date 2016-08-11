@@ -457,6 +457,12 @@ function scoreRound(answers, room) {
     sendChosenWordList(room, answers);
 }
 
+function allAnswersScored(roomMembers, answers) {
+    var numAnswers = Object.keys(answers).length;
+
+    return (roomMembers.length === numAnswers)
+}
+
 function sendChosenWordList(room, answers){
     var toSend = {};
     var roomMembers = room.getMembers(true);
@@ -474,7 +480,8 @@ function sendChosenWordList(room, answers){
         }
     }
     room.data.roundResults = toSend;
-    if(roomMembers.length === Object.keys(toSend).length){
+
+    if(allAnswersScored(roomMembers, toSend)) {
         room.messageMembers('submittedAnswers', toSend);
     }
     startRoundResetTimer(room);
