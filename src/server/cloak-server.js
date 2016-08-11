@@ -48,13 +48,20 @@ function gameStartedRefresh(user, room) {
         user.message('startAnswering', room.data.answerTime);
     } else {
         user.message('stopAnswering');
-        if(room.data.submitting) {
-            user.message('startSubmission', room.data.submitTime);
-        }
-        else {
-            user.message('stopSubmission');
-        }
     }
+
+    if(room.data.submitting) {
+        user.message('startSubmission', room.data.submitTime);
+    }
+    else {
+        user.message('stopSubmission');
+    }
+
+    if(room.data.roundEnded) {
+        user.message('roundEnded');
+        user.message('submittedAnswers', room.data.roundResults);
+    }
+
 }
 
 function gameNotStartedRefresh(room) {
@@ -363,6 +370,7 @@ function startSubmission(room) {
 }
 
 function submissionFinished(room, timeLeft) {
+    room.data.roundEnded = true;
     room.messageMembers('stopSubmission');
     room.data.submitting = false;
     clearInterval(timeLeft);
@@ -422,7 +430,6 @@ function scoreRound(answers, room) {
     if(bestLength === -1) {
         room.messageMembers('roundEnded');
         sendChosenWordList(room, answers);
-        room.data.roundEnded = true;
         return;
     }
 
@@ -448,8 +455,6 @@ function scoreRound(answers, room) {
     refreshRoomUsers.bind(room)();
     room.messageMembers('roundEnded');
     sendChosenWordList(room, answers);
-
-    room.data.roundEnded = true;
 }
 
 function sendChosenWordList(room, answers){
@@ -468,7 +473,7 @@ function sendChosenWordList(room, answers){
             }
         }
     }
-
+    room.data.roundResults = toSend;
     if(roomMembers.length === Object.keys(toSend).length){
         room.messageMembers('submittedAnswers', toSend);
     }
@@ -476,7 +481,6 @@ function sendChosenWordList(room, answers){
 }
 
 function startRoundResetTimer(room) {
-    room.data.changingRound = true;
     var roundResetTimer = setTimeout(nextRound.bind(null, room), 7000);
 }
 
@@ -486,7 +490,6 @@ function nextRound(room) {
     room.messageMembers('resetRound');
     var answeringTimer = setTimeout(function() {
         room.messageMembers('resetFinished');
-        room.data.changingRound = false;
     },2000);
 }
 

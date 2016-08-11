@@ -6,7 +6,7 @@ module.exports = {
 function initialRoomData(user) {
 	return {
 		creator: {
-			id: user.id, 
+			id: user.id,
 			name: user.name
 		},
 	    userIdList: [],
@@ -30,6 +30,7 @@ function newRoundData(oldData) {
 	Object.assign(oldData,{
 		answering: false,
     	submitting: false,
+		roundEnded: false,
     	letterList: {
         	letters: [],
         	consonantNum: 0,
