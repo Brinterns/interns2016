@@ -20,7 +20,7 @@ export class Game extends Component {
         }
         return false;
     }
-    
+
     componentWillReceiveProps(nextProps) {
         for(var i=0; i<numLetters; i++){
             if(nextProps.letterList[i] !== undefined){
@@ -29,7 +29,6 @@ export class Game extends Component {
         }
 
         if(nextProps.resetRound !== this.props.resetRound && nextProps.resetRound) {
-            console.log('here');
             this.resetLetterBoxes();
         }
     }
@@ -75,7 +74,7 @@ export class Game extends Component {
                 <div>
                     {letterBoxes}
                 </div>
-                {this.props.roundResults ? <RoundResults /> : 
+                {this.props.roundResults ? <RoundResults /> :
                     <AnswerInput answering={this.props.answering} submission={this.props.submission}/>
                 }
             </div>

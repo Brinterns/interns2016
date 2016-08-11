@@ -468,15 +468,17 @@ function sendChosenWordList(room, answers){
 }
 
 function startRoundResetTimer(room) {
-    var roundResetTimer = setTimeout(resetRound.bind(null, room), 7000);
+    room.data.changingRound = true;
+    var roundResetTimer = setTimeout(nextRound.bind(null, room), 7000);
 }
 
-function resetRound(room) {
+function nextRound(room) {
     setNextLeader(room);
     room.data = roomDataService.newRoundData(room.data);
     room.messageMembers('resetRound');
     var answeringTimer = setTimeout(function() {
         room.messageMembers('resetFinished');
+        room.data.changingRound = false;
     },2000);
 }
 
