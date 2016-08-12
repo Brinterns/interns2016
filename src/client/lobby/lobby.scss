@@ -1,6 +1,6 @@
 .room-creator-input {
     margin-left: 10px;
-    height: 60px;
+    min-height: 60px;
     width: 250px;
 }
 
@@ -17,8 +17,18 @@
 	font-family: helvetica;
 }
 
-.cogs-icon {
-    color: grey;
-    font-size: 60px;
+.cogs-button {
+    color: white;
+    min-height: 60px;
+    min-width: 60px;
+    font-size: 40px;
     vertical-align: middle; 
+}
+
+.input-slider-wrapper {
+    margin-top: 15px;
+}
+
+.input-slider {
+    margin-left: 350px;
 }

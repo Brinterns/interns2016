@@ -1,9 +1,10 @@
-import { UPDATE_LOBBY_LIST, UPDATE_ROOM_LIST } from './lobby-actions';
+import { UPDATE_LOBBY_LIST, UPDATE_ROOM_LIST, UPDATE_LETTER_SLIDER } from './lobby-actions';
 import updateState from '../utils/util';
 
 const initialState = {
 	rooms: [],
-	users: []
+	users: [],
+    letterSlider: 5
 };
 
 const lobby = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const lobby = (state = initialState, action) => {
             return updateState(state, {
         		users: action.payload
         	});
+        }
+        case UPDATE_LETTER_SLIDER: {
+            return updateState(state, {
+                letterSlider: action.payload
+            });
         }
         default:{
             return state;

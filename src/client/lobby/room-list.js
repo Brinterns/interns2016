@@ -8,6 +8,8 @@ import storageService from '../services/storage-service';
 import lobbyStyle from './lobby.scss';
 import style from '../common/common.scss';
 
+import RoomOptions from './room-options';
+
 const ENTER_KEY = 13;
 
 export class RoomList extends Component {
@@ -34,11 +36,15 @@ export class RoomList extends Component {
                  <div className="col-lg-12 text-center">
                     <div className="col-lg-12 list-group">
                         <div className="row">
-                            <i className={`fa fa-cog fa-5x ${lobbyStyle['cogs-icon']}`}></i>
+                            <button className={`fa fa-cog fa-3x btn btn-info ${lobbyStyle['cogs-button']}`} 
+                            data-toggle="collapse" data-target="#room-options"></button>
                             <input className={lobbyStyle['room-creator-input']} placeholder="Room Name"type="text" 
                             onChange={(event) => this.handleRoomname(event)} onKeyDown={event => this.handleEnterPress(event)}/>
                             <button className={`btn btn-success`} id="room-name-button"
-                                onClick={() => this.createRoom()}>Create</button>
+                            onClick={() => this.createRoom()}>Create</button>
+                        </div>
+                        <div id="room-options" className="collapse">
+                            <RoomOptions />
                         </div>
                     </div>
                 </div>
@@ -47,7 +53,7 @@ export class RoomList extends Component {
                         if(!room.data.started){
                             return (
                                 <button className={`list-group-item list-group-item-${getColour(room)} ${style.space}`} key={room.id}
-                                        disabled={room.data.started} onClick={()=>joinRoom(room)}>
+                                        disabled={room.data.started} onClick={() => joinRoom(room)}>
                                     {room.name}
                                     <span className='badge'>{room.users.length}</span>
                                 </button>
