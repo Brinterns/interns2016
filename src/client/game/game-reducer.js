@@ -5,7 +5,7 @@ import updateState from '../utils/util';
 const initialState = {
 	started: false,
     leader: {
-        id: null, 
+        id: null,
         name: null
     },
     letterList: [],
@@ -18,12 +18,13 @@ const initialState = {
     submission: false,
     roundResults: false,
     finalAnswers: [],
-    resetRound: false
+    resetRound: false,
+	gameParams: {}
 };
 
 const game = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.START_GAME: 
+        case actionTypes.START_GAME:
         	return updateState(state, {
         		started: true,
                 disableStart: true
@@ -49,19 +50,19 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 letterList: [...state.letterList, action.payload]
             });
-        case actionTypes.GET_VOWEL: 
+        case actionTypes.GET_VOWEL:
             return updateState(state, {
                 letterList: [...state.letterList, action.payload]
             });
         case actionTypes.RESET_LETTERS:
             return updateState(state, {
                 letterList: action.payload
-            });  
+            });
         case actionTypes.DISABLE_CONSONANT:
             return updateState(state, {
                 disableConsonant: action.payload
             });
-        case actionTypes.DISABLE_VOWEL: 
+        case actionTypes.DISABLE_VOWEL:
             return updateState(state, {
                 disableVowel: action.payload
             });
@@ -93,7 +94,7 @@ const game = (state = initialState, action) => {
         case actionTypes.DISABLE_START:
             return updateState(state, {
                 disableStart: action.payload
-            });  
+            });
         case actionTypes.START_SUBMISSION:
             return updateState(state, {
                 submission: true,
@@ -111,11 +112,11 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 roundResults: false
             })
-        case actionTypes.ROUND_ENDED: 
+        case actionTypes.ROUND_ENDED:
             return updateState(state, {
                 roundResults: true
             })
-        case actionTypes.RESET_ROUND: 
+        case actionTypes.RESET_ROUND:
             return updateState(state, {
                 letterList: [],
                 answerTimerValue: null,
@@ -134,6 +135,12 @@ const game = (state = initialState, action) => {
                 disableVowel: false
             })
         }
+		case actionTypes.GAME_PARAMETERS:{
+			console.log(action.payload);
+			return updateState(state,{
+				gameParams: action.payload
+			})
+		}
         default:
             return state;
     }

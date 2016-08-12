@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Progress from './progress';
+
 import { answerTimerTick, submissionTimerTick, resetAnswerTimer, resetSubmissionTimer } from './game-actions';
 
 import cloakService from '../services/cloak-service';
@@ -218,9 +220,9 @@ export class AnswerInput extends Component {
         return (
             <div className="col-lg-12 text-center">
                 <h3>Answer</h3>
-                {this.props.answering ? answerTimerArea : null}
-                {this.props.submission ? submitTimerArea : null}
                 <div>{this.textBoxes()}</div>
+                {this.props.answering ? <Progress maxTime={this.props.gameParams.answerTime} timeLeft={this.props.answerTimerValue} whichTimer={'answer'}/> : null}
+                {this.props.submission ? <Progress maxTime={this.props.gameParams.submitTime} timeLeft={this.props.submissionTimerValue} whichTimer={'submission'}/> : null}
                 {this.props.submission ? submitButton : null}
             </div>
         );
@@ -229,7 +231,8 @@ export class AnswerInput extends Component {
 
 const mapStateToProps = state => ({
     answerTimerValue: state.game.answerTimerValue,
-    submissionTimerValue: state.game.submissionTimerValue
+    submissionTimerValue: state.game.submissionTimerValue,
+    gameParams: state.game.gameParams
 });
 
 const mapDispatchToProps = dispatch => ({

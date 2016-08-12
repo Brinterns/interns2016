@@ -20,6 +20,7 @@ export const ROUND_ENDED = 'ROUND_ENDED';
 export const ROUND_STARTED = 'ROUND_STARTED';
 export const RESET_ROUND = 'RESET_ROUND';
 export const RESET_FINISHED = 'RESET_FINISHED';
+export const GAME_PARAMETERS = 'GAME_PARAMETERS';
 
 export function startGame() {
     return {
@@ -161,4 +162,11 @@ export function resetFinished() {
 	return{
 		type: RESET_FINISHED
 	}
+}
+
+export function gameParameters(params) {
+    return {
+        type: GAME_PARAMETERS,
+        payload: params
+    }
 }

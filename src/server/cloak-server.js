@@ -84,6 +84,10 @@ function newMember(user) {
     } else {
         gameNotStartedRefresh(this);
     }
+    user.message('initialGameParams', {
+        answerTime: gameParameters.answerTime,
+    	submitTime: gameParameters.submitTime
+    });
 }
 
 function memberLeaves(user) {
