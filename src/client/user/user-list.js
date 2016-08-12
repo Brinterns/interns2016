@@ -15,7 +15,7 @@ export default function UserList({ users }) {
 
     return (
         <div className="col-lg-4 text-center">
-            <h2>User List</h2>
+            <h2>Users</h2>
             <div className="col-lg-12 pre-scrollable list-group">
                 <ul>{userItems}</ul>
             </div>
@@ -36,7 +36,7 @@ function sort(users) {
     users = Array.from(users);
     users.sort((user1, user2) => {
         let score = 0-(user1.data.score-user2.data.score);
-        if(user1.score !== undefined && user2.data.score !== undefined && score !== 0) {
+        if(user1.data.score !== undefined && user2.data.score !== undefined && score !== 0) {
             return score;
         }
 

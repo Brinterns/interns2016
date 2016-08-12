@@ -1,6 +1,6 @@
 {
   "name": "interns2016",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Interns 2016",
   "main": "app.js",
   "engines": {
@@ -12,7 +12,8 @@
     "dev": "gulp dev",
     "start": "npm run build && node dist/server",
     "test": "gulp test",
-    "test:server": "gulp test:server"
+    "test:server": "gulp test:server",
+    "test:client": "gulp test:client"
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",
@@ -26,6 +27,7 @@
     "del": "^2.2.0",
     "express": "^4.13.4",
     "extract-text-webpack-plugin": "^1.0.1",
+    "font-awesome": "^4.6.3",
     "gulp": "gulpjs/gulp#4.0",
     "gulp-concat": "^2.6.0",
     "gulp-load-plugins": "^1.2.0",

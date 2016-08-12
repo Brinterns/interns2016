@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import AnswerInput from './answer-input';
+import RoundResults from './round-results';
 
 import cloakService from '../services/cloak-service';
 
 import storageService from '../services/storage-service';
 
 import style from './game.scss';
+
+const numLetters = 9;
 
 export class Game extends Component {
     isLeader() {
@@ -17,10 +20,22 @@ export class Game extends Component {
         }
         return false;
     }
-    
+
     componentWillReceiveProps(nextProps) {
-        if(nextProps.letterList.length-1 >= 0){
-            this.refs[`box${nextProps.letterList.length-1}`].className += ` ${style.flipped}`;
+        for(var i=0; i<numLetters; i++){
+            if(nextProps.letterList[i] !== undefined){
+                this.refs[`box${i}`].className += this.refs[`box${i}`].className.includes(style.flipped) ? '' : ` ${style.flipped}` ;
+            }
+        }
+
+        if(nextProps.resetRound !== this.props.resetRound && nextProps.resetRound) {
+            this.resetLetterBoxes();
+        }
+    }
+
+    resetLetterBoxes() {
+        for(let i=0; i<numLetters; i++) {
+            this.refs[`box${i}`].className = style.card;
         }
     }
 
@@ -39,7 +54,7 @@ export class Game extends Component {
                 <div className={style.card} ref={`box${index}`}>
                     <div className={`${style.face} ${style.front}`}>
                     </div>
-                    <div className={`${style.face} ${style.back}`}>
+                    <div ref={`card${index}`} className={`${style.face} ${style.back}`}>
                         {letter}
                     </div>
                 </div>
@@ -47,7 +62,7 @@ export class Game extends Component {
         );
 
         let letterBoxes = [];
-        for(let i = 0; i < 9; i++) {
+        for(let i = 0; i < numLetters; i++) {
             letterBoxes.push(letterBox(this.props.letterList[i], i));
         }
 
@@ -59,7 +74,9 @@ export class Game extends Component {
                 <div>
                     {letterBoxes}
                 </div>
-                <AnswerInput answering={this.props.answering} />
+                {this.props.roundResults ? <RoundResults /> :
+                    <AnswerInput answering={this.props.answering} submission={this.props.submission}/>
+                }
             </div>
         );
     }
@@ -71,7 +88,10 @@ const mapStateToProps = state => ({
     letterList: state.game.letterList,
     disableConsonant: state.game.disableConsonant,
     disableVowel: state.game.disableVowel,
-    answering: state.game.answering
+    answering: state.game.answering,
+    submission: state.game.submission,
+    roundResults: state.game.roundResults,
+    resetRound: state.game.resetRound
 });
 
 export default connect(

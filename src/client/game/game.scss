@@ -1,34 +1,69 @@
 .flip {
   -webkit-perspective: 800;
+  -moz-perspective: 800;
   margin: 10px;
   width: 50px;
   height: 50px;
     display: inline-block;
 }
+
 .flip .card.flipped {
-  -webkit-transform: rotateY(-180deg);
+  transform: rotateY(-180deg);
 }
+
 .flip .card {
   width: 100%;
   height: 100%;
   -webkit-transform-style: preserve-3d;
   -webkit-transition: 0.5s;
+  -moz-transform-style: preserve-3d;
+  -moz-transition: 0.5s;
 }
+
 .flip .card .face {
   width: 100%;
   height: 100%;
   position: absolute;
   -webkit-backface-visibility: hidden ;
+  -moz-backface-visibility: hidden ;
     font-family: Helvetica;
     font-weight: bolder;
     font-size: 250%;
     text-align: center;
 }
+
 .flip .card .front {
     background: #6375A9;
 }
+
 .flip .card .back {
-  -webkit-transform: rotateY(-180deg);
+  transform: rotateY(-180deg);
     background: #47B747;
     color: white;
+}
+
+.answer-boxes-checked {
+  border-color: #70db70;
+  outline: none;
+}
+
+.result-pointer {
+  margin-top: 7.5px;
+}
+
+.result-crown {
+  font-size: 200%;
+}
+
+.result-name {
+  margin-top: 7.5px;
+  font-weight: bold;
+}
+
+.result-word {
+  margin-top: 7.5px;
+}
+
+.result-score {
+  margin-top: 7.5px;
 }

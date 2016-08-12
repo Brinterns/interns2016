@@ -11,15 +11,22 @@ const initialState = {
     letterList: [],
     disableConsonant: false,
     disableVowel: false,
+    answerTimerValue: null,
+    submissionTimerValue: null,
+    disableStart: true,
     answering: false,
-    timerValue: null
+    submission: false,
+    roundResults: false,
+    finalAnswers: [],
+    resetRound: false
 };
 
 const game = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.START_GAME: 
         	return updateState(state, {
-        		started: true
+        		started: true,
+                disableStart: true
         	});
         case actionTypes.LEAVE_GAME:
             return updateState(state, {
@@ -46,6 +53,10 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 letterList: [...state.letterList, action.payload]
             });
+        case actionTypes.RESET_LETTERS:
+            return updateState(state, {
+                letterList: action.payload
+            });  
         case actionTypes.DISABLE_CONSONANT:
             return updateState(state, {
                 disableConsonant: action.payload
@@ -57,20 +68,72 @@ const game = (state = initialState, action) => {
         case actionTypes.START_ANSWERING:
             return updateState(state, {
                 answering: true,
-                timerValue: action.payload
+                answerTimerValue: action.payload
             });
         case actionTypes.STOP_ANSWERING:
             return updateState(state, {
                 answering: false
             });
-        case actionTypes.TIMER_TICK:
+        case actionTypes.ANSWER_TIMER_TICK:
             return updateState(state, {
-                timerValue: state.timerValue-1
+                answerTimerValue: state.answerTimerValue-1
             });
-        case actionTypes.RESET_TIMER:
+        case actionTypes.SUBMISSION_TIMER_TICK:
             return updateState(state, {
-                timerValue: null
-            });        
+                submissionTimerValue: state.submissionTimerValue-1
+            });
+        case actionTypes.RESET_ANSWER_TIMER:
+            return updateState(state, {
+                answerTimerValue: null
+            });
+        case actionTypes.RESET_SUBMISSION_TIMER:
+            return updateState(state, {
+                submissionTimerValue: null
+            });
+        case actionTypes.DISABLE_START:
+            return updateState(state, {
+                disableStart: action.payload
+            });  
+        case actionTypes.START_SUBMISSION:
+            return updateState(state, {
+                submission: true,
+                submissionTimerValue: action.payload
+            });
+        case actionTypes.STOP_SUBMISSION:
+            return updateState(state, {
+                submission: false
+            });
+        case actionTypes.SUBMITTED_ANSWERS:
+            return updateState(state, {
+                finalAnswers: action.payload
+            });
+        case actionTypes.ROUND_STARTED:
+            return updateState(state, {
+                roundResults: false
+            })
+        case actionTypes.ROUND_ENDED: 
+            return updateState(state, {
+                roundResults: true
+            })
+        case actionTypes.RESET_ROUND: 
+            return updateState(state, {
+                letterList: [],
+                answerTimerValue: null,
+                submissionTimerValue: null,
+                disableStart: true,
+                answering: false,
+                submission: false,
+                roundResults: false,
+                finalAnswers: [],
+                resetRound: true
+            })
+        case actionTypes.RESET_FINISHED: {
+            return updateState(state, {
+                resetRound: false,
+                disableConsonant: false,
+                disableVowel: false
+            })
+        }
         default:
             return state;
     }
