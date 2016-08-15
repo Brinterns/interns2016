@@ -127,6 +127,7 @@ function createRoom(options, user) {
     var room = cloak.createRoom(options.name);
     room.data = roomDataService.initialRoomData(user);
     room.data.rounds = roomDataService.setRounds(room.data, options);
+    user.message('roomIdForJoin', room.id);
     fireRoomListReload();
 }
 

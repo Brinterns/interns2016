@@ -140,6 +140,9 @@ function configureAndRun(roomId) {
             },
             gameFinished: () => {
                 dispatch(gameFinished());
+            },
+            roomIdForJoin: (roomId) => {
+                router.navigateToRoom(roomId);
             }
         },
         initialData: {
