@@ -136,7 +136,6 @@ const game = (state = initialState, action) => {
             })
         }
 		case actionTypes.GAME_PARAMETERS:{
-			console.log(action.payload);
 			return updateState(state,{
 				gameParams: action.payload
 			})
