@@ -5,7 +5,6 @@ import { updateLetterSlider, updateNumberSlider } from './lobby-actions';
 
 import style from './lobby.scss';
 
-
 export class RoomOptions extends Component {
     handleLetterSliderChange(event) {
         this.props.updateLetterSlider(event.target.value);
@@ -15,22 +14,37 @@ export class RoomOptions extends Component {
         this.props.updateNumberSlider(event.target.value);
     }
 
-    render() {
-        return (
-            <div className={`col-lg-8 ${style['input-slider-wrapper']}`}>
+    letterSlider() {
+        return(
+            <div>
                 Letters
                 <input className={style['input-slider']} type="range" min="1" max="9" 
-                onChange={(event) => this.handleLetterSliderChange(event)}/>
+                    onChange={(event) => this.handleLetterSliderChange(event)} />
                 <div className={style['round-number']}>
                     {this.props.sliders.letterSlider}
                 </div>
-                <br></br>
+            </div>
+        );
+    }
+
+    numberSlider() {
+        return(
+            <div>
                 Numbers
                 <input className={style['input-slider']} type="range" min="1" max="9" 
                 onChange={(event) => this.handleNumberSliderChange(event)}/>
                 <div className={style['round-number']}>
                     {this.props.sliders.numberSlider}
                 </div>
+            </div>
+        );
+    }
+
+    render() {
+        return (
+            <div className={`col-lg-8 ${style['input-slider-wrapper']}`}>
+                {this.props.roundTypes.letters ? this.letterSlider() : null}
+                {this.props.roundTypes.numbers ? this.numberSlider() : null}
             </div>
         )
     }
@@ -40,7 +54,8 @@ const mapStateToProps = state => ({
     sliders: {
         letterSlider: state.lobby.letterSlider,
         numberSlider: state.lobby.numberSlider
-    }
+    },
+    roundTypes: state.lobby.roundTypes
 })
 
 const mapDispatchToProps = dispatch => ({

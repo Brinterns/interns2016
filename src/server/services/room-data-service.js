@@ -11,9 +11,7 @@ function initialRoomData(user) {
             name: user.name
         },
         userIdList: [],
-        rounds: {
-            letter: 5
-        },
+        rounds: [],
         started: false,
         answering: false,
         submitting: false,
@@ -32,9 +30,6 @@ function initialRoomData(user) {
 
 function newRoundData(oldData) {
     return Object.assign({}, oldData, {
-        rounds: {
-            letter: oldData.rounds.letter - 1
-        },
         answering: false,
         submitting: false,
         roundEnded: false,
@@ -51,5 +46,9 @@ function newRoundData(oldData) {
 }
 
 function setRounds(oldData, options) {
-    return ({letter: options.rounds.letter});
+    let roundList = [];
+    for(var i=0; i<options.rounds.letter; i++) {
+        roundList.push('L');
+    }
+    return roundList;
 }

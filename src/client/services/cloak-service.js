@@ -26,7 +26,7 @@ import {
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
 
-import { refreshLobby, refreshRooms} from '../lobby/lobby-actions';
+import { refreshLobby, refreshRooms, roundTypes} from '../lobby/lobby-actions';
 
 export default {
     configureAndRun,
@@ -141,8 +141,11 @@ function configureAndRun(roomId) {
             gameFinished: () => {
                 dispatch(gameFinished());
             },
-            roomIdForJoin: (roomId) => {
+            roomIdForJoin: roomId => {
                 router.navigateToRoom(roomId);
+            },
+            roundTypes: types => {
+                dispatch(roundTypes(types));
             }
         },
         initialData: {
