@@ -21,6 +21,7 @@ import {
     resetRound,
     resetFinished,
     gameParameters
+    gameFinished
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -136,6 +137,9 @@ function configureAndRun(roomId) {
             },
             initialGameParams: (params) => {
                 dispatch(gameParameters(params));
+            },
+            gameFinished: () => {
+                dispatch(gameFinished());
             }
         },
         initialData: {

@@ -20,7 +20,7 @@ export class RoomList extends Component {
     }
 
     createRoom() {
-        cloakService.messageCreateRoom({name: this.state.roomname, sliders: this.props.sliders});
+        cloakService.messageCreateRoom({name: this.state.roomname, rounds: this.props.rounds});
     }
 
     handleRoomname(event) {
@@ -88,8 +88,8 @@ function joinRoom(room) {
 
 const mapStateToProps = state => ({
     roomList: state.lobby.rooms,
-    sliders: {
-        letterSlider: state.lobby.letterSlider
+    rounds: {
+        letter: state.lobby.letterSlider
     }
 });
 

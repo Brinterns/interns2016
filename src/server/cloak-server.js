@@ -500,10 +500,14 @@ function startRoundResetTimer(room) {
 function nextRound(room) {
     setNextLeader(room);
     room.data = roomDataService.newRoundData(room.data);
-    room.messageMembers('resetRound');
-    var answeringTimer = setTimeout(function() {
-        room.messageMembers('resetFinished');
-    },2000);
+    if(room.data.rounds.letter === 0){
+        room.messageMembers('gameFinished');
+    } else {
+        room.messageMembers('resetRound');
+        var answeringTimer = setTimeout(function() {
+            room.messageMembers('resetFinished');
+        }, 2000);
+    }
 }
 
 function possibleAnswers(answerList, user) {

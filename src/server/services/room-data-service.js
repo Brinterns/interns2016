@@ -12,8 +12,7 @@ function initialRoomData(user) {
         },
         userIdList: [],
         rounds: {
-            letter: 5,
-            number: 5
+            letter: 5
         },
         started: false,
         answering: false,
@@ -33,6 +32,9 @@ function initialRoomData(user) {
 
 function newRoundData(oldData) {
     return Object.assign({}, oldData, {
+        rounds: {
+            letter: oldData.rounds.letter - 1
+        },
         answering: false,
         submitting: false,
         roundEnded: false,
@@ -49,9 +51,5 @@ function newRoundData(oldData) {
 }
 
 function setRounds(oldData, options) {
-    return Object.assign({}, oldData, {
-        rounds: {
-            letter: options.sliders.letterSlider
-        }
-    });
+    return ({letter: options.rounds.letter});
 }
