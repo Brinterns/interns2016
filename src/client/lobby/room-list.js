@@ -13,8 +13,14 @@ import RoomOptions from './room-options';
 const ENTER_KEY = 13;
 
 export class RoomList extends Component {
+    componentWillMount() {
+        this.setState({
+            roomname: ''
+        });
+    }
+
     createRoom() {
-        cloakService.messageCreateRoom(this.state.roomname);
+        cloakService.messageCreateRoom({name: this.state.roomname, sliders: this.props.sliders});
     }
 
     handleRoomname(event) {
@@ -81,7 +87,10 @@ function joinRoom(room) {
 
 
 const mapStateToProps = state => ({
-    roomList: state.lobby.rooms
+    roomList: state.lobby.rooms,
+    sliders: {
+        letterSlider: state.lobby.letterSlider
+    }
 });
 
 export default connect(

@@ -17,14 +17,16 @@ export class RoomOptions extends Component {
                 letters
                 <input className={style['input-slider']} type="range" min="1" max="9" 
                 onChange={(event) => this.handleLetterSliderChange(event)}/>
-                <div>{this.props.letterSlider}</div>
+                <div>{this.props.sliders.letterSlider}</div>
             </div>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    letterSlider: state.lobby.letterSlider
+    sliders: {
+        letterSlider: state.lobby.letterSlider
+    }
 })
 
 const mapDispatchToProps = dispatch => ({

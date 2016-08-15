@@ -123,9 +123,10 @@ function setUsername(name, user) {
     fireLobbyReload();
 }
 
-function createRoom(name, user) {
-    var room = cloak.createRoom(name);
+function createRoom(options, user) {
+    var room = cloak.createRoom(options.name);
     room.data = roomDataService.initialRoomData(user);
+    room.data.rounds = roomDataService.setRounds(room.data, options);
     fireRoomListReload();
 }
 

@@ -151,8 +151,8 @@ function messageSetUsername(username) {
     cloak.message('setUsername', username);
 }
 
-function messageCreateRoom(roomname) {
-    cloak.message('createRoom', roomname);
+function messageCreateRoom(roomOptions) {
+    cloak.message('createRoom', roomOptions);
 }
 
 function messageJoinRoom(roomId) {
