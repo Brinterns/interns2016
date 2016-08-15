@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { updateLetterSlider } from './lobby-actions'; 
+import { updateLetterSlider, updateNumberSlider } from './lobby-actions'; 
 
 import style from './lobby.scss';
 
@@ -11,13 +11,26 @@ export class RoomOptions extends Component {
         this.props.updateLetterSlider(event.target.value);
     }
 
+    handleNumberSliderChange(event) {
+        this.props.updateNumberSlider(event.target.value);
+    }
+
     render() {
         return (
-            <div className={`col-lg-4 ${style['input-slider-wrapper']}`}>
-                letters
+            <div className={`col-lg-8 ${style['input-slider-wrapper']}`}>
+                Letters
                 <input className={style['input-slider']} type="range" min="1" max="9" 
                 onChange={(event) => this.handleLetterSliderChange(event)}/>
-                <div>{this.props.sliders.letterSlider}</div>
+                <div className={style['round-number']}>
+                    {this.props.sliders.letterSlider}
+                </div>
+                <br></br>
+                Numbers
+                <input className={style['input-slider']} type="range" min="1" max="9" 
+                onChange={(event) => this.handleNumberSliderChange(event)}/>
+                <div className={style['round-number']}>
+                    {this.props.sliders.numberSlider}
+                </div>
             </div>
         )
     }
@@ -25,13 +38,17 @@ export class RoomOptions extends Component {
 
 const mapStateToProps = state => ({
     sliders: {
-        letterSlider: state.lobby.letterSlider
+        letterSlider: state.lobby.letterSlider,
+        numberSlider: state.lobby.numberSlider
     }
 })
 
 const mapDispatchToProps = dispatch => ({
     updateLetterSlider(value) {
         dispatch(updateLetterSlider(value));
+    },
+    updateNumberSlider(value) {
+        dispatch(updateNumberSlider(value));
     }
 })
 

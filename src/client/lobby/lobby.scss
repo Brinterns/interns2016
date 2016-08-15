@@ -26,9 +26,15 @@
 }
 
 .input-slider-wrapper {
+    text-align: center;
     margin-top: 15px;
+    margin-left: 150px;
 }
 
 .input-slider {
-    margin-left: 350px;
+    display: inline-block;
+}
+
+.round-number {
+    display: inline-block;
 }
