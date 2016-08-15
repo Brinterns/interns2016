@@ -198,17 +198,6 @@ export class AnswerInput extends Component {
     }
 
     render() {
-        const answerTimerArea = (
-            <div>
-                <p>Answering Time Left: {this.props.answerTimerValue}</p>
-            </div>
-        );
-
-        const submitTimerArea = (
-            <div>
-                <p>Submission Time Left: {this.props.submissionTimerValue}</p>
-            </div>
-        );
 
         const submitButton = (
             <div>
@@ -221,8 +210,6 @@ export class AnswerInput extends Component {
             <div className="col-lg-12 text-center">
                 <h3>Answer</h3>
                 <div>{this.textBoxes()}</div>
-                {this.props.answering ? <Progress maxTime={this.props.gameParams.answerTime} timeLeft={this.props.answerTimerValue} whichTimer={'answer'}/> : null}
-                {this.props.submission ? <Progress maxTime={this.props.gameParams.submitTime} timeLeft={this.props.submissionTimerValue} whichTimer={'submission'}/> : null}
                 {this.props.submission ? submitButton : null}
             </div>
         );
@@ -231,8 +218,7 @@ export class AnswerInput extends Component {
 
 const mapStateToProps = state => ({
     answerTimerValue: state.game.answerTimerValue,
-    submissionTimerValue: state.game.submissionTimerValue,
-    gameParams: state.game.gameParams
+    submissionTimerValue: state.game.submissionTimerValue
 });
 
 const mapDispatchToProps = dispatch => ({
