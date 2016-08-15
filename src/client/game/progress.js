@@ -6,7 +6,7 @@ import style from '../rooms/room.scss'
 export class Progress extends Component {
     timer(timeLeft, maxTime) {
         let barStyle = {
-            width: `${timeLeft===undefined ? 0 : 100-((100*timeLeft)/maxTime)}%`,
+            width: `${timeLeft===undefined ? 0 : ((100*(timeLeft-1))/(maxTime-1))}%`,
             transition: {
                 duration: '1000ms'
             }
