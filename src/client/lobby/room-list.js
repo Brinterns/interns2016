@@ -47,18 +47,18 @@ export class RoomList extends Component {
                             <input className={lobbyStyle['room-creator-input']} placeholder="Room Name"type="text" 
                             onChange={(event) => this.handleRoomname(event)} onKeyDown={event => this.handleEnterPress(event)}/>
                             <button className={`btn btn-success`} id="room-name-button"
-                            onClick={() => this.createRoom()}>Create</button>
+                            onClick={() => this.createRoom()}>Start</button>
                         </div>
                         <div id="room-options" className="collapse">
                             <RoomOptions />
                         </div>
                     </div>
                 </div>
-                <div className="col-lg-12 pre-scrollable list-group">
+                <div className='col-lg-12 list-group'>
                     {this.props.roomList.map( room => {
                         if(!room.data.started){
                             return (
-                                <button className={`list-group-item list-group-item-${getColour(room)} ${style.space}`} key={room.id}
+                                <button className={`list-group-item list-group-item-warning ${style.space}`} key={room.id}
                                         disabled={room.data.started} onClick={() => joinRoom(room)}>
                                     {room.name}
                                     <span className='badge'>{room.users.length}</span>
@@ -69,15 +69,6 @@ export class RoomList extends Component {
                 </div>
             </div>
         )
-    }
-}
-
-function getColour(room) {
-    if(room.data.started){
-        return 'danger';
-    }
-    else{
-        return 'warning';
     }
 }
 

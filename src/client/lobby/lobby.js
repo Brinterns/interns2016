@@ -8,7 +8,6 @@ import style from './lobby.scss';
 
 import UserList from '../user/user-list';
 import RoomList from './room-list';
-import RoomCreator from './room-creator';
 
 export class Lobby extends Component {
     componentWillMount() {

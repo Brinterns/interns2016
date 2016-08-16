@@ -69,21 +69,24 @@ export class Game extends Component {
         return (
             <div className="col-lg-8 text-center">
                 <h3>COUNTDOWN</h3>
-                <p>Leader: {this.props.leader.name}</p>
-                {this.isLeader() ? letterButtons : null}
-                <div>
-                    {letterBoxes}
-                </div>
-                {
-                    (!this.props.gameFinished ? 
-                        (this.props.roundResults ? <RoundResults /> :
-                            <AnswerInput answering={this.props.answering} submission={this.props.submission}/>) :
+                {(!this.props.gameFinished ? 
+                    <div>
+                        <p>Leader: {this.props.leader.name}</p>
+                        {this.isLeader() ? letterButtons : null}
                         <div>
-                            GAME DONE GJ GUYS
+                            {letterBoxes}
                         </div>
-                    )
-
-                }
+                        {(this.props.roundResults ? 
+                            <RoundResults /> 
+                        :
+                            <AnswerInput answering={this.props.answering} submission={this.props.submission}/>)
+                        }
+                    </div>
+                :
+                    <div>
+                        GAME DONE GJ GUYS
+                    </div>
+                )}
             </div>
         );
     }

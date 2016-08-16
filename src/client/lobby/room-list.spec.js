@@ -1,34 +1,49 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import { shallow, mount } from 'enzyme';
 
-import RoomList from './room-list';
+import store from '../store';
+
+import { RoomList } from './room-list';
 
 describe('<RoomList />', () => {
+    let props;
     let mockList;
     beforeEach(() => {
-        mockList = [
-            {id: 0, name: 'Room 0', users: ['a','b'], data: { started: false }},
-            {id: 1, name: 'Room 1', users: [], data: { started: false }}
-        ];
-
+        props = {
+            roomList: [],
+            rounds: {}
+        };
     });
 
     it('contains "Rooms" heading', () => {
-        const wrapper = shallow(<RoomList roomList={mockList}/>);
+        const wrapper = shallow(
+                <RoomList {...props} />
+        );
 
         expect(wrapper.find('h2').text()).toEqual('Rooms');
     });
 
     it('renders the rooms in which a game has not started', () => {
-        const wrapper = shallow(<RoomList roomList={mockList} />);
+        mockList = [
+            {id: 0, name: 'Room 0', users: ['a','b'], data: { started: false }},
+            {id: 1, name: 'Room 1', users: [], data: { started: false }}
+        ];
+        props.roomList = mockList;
 
-        wrapper.find('button').forEach((current, index) => {
+        const wrapper = shallow(
+                <RoomList {...props} />
+        );
+
+        wrapper.find('.list-group-item').forEach((current, index) => {
             expect(current.text()).toEqual(`${mockList[index].name}${mockList[index].users.length}`);
         });
     });
 
     it('renders the number of users in a room if it is not undefined', () => {
-        const wrapper = shallow(<RoomList roomList={[mockList[0]]} />);
+        const wrapper = shallow(
+                <RoomList {...props} />
+        );
 
         wrapper.find('badge').forEach((span, index) => {
             expect(span.text()).toEqual('2');
@@ -36,9 +51,17 @@ describe('<RoomList />', () => {
     });
 
     it('room has the class warning list-group-item-warning if the game has not started', () => {
-        const wrapper = mount(<RoomList roomList={[mockList[0]]} />);
+        mockList = [
+            {id: 0, name: 'Room 0', users: ['a','b'], data: { started: false }},
+            {id: 1, name: 'Room 1', users: [], data: { started: false }}
+        ];
+        props.roomList = mockList;
 
-        wrapper.find('button').forEach((span, index) => {
+        const wrapper = shallow(
+                <RoomList {...props} />
+        );
+
+        wrapper.find('list-group-item').forEach((span, index) => {
             expect(span.hasClass('list-group-item-warning')).toBe(true);
         });
     });
@@ -53,9 +76,24 @@ describe('<RoomList />', () => {
         mockList.push({id: 9, name: 'Room 9', users: [], data: { started: true }});
         mockList.push({id: 10, name: 'Room 10', users: [], data: { started: false }});
 
-        const wrapper = mount(<RoomList roomList={mockList} />);
+        props.roomList = mockList;
 
-        expect(wrapper.find('button').length).toEqual(4);
+        const wrapper = shallow(
+            <RoomList {...props} />
+        );
+
+        expect(wrapper.find('.list-group-item').length).toEqual(4);
     });
 
+    // it('start button calls createRoom', () => {
+    //     let cloakService = jasmine.createSpyObj('cloakService', ['messageCreateRoom']);
+    //     let RoomList = jasmine.createSpyObj('RoomList', ['createRoom']);
+
+    //     const wrapper = shallow(
+    //         <RoomList {...props} />
+    //     );
+
+    //     RoomList.createRoom;
+    //     expect(cloakService.messageCreateRoom).toHaveBeenCalled();
+    // });
 });
