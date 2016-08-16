@@ -86,8 +86,8 @@ function newMember(user) {
     }
     
     user.message('initialGameParams', {
-        answerTime: gameParameters.answerTime,
-    	submitTime: gameParameters.submitTime
+        answerTime: parameters.answerTime,
+    	submitTime: parameters.submitTime
     });
 }
 

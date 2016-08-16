@@ -20,7 +20,7 @@ import {
     roundStarted,
     resetRound,
     resetFinished,
-    gameParameters
+    gameParameters,
     gameFinished
 } from '../game/game-actions';
 

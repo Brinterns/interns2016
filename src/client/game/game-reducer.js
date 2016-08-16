@@ -19,7 +19,7 @@ const initialState = {
     roundResults: false,
     finalAnswers: [],
     resetRound: false,
-    gameParams: {}
+    gameParams: {},
     gameFinished: false
 };
 
