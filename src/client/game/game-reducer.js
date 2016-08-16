@@ -19,7 +19,7 @@ const initialState = {
     roundResults: false,
     finalAnswers: [],
     resetRound: false,
-	gameParams: {}
+    gameParams: {}
 };
 
 const game = (state = initialState, action) => {
@@ -136,7 +136,7 @@ const game = (state = initialState, action) => {
             })
         }
 		case actionTypes.GAME_PARAMETERS:{
-			return updateState(state,{
+            return updateState(state,{
 				gameParams: action.payload
 			})
 		}
