@@ -25,10 +25,10 @@ const initialState = {
 const game = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.START_GAME:
-        	return updateState(state, {
-        		started: true,
+            return updateState(state, {
+                started: true,
                 disableStart: true
-        	});
+            });
         case actionTypes.LEAVE_GAME:
             return updateState(state, {
                 started: false,
@@ -135,11 +135,11 @@ const game = (state = initialState, action) => {
                 disableVowel: false
             })
         }
-		case actionTypes.GAME_PARAMETERS:{
+        case actionTypes.GAME_PARAMETERS:{
             return updateState(state,{
-				gameParams: action.payload
-			})
-		}
+                gameParams: action.payload
+            })
+        }
         default:
             return state;
     }
