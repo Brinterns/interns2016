@@ -4,11 +4,12 @@ import { shallow, mount } from 'enzyme';
 
 import store from '../store';
 
-import { RoomList } from './room-list';
+import { RoomList, __RewireAPI__ } from './room-list';
+const rewire = __RewireAPI__.__Rewire__;
+const resetDependency = __RewireAPI__.__ResetDependency__;
 
 describe('<RoomList />', () => {
     let props;
-    let mockList;
     beforeEach(() => {
         props = {
             roomList: [],
@@ -25,7 +26,7 @@ describe('<RoomList />', () => {
     });
 
     it('renders the rooms in which a game has not started', () => {
-        mockList = [
+        let mockList = [
             {id: 0, name: 'Room 0', users: ['a','b'], data: { started: false }},
             {id: 1, name: 'Room 1', users: [], data: { started: false }}
         ];
@@ -51,11 +52,10 @@ describe('<RoomList />', () => {
     });
 
     it('room has the class warning list-group-item-warning if the game has not started', () => {
-        mockList = [
+        props.roomList = [
             {id: 0, name: 'Room 0', users: ['a','b'], data: { started: false }},
             {id: 1, name: 'Room 1', users: [], data: { started: false }}
         ];
-        props.roomList = mockList;
 
         const wrapper = shallow(
                 <RoomList {...props} />
@@ -67,33 +67,32 @@ describe('<RoomList />', () => {
     });
 
     it('does not render any rooms in which a game has started', () => {
-        mockList.push({id: 3, name: 'Room 3', users: [], data: { started: true }});
-        mockList.push({id: 4, name: 'Room 4', users: [], data: { started: false }});
-        mockList.push({id: 5, name: 'Room 5', users: [], data: { started: true }});
-        mockList.push({id: 6, name: 'Room 6', users: [], data: { started: true }});
-        mockList.push({id: 7, name: 'Room 7', users: [], data: { started: true }});
-        mockList.push({id: 8, name: 'Room 8', users: [], data: { started: true }});
-        mockList.push({id: 9, name: 'Room 9', users: [], data: { started: true }});
-        mockList.push({id: 10, name: 'Room 10', users: [], data: { started: false }});
-
-        props.roomList = mockList;
+        props.roomList = [
+            {id: 0, name: 'Room 0', users: [], data: { started: false }},
+            {id: 1, name: 'Room 1', users: [], data: { started: true  }}
+        ];
 
         const wrapper = shallow(
             <RoomList {...props} />
         );
 
-        expect(wrapper.find('.list-group-item').length).toEqual(4);
+        expect(wrapper.find('.list-group-item').length).toEqual(1);
     });
 
-    // it('start button calls createRoom', () => {
-    //     let cloakService = jasmine.createSpyObj('cloakService', ['messageCreateRoom']);
-    //     let RoomList = jasmine.createSpyObj('RoomList', ['createRoom']);
+    it('start button calls createRoom', () => {
+        let cloakService = jasmine.createSpyObj('cloakService', ['messageCreateRoom']);
+        let RoomOptions = () => null;
+        rewire('cloakService', cloakService);
+        rewire('RoomOptions', RoomOptions)
+        
+        const wrapper = mount(
+            <RoomList {...props} />
+        );
 
-    //     const wrapper = shallow(
-    //         <RoomList {...props} />
-    //     );
+        wrapper.find('#room-name-button').simulate('click');
+        expect(cloakService.messageCreateRoom).toHaveBeenCalled();
 
-    //     RoomList.createRoom;
-    //     expect(cloakService.messageCreateRoom).toHaveBeenCalled();
-    // });
+        resetDependency('cloakService');
+        resetDependency('RoomOptions');
+    });
 });

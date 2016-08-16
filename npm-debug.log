@@ -2,20 +2,20 @@
 1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
 1 verbose cli   'C:\\Users\\joconnor\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
 1 verbose cli   'run',
-1 verbose cli   'test:client' ]
+1 verbose cli   'test:server' ]
 2 info using npm@3.10.2
 3 info using node@v6.2.2
-4 verbose run-script [ 'pretest:client', 'test:client', 'posttest:client' ]
-5 info lifecycle interns2016@0.0.2~pretest:client: interns2016@0.0.2
-6 silly lifecycle interns2016@0.0.2~pretest:client: no script for pretest:client, continuing
-7 info lifecycle interns2016@0.0.2~test:client: interns2016@0.0.2
-8 verbose lifecycle interns2016@0.0.2~test:client: unsafe-perm in lifecycle true
-9 verbose lifecycle interns2016@0.0.2~test:client: PATH: C:\Users\joconnor\AppData\Roaming\npm\node_modules\npm\bin\node-gyp-bin;C:\joconnor\Projects\interns2016\node_modules\.bin;C:\Program Files\nodejs;C:\Users\joconnor\bin;C:\Users\joconnor\AppData\Local\Programs\Git\mingw64\bin;C:\Users\joconnor\AppData\Local\Programs\Git\usr\local\bin;C:\Users\joconnor\AppData\Local\Programs\Git\usr\bin;C:\Users\joconnor\AppData\Local\Programs\Git\usr\bin;C:\Users\joconnor\AppData\Local\Programs\Git\mingw64\bin;C:\Users\joconnor\AppData\Local\Programs\Git\usr\bin;C:\Users\joconnor\bin;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files\nodejs;C:\joconnor\chromedriver;C:\Program Files (x86)\Google\Chrome\Application;C:\Users\joconnor\AppData\Local\atom\bin;C:\Users\joconnor\AppData\Roaming\npm;C:\Users\joconnor\AppData\Local\Programs\Git\usr\bin\vendor_perl;C:\Users\joconnor\AppData\Local\Programs\Git\usr\bin\core_perl
-10 verbose lifecycle interns2016@0.0.2~test:client: CWD: C:\joconnor\Projects\interns2016
-11 silly lifecycle interns2016@0.0.2~test:client: Args: [ '/d /s /c', 'gulp test:client' ]
-12 silly lifecycle interns2016@0.0.2~test:client: Returned: code: 1  signal: null
-13 info lifecycle interns2016@0.0.2~test:client: Failed to exec test:client script
-14 verbose stack Error: interns2016@0.0.2 test:client: `gulp test:client`
+4 verbose run-script [ 'pretest:server', 'test:server', 'posttest:server' ]
+5 info lifecycle interns2016@0.0.2~pretest:server: interns2016@0.0.2
+6 silly lifecycle interns2016@0.0.2~pretest:server: no script for pretest:server, continuing
+7 info lifecycle interns2016@0.0.2~test:server: interns2016@0.0.2
+8 verbose lifecycle interns2016@0.0.2~test:server: unsafe-perm in lifecycle true
+9 verbose lifecycle interns2016@0.0.2~test:server: PATH: C:\Users\joconnor\AppData\Roaming\npm\node_modules\npm\bin\node-gyp-bin;C:\joconnor\Projects\interns2016\node_modules\.bin;C:\Program Files\nodejs;C:\Users\joconnor\bin;C:\Users\joconnor\AppData\Local\Programs\Git\mingw64\bin;C:\Users\joconnor\AppData\Local\Programs\Git\usr\local\bin;C:\Users\joconnor\AppData\Local\Programs\Git\usr\bin;C:\Users\joconnor\AppData\Local\Programs\Git\usr\bin;C:\Users\joconnor\AppData\Local\Programs\Git\mingw64\bin;C:\Users\joconnor\AppData\Local\Programs\Git\usr\bin;C:\Users\joconnor\bin;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files\nodejs;C:\joconnor\chromedriver;C:\Program Files (x86)\Google\Chrome\Application;C:\Users\joconnor\AppData\Local\atom\bin;C:\Users\joconnor\AppData\Roaming\npm;C:\Users\joconnor\AppData\Local\Programs\Git\usr\bin\vendor_perl;C:\Users\joconnor\AppData\Local\Programs\Git\usr\bin\core_perl
+10 verbose lifecycle interns2016@0.0.2~test:server: CWD: C:\joconnor\Projects\interns2016
+11 silly lifecycle interns2016@0.0.2~test:server: Args: [ '/d /s /c', 'gulp test:server' ]
+12 silly lifecycle interns2016@0.0.2~test:server: Returned: code: 1  signal: null
+13 info lifecycle interns2016@0.0.2~test:server: Failed to exec test:server script
+14 verbose stack Error: interns2016@0.0.2 test:server: `gulp test:server`
 14 verbose stack Exit status 1
 14 verbose stack     at EventEmitter.<anonymous> (C:\Users\joconnor\AppData\Roaming\npm\node_modules\npm\lib\utils\lifecycle.js:242:16)
 14 verbose stack     at emitTwo (events.js:106:13)
@@ -28,18 +28,18 @@
 15 verbose pkgid interns2016@0.0.2
 16 verbose cwd C:\joconnor\Projects\interns2016
 17 error Windows_NT 6.1.7601
-18 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\joconnor\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "run" "test:client"
+18 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\joconnor\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "run" "test:server"
 19 error node v6.2.2
 20 error npm  v3.10.2
 21 error code ELIFECYCLE
-22 error interns2016@0.0.2 test:client: `gulp test:client`
+22 error interns2016@0.0.2 test:server: `gulp test:server`
 22 error Exit status 1
-23 error Failed at the interns2016@0.0.2 test:client script 'gulp test:client'.
+23 error Failed at the interns2016@0.0.2 test:server script 'gulp test:server'.
 23 error Make sure you have the latest version of node.js and npm installed.
 23 error If you do, this is most likely a problem with the interns2016 package,
 23 error not with npm itself.
 23 error Tell the author that this fails on your system:
-23 error     gulp test:client
+23 error     gulp test:server
 23 error You can get information on how to open an issue for this project with:
 23 error     npm bugs interns2016
 23 error Or if that isn't available, you can get their info via:
