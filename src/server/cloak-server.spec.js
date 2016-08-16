@@ -244,8 +244,10 @@ describe('cloak server', () => {
         });
 
         it('updates creator', () => {
-            room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
+            room = {name: "Room 1", data: {creator: {id:'sa', name:'sa'}}};
             rooms = [{id:'1'}];
+            user.name = 'BOBSAGET';
+            user.id = 69; 
             var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
@@ -253,11 +255,10 @@ describe('cloak server', () => {
  
             cloakConfig.messages.createRoom(options, user);
 
-            expect(room.data).toEqual(roomDataService.initialRoomData);
+            expect(room.data.creator).toEqual({id: user.id, name: user.name});
         });
 
         it('sets room to not started on creation', () => {
-            user = {name: "name", id: "12345-abcde"};
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
             var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
@@ -272,7 +273,6 @@ describe('cloak server', () => {
         });
 
         it('sets room to not be in answering phase on creation', () => {
-            user = {name: "name", id: "12345-abcde"};
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
             var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
@@ -287,7 +287,6 @@ describe('cloak server', () => {
         });
 
         it('sets list of allowed users to empty on creation', () => {
-            user = {name: "name", id: "12345-abcde"};
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
             var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
@@ -302,7 +301,6 @@ describe('cloak server', () => {
         });
 
         it('sets letterList to its initial state on creation of the room', () => {
-            user = {name: "name", id: "12345-abcde"};
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
             var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
@@ -464,7 +462,8 @@ describe('cloak server', () => {
                 letterList: {
                     disableConsonant: false,
                     disableVowel: true
-                }
+                },
+                rounds: []
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -483,7 +482,8 @@ describe('cloak server', () => {
                 letterList: {
                     disableConsonant: false,
                     disableVowel: true
-                }
+                },
+                rounds: []
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -496,7 +496,8 @@ describe('cloak server', () => {
                     letterList: {
                         disableConsonant: false,
                         disableVowel: true
-                    }
+                    },
+                    rounds: []
             });
         })
 
@@ -512,7 +513,8 @@ describe('cloak server', () => {
                 letterList: {
                     disableConsonant: false,
                     disableVowel: true
-                }
+                },
+                rounds: ['L']
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -537,7 +539,8 @@ describe('cloak server', () => {
                 letterList: {
                     disableConsonant: false,
                     disableVowel: true
-                }
+                },
+                rounds: []
             };
             cloak.getRooms.and.returnValue([]);
 
