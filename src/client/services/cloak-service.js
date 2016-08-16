@@ -5,9 +5,9 @@ import { dispatch } from '../store';
 import {
     startGame,
     setLeader,
-    getConsonant, 
-    getVowel, 
-    disableConsonant, 
+    getConsonant,
+    getVowel,
+    disableConsonant,
     disableVowel,
     startAnswering,
     stopAnswering,
@@ -19,7 +19,8 @@ import {
     roundEnded,
     roundStarted,
     resetRound,
-    resetFinished
+    resetFinished,
+    gameParameters
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -132,6 +133,9 @@ function configureAndRun(roomId) {
             },
             resetFinished: () => {
                 dispatch(resetFinished());
+            },
+            initialGameParams: (params) => {
+                dispatch(gameParameters(params));
             }
         },
         initialData: {

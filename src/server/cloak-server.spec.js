@@ -19,8 +19,8 @@ let solver;
 describe('cloak server', () => {
     let randomConsonant;
     let randomVowel;
-    let setIntervalSpy; 
-    let setTimeoutSpy; 
+    let setIntervalSpy;
+    let setTimeoutSpy;
 
     beforeEach(() => {
         randomConsonant = jasmine.createSpy('randomConsonant');
@@ -100,7 +100,7 @@ describe('cloak server', () => {
         it('on creating a new member, refreshRooms message sent with correct list of rooms', () => {
             rooms = [{id:'1'}];
             cloak.getRooms.and.returnValue(rooms);
-            cloak.getRoom.and.returnValue({data:''});      
+            cloak.getRoom.and.returnValue({data:''});
             lobby.getMembers.and.returnValue(users);
 
             cloakConfig.lobby.newMember();
@@ -171,7 +171,7 @@ describe('cloak server', () => {
             cloak.getRoom.and.returnValue({data:''});
             room.getMembers.and.returnValue(users);
             room.data = makeRoom(true, ['a','b','c'], gameParameters.answerTime);
-            
+
             cloakConfig.room.newMember.bind(room, user)();
 
             expect(user.message).toHaveBeenCalledWith('startAnswering', gameParameters.answerTime);
@@ -242,7 +242,7 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
- 
+
             cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
 
             expect(room.data.creator).toEqual(user);
@@ -255,7 +255,7 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
- 
+
             cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
 
             expect(room.data.started).toEqual(false);
@@ -268,7 +268,7 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
- 
+
             cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
 
             expect(room.data.answering).toEqual(false);
@@ -281,7 +281,7 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
- 
+
             cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
 
             expect(room.data.userIdList).toEqual([]);
@@ -294,7 +294,7 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
- 
+
             cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
 
             expect(room.data.letterList).toEqual({
@@ -344,7 +344,7 @@ describe('cloak server', () => {
             lobby.getMembers.and.returnValue([]);
 
             cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
-            
+
             expect(room.data.scores['1234']).toEqual(0);
         });
 
@@ -358,7 +358,7 @@ describe('cloak server', () => {
             lobby.getMembers.and.returnValue([]);
 
             cloakConfig.messages.joinRoom('TEST_ROOM_ID', user);
-            
+
             expect(room.data.userIdList).toEqual(['1234']);
         });
     });
@@ -368,7 +368,7 @@ describe('cloak server', () => {
             room.getMembers.and.returnValue([]);
             room.data = {};
 
-            cloakConfig.room.newMember.bind(room,'')();
+            cloakConfig.room.newMember.bind(room, user)();
 
             expect(room.getMembers).toHaveBeenCalled();
         });
@@ -381,7 +381,7 @@ describe('cloak server', () => {
             user.id = 1234;
             room.data = {
                 leaderIndex: 0,
-                scores: { 
+                scores: {
                     1234: 10
                 }
             };
@@ -398,12 +398,12 @@ describe('cloak server', () => {
             user.id = 1234;
             room.data = {
                 leaderIndex: 0,
-                scores: { 
+                scores: {
                     1234: 10
                 }
             };
             room.getMembers.and.returnValue(['', user]);
-            
+
             cloakConfig.messages.leaveRoom('', user);
 
             expect(room.removeMember).toHaveBeenCalledWith(user);
@@ -415,12 +415,12 @@ describe('cloak server', () => {
             user.id = 1234;
             room.data = {
                 leaderIndex: 0,
-                scores: { 
+                scores: {
                     1234: 10
                 }
             };
             room.getMembers.and.returnValue(['', user]);
-            
+
             cloakConfig.messages.leaveRoom('', user);
 
             expect(room.data.scores).toEqual({});
@@ -607,7 +607,7 @@ describe('cloak server', () => {
             }
             user.getRoom.and.returnValue(room);
         });
-                
+
         it('sends user disableConsonant message if there are 9 or more letters in the letterList', () => {
             cloakConfig.messages.getVowel('', user);
 
@@ -1032,7 +1032,7 @@ describe('cloak server', () => {
             cloakConfig.messages.possibleAnswers(fakeAnswerList, user);
 
             expect(room.data.possibleAnswers).toEqual({
-                'fakeId' : ['fakeAnswer1', 'fakeAnswer2'] 
+                'fakeId' : ['fakeAnswer1', 'fakeAnswer2']
             });
         });
     });
