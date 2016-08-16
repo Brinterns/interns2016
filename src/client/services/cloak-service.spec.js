@@ -1,11 +1,18 @@
 import cloakService from './cloak-service.js';
 
+const rewire = cloakService.__Rewire__.bind(cloakService.__Rewire__);
+const resetDependency = cloakService.__ResetDependency__.bind(cloakService.__ResetDependency__);
+
 describe('cloak service', () => {
+    let cloakConfig;
     beforeEach(() => {
         window.cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'message', 'connected']);
     });
 
     beforeEach(() => {
+        window.cloak.configure.and.callFake(_config_ => {
+            cloakConfig = _config_;
+        });
         cloakService.configureAndRun();
     })
 
@@ -95,6 +102,78 @@ describe('cloak service', () => {
 
             expect(window.cloak.message).toHaveBeenCalledWith('submitAnswer', 7);
         });
-    })
+    });
 
+
+    describe('messages', () => {
+        let dispatch;
+        beforeEach(() => {
+            dispatch = jasmine.createSpy('dispatch');
+            rewire('dispatch', dispatch);
+        });
+
+        afterEach(() => {
+            resetDependency('dispatch');
+        });
+
+        describe('refreshLobby', () => {
+            let refreshLobby;
+            beforeEach(() => {
+                refreshLobby = jasmine.createSpy('refreshLobby');
+                rewire('refreshLobby', refreshLobby);
+            });
+
+            afterEach(() => {
+                resetDependency('refreshLobby');
+            });
+
+            it('should call refreshLobby', () => {
+                const lobbyList = 'lobbyList';
+                refreshLobby.and.callFake(lobbyListArg => lobbyListArg);
+
+                cloakConfig.messages.refreshLobby(lobbyList);
+
+                expect(refreshLobby).toHaveBeenCalledWith(lobbyList);
+            });
+
+            it('should dispatch the result of calling refreshLobby', () => {
+                const lobbyList = 'lobbyList';
+                refreshLobby.and.callFake(lobbyListArg => lobbyListArg);
+
+                cloakConfig.messages.refreshLobby(lobbyList);
+
+                expect(dispatch).toHaveBeenCalledWith(lobbyList)
+            })
+        });
+
+        describe('roomDetailsResponse', () => {
+            let getRoomDetails;
+            beforeEach(() => {
+                getRoomDetails = jasmine.createSpy('getRoomDetails');
+                rewire('getRoomDetails', getRoomDetails);
+            });
+
+            afterEach(() => {
+                resetDependency('getRoomDetails');
+            });
+
+            it('should call getRoomDetails', () => {
+                const roomDetails = 'roomDetails';
+                getRoomDetails.and.callFake(roomDetailsArg => roomDetailsArg);
+
+                cloakConfig.messages.roomDetailsResponse(roomDetails);
+
+                expect(getRoomDetails).toHaveBeenCalledWith(roomDetails);
+            });
+
+            it('should dispatch the result of calling getRoomDetails', () => {
+                const roomDetails = 'roomDetails';
+                getRoomDetails.and.callFake(roomDetailsArg => roomDetailsArg);
+
+                cloakConfig.messages.roomDetailsResponse(roomDetails);
+
+                expect(dispatch).toHaveBeenCalledWith(roomDetails);
+            })
+        });
+    });
 });
