@@ -46,7 +46,7 @@ function newRoundData(oldData) {
 }
 
 function setRounds(oldData, options) {
-    let roundList = [];
+    var roundList = [];
     for(var i=0; i<options.rounds.letter; i++) {
         roundList.push('L');
     }
