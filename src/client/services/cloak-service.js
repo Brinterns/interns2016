@@ -22,7 +22,8 @@ import {
     resetFinished,
     gameParameters,
     gameFinished,
-    nextRoundType
+    nextRoundType,
+    setRandomNumber
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -43,7 +44,8 @@ export default {
     messageRemoveFromRoomList,
     resetScore,
     messageAnswers,
-    messageAnswerToSubmit
+    messageAnswerToSubmit,
+    messageGetRandomNumber
 };
 
 function configureAndRun(roomId) {
@@ -150,6 +152,9 @@ function configureAndRun(roomId) {
             },
             nextRoundType: type => {
                 dispatch(nextRoundType(type));
+            },
+            setRandomNumber: number => {
+                dispatch(setRandomNumber(number));
             }
         },
         initialData: {
@@ -211,4 +216,8 @@ function messageAnswers(answerList) {
 
 function messageAnswerToSubmit(index) {
     cloak.message('submitAnswer', index);
+}
+
+function messageGetRandomNumber() {
+    cloak.message('getRandomNumber');
 }

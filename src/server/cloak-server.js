@@ -4,6 +4,7 @@ var randomVowel = require('./letters/random-vowel-picker');
 var parameters = require('./parameters');
 var solver = require('./vendor/validation/cntdn');
 var roomDataService = require('./services/room-data-service');
+var numbersRound = require('./numbers-round/numbers-round')
 
 module.exports = function(expressServer) {
     cloak.configure({
@@ -34,7 +35,8 @@ module.exports = function(expressServer) {
             removeFromRoomList: removeFromRoomList,
             resetScore: resetScore,
             submitAnswer: submitAnswer,
-            possibleAnswers: possibleAnswers
+            possibleAnswers: possibleAnswers,
+            getRandomNumber: numbersRound.getRandomNumber
         }
     });
     cloak.run();
@@ -526,3 +528,6 @@ function possibleAnswers(answerList, user) {
     var room = user.getRoom();
     room.data.possibleAnswers[user.id] = answerList;
 }
+
+
+

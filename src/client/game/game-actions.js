@@ -23,6 +23,7 @@ export const RESET_FINISHED = 'RESET_FINISHED';
 export const GAME_PARAMETERS = 'GAME_PARAMETERS';
 export const GAME_FINISHED = 'GAME_FINISHED';
 export const NEXT_ROUND_TYPE = 'NEXT_ROUND_TYPE';
+export const SET_RANDOM_NUMBER = 'SET_RANDOM_NUMBER';
 
 export function startGame() {
     return {
@@ -183,5 +184,12 @@ export function nextRoundType(type) {
 	return {
 		type: NEXT_ROUND_TYPE,
 		payload: type
+	}
+}
+
+export function setRandomNumber(number) {
+	return {
+		type: SET_RANDOM_NUMBER,
+		payload: number
 	}
 }

@@ -21,7 +21,8 @@ const initialState = {
     resetRound: false,
     gameParams: {},
     gameFinished: false,
-    nextRoundType: ''
+    nextRoundType: '',
+    randomNumber: null
 };
 
 const game = (state = initialState, action) => {
@@ -128,7 +129,8 @@ const game = (state = initialState, action) => {
                 submission: false,
                 roundResults: false,
                 finalAnswers: [],
-                resetRound: true
+                resetRound: true,
+                randomNumber: null
             });
         case actionTypes.RESET_FINISHED: {
             return updateState(state, {
@@ -151,6 +153,11 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 nextRoundType: action.payload
             });
+        }
+        case actionTypes.SET_RANDOM_NUMBER: {
+            return updateState(state, {
+                randomNumber: action.payload
+            })
         }
         default:
             return state;
