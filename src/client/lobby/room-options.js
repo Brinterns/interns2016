@@ -18,7 +18,7 @@ export class RoomOptions extends Component {
         return(
             <div>
                 Letters
-                <input className={style['input-slider']} type="range" min="1" max="9" 
+                <input className={style['input-slider']} type="range" min="1" max="9" value={this.props.sliders.letterSlider}
                     onChange={(event) => this.handleLetterSliderChange(event)} />
                 <div className={style['round-number']}>
                     {this.props.sliders.letterSlider}
@@ -31,7 +31,7 @@ export class RoomOptions extends Component {
         return(
             <div>
                 Numbers
-                <input className={style['input-slider']} type="range" min="1" max="9" 
+                <input className={style['input-slider']} type="range" min="1" max="9" value={this.props.sliders.numberSlider}
                 onChange={(event) => this.handleNumberSliderChange(event)}/>
                 <div className={style['round-number']}>
                     {this.props.sliders.numberSlider}
