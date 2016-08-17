@@ -776,6 +776,129 @@ describe('cloak service', () => {
                 expect(dispatch).toHaveBeenCalledWith(params);
             });
         });
+
+        describe('gameFinished response', () => {
+            let gameFinished;
+            beforeEach(() => {
+                gameFinished = jasmine.createSpy('gameFinished');
+                rewire('gameFinished', gameFinished);
+            });
+
+            afterEach(() => {
+                resetDependency('gameFinished');
+            });
+
+            it('should call gameFinished', () => {
+                cloakConfig.messages.gameFinished();
+
+                expect(gameFinished).toHaveBeenCalled();
+            });
+
+            it('should dispatch the result of calling gameFinished', () => {
+                cloakConfig.messages.gameFinished();
+
+                expect(dispatch).toHaveBeenCalled();
+            });
+        });
+
+        describe('roomIdForJoin response', () => {
+            let router;
+            beforeEach(() => {
+                router = jasmine.createSpyObj('router', ['navigateToRoom']);
+                rewire('router', router);
+            });
+
+            afterEach(() => {
+                resetDependency('router');
+            });
+
+            it('should call router.navigateToRoom with relevant id', () => {
+                cloakConfig.messages.roomIdForJoin('fake_id');
+
+                expect(router.navigateToRoom).toHaveBeenCalledWith('fake_id');
+            });
+        });
+
+        describe('roundTypes response', () => {
+            let roundTypes;
+            let fakeRoundTypes
+            beforeEach(() => {
+                fakeRoundTypes = {letter: true};
+                roundTypes = jasmine.createSpy('roundTypes');
+                rewire('roundTypes', roundTypes);
+            });
+
+            afterEach(() => {
+                resetDependency('roundTypes');
+            });
+
+            it('should call roundTypes with given argument', () => {
+                cloakConfig.messages.roundTypes(fakeRoundTypes);
+
+                expect(roundTypes).toHaveBeenCalledWith(fakeRoundTypes);
+            });
+
+            it('should dispatch the result of calling roundTypes', () => {
+                roundTypes.and.callFake(fakeRoundTypes => fakeRoundTypes);
+                cloakConfig.messages.roundTypes(fakeRoundTypes);
+
+                expect(dispatch).toHaveBeenCalledWith(fakeRoundTypes);
+            });
+        });
+
+        describe('nextRoundType response', () => {
+            let nextRoundType;
+            let fakeRoundType;
+            beforeEach(() => {
+                fakeRoundType = 'L';
+                nextRoundType = jasmine.createSpy('nextRoundType');
+                rewire('nextRoundType', nextRoundType);
+            });
+
+            afterEach(() => {
+                resetDependency('nextRoundType');
+            });
+
+            it('should call nextRoundType with given argument', () => {
+                cloakConfig.messages.nextRoundType(fakeRoundType);
+
+                expect(nextRoundType).toHaveBeenCalledWith(fakeRoundType);
+            });
+
+            it('should dispatch the result of calling nextRoundType', () => {
+                nextRoundType.and.callFake(fakeRoundType => fakeRoundType);
+                cloakConfig.messages.nextRoundType(fakeRoundType);
+
+                expect(dispatch).toHaveBeenCalledWith(fakeRoundType);
+            });
+        });
+
+        describe('setRandomNumber response', () => {
+            let setRandomNumber;
+            let fakeNumber;
+            beforeEach(() => {
+                fakeNumber = 1;
+                setRandomNumber = jasmine.createSpy('setRandomNumber');
+                rewire('setRandomNumber', setRandomNumber);
+            });
+
+            afterEach(() => {
+                resetDependency('setRandomNumber');
+            });
+
+            it('should call setRandomNumber with given argument', () => {
+                cloakConfig.messages.setRandomNumber(fakeNumber);
+
+                expect(setRandomNumber).toHaveBeenCalledWith(fakeNumber);
+            });
+
+            it('should dispatch the result of calling setRandomNumber', () => {
+                setRandomNumber.and.callFake(fakeNumber => fakeNumber);
+                cloakConfig.messages.setRandomNumber(fakeNumber);
+
+                expect(dispatch).toHaveBeenCalledWith(fakeNumber);
+            });
+        });
     });
 
     describe('initialData', () => {
@@ -882,6 +1005,12 @@ describe('cloak service', () => {
             cloakService.messageAnswerToSubmit(7);
 
             expect(window.cloak.message).toHaveBeenCalledWith('submitAnswer', 7);
+        });
+
+        it('messages the server getRandomNumber when messageGetRandomNumber is called', () => {
+            cloakService.messageGetRandomNumber();
+
+            expect(window.cloak.message).toHaveBeenCalledWith('getRandomNumber');
         });
     });
 });
