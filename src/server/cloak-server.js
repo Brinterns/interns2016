@@ -6,11 +6,13 @@ var solver = require('./vendor/validation/cntdn');
 var roomDataService = require('./services/room-data-service');
 var numbersRound = require('./numbers-round/numbers-round')
 
+var fiveMinutes = 300000;
 module.exports = function(expressServer) {
     cloak.configure({
         express: expressServer,
         autoJoinLobby: true,
         reconnectWait: 300,
+        pruneEmptyRooms: fiveMinutes,
         lobby: {
             newMember: refreshListener,
             memberLeaves: refreshListener
@@ -36,11 +38,16 @@ module.exports = function(expressServer) {
             resetScore: resetScore,
             submitAnswer: submitAnswer,
             possibleAnswers: possibleAnswers,
-            getRandomNumber: numbersRound.getRandomNumber
+            getRandomNumber: numbersRound.getRandomNumber,
+            refreshRoomList: refreshRoomList
         }
     });
     cloak.run();
 };
+
+function refreshRoomList(arg, user) {
+    refreshListener();
+}
 
 function gameStartedRefresh(user, room) {
     user.message('startGame');
@@ -167,7 +174,8 @@ function fireLobbyReload() {
 }
 
 function fireRoomListReload() {
-    var rooms = cloak.getRooms(true);
+    var rooms = cloak.getRooms();
+    rooms=cloak.getRooms(true);
     for(var i = 0; i < rooms.length; i++){
         var currRoom = cloak.getRoom(rooms[i].id);
         rooms[i].data = currRoom.data;

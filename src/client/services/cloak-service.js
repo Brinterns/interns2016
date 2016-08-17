@@ -56,6 +56,9 @@ function configureAndRun(roomId) {
                 if(roomId !== undefined) {
                     cloak.message('checkRoom', roomId);
                 }
+            },
+            roomDeleted: () => {
+                cloak.message('refreshRoomList');
             }
         },
         messages: {
