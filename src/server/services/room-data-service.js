@@ -47,13 +47,14 @@ function newRoundData(oldData) {
 
 function setRounds(oldData, options) {
     var roundList = [];
-    for(var i=0; i<options.rounds.number; i++) {
-        roundList.push('N');
-    }
-    
     for(var i=0; i<options.rounds.letter; i++) {
         roundList.push('L');
     }
+    
+    for(var i=0; i<options.rounds.number; i++) {
+        roundList.push('N');
+    }
+
 
     return roundList;
 }

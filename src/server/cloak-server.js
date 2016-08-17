@@ -217,7 +217,7 @@ function startGame(arg, user) {
     var room = user.getRoom();
     var roomUsers = room.getMembers();
     var leaderIndex = roomUsers.indexOf(user);
-    var nextRoundType = room.data.rounds.pop();
+    var nextRoundType = room.data.rounds.shift();
     room.data.leaderIndex = leaderIndex;
     room.data.leaderId = user.id;
     room.data.started = true;
@@ -510,7 +510,7 @@ function startRoundResetTimer(room) {
 function nextRound(room) {
     setNextLeader(room);
     room.data = roomDataService.newRoundData(room.data);
-    var nextRoundType = room.data.rounds.pop();
+    var nextRoundType = room.data.rounds.shift();
     if(nextRoundType){
         room.messageMembers('nextRoundType', nextRoundType);    
         room.messageMembers('resetRound');
