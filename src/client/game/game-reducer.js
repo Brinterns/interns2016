@@ -22,7 +22,8 @@ const initialState = {
     gameParams: {},
     gameFinished: false,
     nextRoundType: '',
-    randomNumber: null
+    randomNumber: null,
+    progressBarVisible: false
 };
 
 const game = (state = initialState, action) => {
@@ -101,7 +102,8 @@ const game = (state = initialState, action) => {
         case actionTypes.START_SUBMISSION:
             return updateState(state, {
                 submission: true,
-                submissionTimerValue: action.payload
+                submissionTimerValue: action.payload,
+                progressBarVisible: true
             });
         case actionTypes.STOP_SUBMISSION:
             return updateState(state, {
@@ -109,6 +111,7 @@ const game = (state = initialState, action) => {
             });
         case actionTypes.SUBMITTED_ANSWERS:
             return updateState(state, {
+                progressBarVisible: false,
                 finalAnswers: action.payload
             });
         case actionTypes.ROUND_STARTED:

@@ -12,7 +12,8 @@ describe('<Progress />', () => {
     it('renders no element with class progress if neither answering nor submission props are true', () => {
         wrapper.setProps({
             answering: false,
-            submission: false
+            submission: false,
+            progressBarVisible: false
         });
 
         expect(wrapper.find('.progress').length).toEqual(0);
@@ -22,6 +23,7 @@ describe('<Progress />', () => {
         wrapper.setProps({
             answering: true,
             submission: false,
+            progressBarVisible: false,
             answerTimerValue: 25,
             gameParams: {
                 answerTime: 30
@@ -35,6 +37,7 @@ describe('<Progress />', () => {
         wrapper.setProps({
             answering: false,
             submission: true,
+            progressBarVisible: true,
             submissionTimerValue: 10,
             gameParams: {
                 submitTime: 15
