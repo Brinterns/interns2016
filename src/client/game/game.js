@@ -42,9 +42,9 @@ export class Game extends Component {
     render() {
         const letterButtons = (
             <div>
-                <button className="btn btn-info" onClick={() => cloakService.messageGetConsonant()}
+                <button className="btn" onClick={() => cloakService.messageGetConsonant()}
                 disabled={this.props.disableConsonant}>Consonant</button>
-                <button className="btn btn-primary" onClick={() => cloakService.messageGetVowel()}
+                <button className="btn" onClick={() => cloakService.messageGetVowel()}
                 disabled={this.props.disableVowel}>Vowel</button>
             </div>
         );

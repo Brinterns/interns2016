@@ -44,6 +44,7 @@ export class RoomOptions extends Component {
         return (
             <div className={`col-lg-8 ${style['input-slider-wrapper']}`}>
                 {this.props.roundTypes.letters ? this.letterSlider() : null}
+                <br></br>
                 {this.props.roundTypes.numbers ? this.numberSlider() : null}
             </div>
         )

@@ -12,6 +12,8 @@ import NumbersRound from '../game/numbers-round';
 import { leaveGame } from '../game/game-actions';
 import storageService from '../services/storage-service';
 
+import style from './room.scss';
+
 export class RoomPage extends Component {
     componentWillMount() {
         if(cloakService.isConnected()) {
@@ -54,9 +56,9 @@ export class RoomPage extends Component {
                     <h1>{`Room: ${this.props.roomData.name}`}</h1>
                     <UserList users={this.props.roomUsers} />
                     <div className="col-lg-8" >
-                        <button className={`btn btn-success`} id="start-game" disabled={this.props.disableStart}
+                        <button className={`btn ${style['start-game']}`} id="start-game" disabled={this.props.disableStart}
                                 onClick={() => {cloakService.messageStartGame()}}>Start</button>
-                        <button className={`btn btn-danger`} id="leave-room"
+                        <button className={`btn  ${style['leave-game']}`} id="leave-room"
                                 onClick={leaveRoom}>Leave</button>
                     </div>
                     {this.props.started ? 
