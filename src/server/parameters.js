@@ -4,7 +4,7 @@ var minUserNo = 2;
 var numLetters = 9;
 var rounds = {
     letters: true, 
-    numbers: false
+    numbers: true
 }
 
 

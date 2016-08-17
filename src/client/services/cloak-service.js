@@ -21,7 +21,8 @@ import {
     resetRound,
     resetFinished,
     gameParameters,
-    gameFinished
+    gameFinished,
+    nextRoundType
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -146,6 +147,9 @@ function configureAndRun(roomId) {
             },
             roundTypes: types => {
                 dispatch(roundTypes(types));
+            },
+            nextRoundType: type => {
+                dispatch(nextRoundType(type));
             }
         },
         initialData: {

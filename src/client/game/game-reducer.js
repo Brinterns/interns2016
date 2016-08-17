@@ -20,7 +20,8 @@ const initialState = {
     finalAnswers: [],
     resetRound: false,
     gameParams: {},
-    gameFinished: false
+    gameFinished: false,
+    nextRoundType: ''
 };
 
 const game = (state = initialState, action) => {
@@ -112,11 +113,11 @@ const game = (state = initialState, action) => {
         case actionTypes.ROUND_STARTED:
             return updateState(state, {
                 roundResults: false
-            })
+            });
         case actionTypes.ROUND_ENDED:
             return updateState(state, {
                 roundResults: true
-            })
+            });
         case actionTypes.RESET_ROUND:
             return updateState(state, {
                 letterList: [],
@@ -128,23 +129,28 @@ const game = (state = initialState, action) => {
                 roundResults: false,
                 finalAnswers: [],
                 resetRound: true
-            })
+            });
         case actionTypes.RESET_FINISHED: {
             return updateState(state, {
                 resetRound: false,
                 disableConsonant: false,
                 disableVowel: false
-            })
+            });
         }
         case actionTypes.GAME_PARAMETERS:{
             return updateState(state,{
                 gameParams: action.payload
-            })
+            });
         }
         case actionTypes.GAME_FINISHED: {
             return updateState(state, {
                 gameFinished: true
-            })
+            });
+        }
+        case actionTypes.NEXT_ROUND_TYPE: {
+            return updateState(state, {
+                nextRoundType: action.payload
+            });
         }
         default:
             return state;

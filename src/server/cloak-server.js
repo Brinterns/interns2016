@@ -217,16 +217,15 @@ function startGame(arg, user) {
     var room = user.getRoom();
     var roomUsers = room.getMembers();
     var leaderIndex = roomUsers.indexOf(user);
-    var roundType = room.data.rounds.pop();
+    var nextRoundType = room.data.rounds.pop();
     room.data.leaderIndex = leaderIndex;
     room.data.leaderId = user.id;
     room.data.started = true;
-    if(roundType === 'L') {
-        room.messageMembers('startGame');
-        room.messageMembers('roundStarted');
-        makeLeader(room.data.leaderIndex, room);
-        fireRoomListReload();
-    }
+    room.messageMembers('nextRoundType', nextRoundType);
+    room.messageMembers('startGame');
+    room.messageMembers('roundStarted');
+    makeLeader(room.data.leaderIndex, room);
+    fireRoomListReload();
 }
 
 function makeLeader(leaderIndex, room) {
@@ -512,7 +511,8 @@ function nextRound(room) {
     setNextLeader(room);
     room.data = roomDataService.newRoundData(room.data);
     var nextRoundType = room.data.rounds.pop();
-    if(nextRoundType === 'L'){
+    if(nextRoundType){
+        room.messageMembers('nextRoundType', nextRoundType);    
         room.messageMembers('resetRound');
         var answeringTimer = setTimeout(function() {
             room.messageMembers('resetFinished');

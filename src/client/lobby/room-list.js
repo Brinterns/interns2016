@@ -80,7 +80,8 @@ function joinRoom(room) {
 const mapStateToProps = state => ({
     roomList: state.lobby.rooms,
     rounds: {
-        letter: state.lobby.letterSlider
+        letter: state.lobby.letterSlider,
+        number: state.lobby.numberSlider
     }
 });
 

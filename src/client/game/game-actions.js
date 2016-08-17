@@ -22,6 +22,7 @@ export const RESET_ROUND = 'RESET_ROUND';
 export const RESET_FINISHED = 'RESET_FINISHED';
 export const GAME_PARAMETERS = 'GAME_PARAMETERS';
 export const GAME_FINISHED = 'GAME_FINISHED';
+export const NEXT_ROUND_TYPE = 'NEXT_ROUND_TYPE';
 
 export function startGame() {
     return {
@@ -175,5 +176,12 @@ export function gameParameters(params) {
 export function gameFinished() {
 	return {
 		type: GAME_FINISHED
+	}
+}
+
+export function nextRoundType(type) {
+	return {
+		type: NEXT_ROUND_TYPE,
+		payload: type
 	}
 }
