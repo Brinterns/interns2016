@@ -10,7 +10,7 @@ export class NumbersRound extends Component {
 
     render() {
         return (
-            <div className="col-lg-8 text-center">
+            <div className="col-lg-8 text-center" id="random-number">
                 {this.props.randomNumber}
             </div>
         );

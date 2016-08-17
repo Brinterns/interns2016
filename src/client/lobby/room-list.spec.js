@@ -1,8 +1,5 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import { shallow, mount } from 'enzyme';
-
-import store from '../store';
 
 import { RoomList, __RewireAPI__ } from './room-list';
 const rewire = __RewireAPI__.__Rewire__;

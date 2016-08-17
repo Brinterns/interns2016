@@ -45,6 +45,7 @@ describe('cloak server', () => {
         mockery.registerAllowable('./letters/letter-lists');
         mockery.registerAllowable('./dictionary');
         mockery.registerAllowable('./services/room-data-service');
+        mockery.registerAllowable('./numbers-round/numbers-round');
         mockery.registerMock('./vendor/validation/cntdn', solver);
         mockery.registerMock('./parameters', parameters);
         mockery.registerMock('./letters/random-consonant-picker', randomConsonant);

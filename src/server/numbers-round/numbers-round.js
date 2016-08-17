@@ -1,5 +1,6 @@
 module.exports =  {
-    getRandomNumber
+    getRandomNumber,
+    generateRandomNumber
 }
 
 function getRandomNumber(arg, user) {
