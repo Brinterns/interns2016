@@ -9,7 +9,7 @@ describe('Numbers Round', () => {
         var room = jasmine.createSpyObj('room', ['messageMembers']);
         user.getRoom.and.returnValue(room);
 
-        numbersRound.getRandomNumber(0, user);
+        numbersRound.getRandomNumber(room);
 
         expect(room.messageMembers).toHaveBeenCalled();
     });

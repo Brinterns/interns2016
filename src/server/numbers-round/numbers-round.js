@@ -2,6 +2,7 @@ var shuffle = require('./shuffle');
 
 module.exports =  {
     generateRandomNumber,
+    getRandomNumber,
     smallNumberList,
     largeNumberList,
     getLarge,
