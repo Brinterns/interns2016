@@ -25,7 +25,9 @@ import {
     nextRoundType,
     setRandomNumber,
     getLarge,
-    getSmall
+    getSmall,
+    disableLarge,
+    disableSmall
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -168,7 +170,13 @@ function configureAndRun(roomId) {
             },
             updateSmall: number => {
                 dispatch(getSmall(number));
-            }
+            },
+            disableLarge: () => {
+                dispatch(disableLarge());
+            },
+            disableSmall: () => {
+                dispatch(disableSmall());
+            },
         },
         initialData: {
             name: storageService.getUser().name,

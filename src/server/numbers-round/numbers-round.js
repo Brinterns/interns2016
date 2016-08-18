@@ -54,12 +54,13 @@ function getSmall(arg, user) {
 function checkNumbersLeft(numbersRound, room) {
     if(numbersRound.large >= 4){
         numbersRound.disableLarge = true;
-        console.log('disableLarge');
+        room.messageMembers('disableLarge');
     }
     if(numbersRound.large + numbersRound.small === 6) {
         numbersRound.disableLarge = true;
         numbersRound.disableSmall = true;
-        console.log('disableall');
+        room.messageMembers('disableSmall');
+        room.messageMembers('disableLarge');
         getRandomNumber(room);
     }
 }

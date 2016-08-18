@@ -7,7 +7,7 @@ import storageService from '../services/storage-service';
 export class NumbersRound extends Component {
     componentWillMount() {
         cloakService.messageGetRandomNumber();
-    }    
+    }
 
     isLeader() {
         let userId = storageService.getUser().id;
@@ -22,7 +22,8 @@ export class NumbersRound extends Component {
             <div>
                 <button className="btn" onClick={() => cloakService.messageGetLarge()}
                 disabled={this.props.disableLarge}>Large</button>
-                <button className="btn" onClick={() => cloakService.messageGetSmall()}>Small</button>
+                <button className="btn" onClick={() => cloakService.messageGetSmall()}
+                disabled={this.props.disableSmall}>Small</button>
             </div>
         );
 
@@ -45,12 +46,9 @@ const mapStateToProps = state => ({
     numberList: state.game.numberList,
     randomNumber: state.game.randomNumber,
     disableLarge: state.game.disableLarge,
-    disableSmall: state.game.disableSmall    
+    disableSmall: state.game.disableSmall
 });
 
 export default connect(
     mapStateToProps
 )(NumbersRound)
-
-
-

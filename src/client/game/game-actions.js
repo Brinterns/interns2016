@@ -26,6 +26,8 @@ export const NEXT_ROUND_TYPE = 'NEXT_ROUND_TYPE';
 export const SET_RANDOM_NUMBER = 'SET_RANDOM_NUMBER';
 export const GET_LARGE = 'GET_LARGE';
 export const GET_SMALL = 'GET_SMALL';
+export const DISABLE_LARGE = 'DISABLE_LARGE';
+export const DISABLE_SMALL = 'DISABLE_SMALL';
 
 export function startGame() {
     return {
@@ -208,4 +210,16 @@ export function getSmall(number) {
 		type: GET_SMALL,
 		payload: number
 	}
+}
+
+export function disableLarge() {
+    return {
+        type: DISABLE_LARGE
+    }
+}
+
+export function disableSmall() {
+    return {
+        type: DISABLE_SMALL
+    }
 }

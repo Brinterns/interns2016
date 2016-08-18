@@ -24,6 +24,8 @@ const initialState = {
     nextRoundType: '',
     randomNumber: null,
     progressBarVisible: false,
+    disableLarge: false,
+    disableSmall: false,
     numberList: []
 };
 
@@ -33,7 +35,6 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 started: true,
                 disableStart: true
-                numberList: []
             });
         case actionTypes.LEAVE_GAME:
             return updateState(state, {
@@ -142,7 +143,9 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 resetRound: false,
                 disableConsonant: false,
-                disableVowel: false
+                disableVowel: false,
+                disableLarge: false,
+                disableSmall: false
             });
         }
         case actionTypes.GAME_PARAMETERS:{
@@ -173,6 +176,16 @@ const game = (state = initialState, action) => {
         case actionTypes.GET_SMALL: {
             return updateState(state, {
                 numberList: [...state.numberList, action.payload]
+            });
+        }
+        case actionTypes.DISABLE_LARGE: {
+            return updateState(state, {
+                disableLarge: true
+            });
+        }
+        case actionTypes.DISABLE_SMALL: {
+            return updateState(state, {
+                disableSmall: true
             });
         }
         default:
