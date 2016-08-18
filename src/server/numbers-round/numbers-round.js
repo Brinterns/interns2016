@@ -34,7 +34,7 @@ function getLarge(arg, user) {
     var room = user.getRoom();
     if(!room.data.numbersRound.disableLarge) {
         var num = room.data.numbersRound.largeNumberList.shift();
-        user.message('updateLarge', num);
+        room.messageMembers('updateLarge', num);
         room.data.numbersRound.numbers.push(num);
         room.data.numbersRound.large++;
         checkNumbersLeft(room.data.numbersRound, room);
@@ -45,7 +45,7 @@ function getSmall(arg, user) {
     var room = user.getRoom();
     if(!room.data.numbersRound.disableSmall) {
         var num = room.data.numbersRound.smallNumberList.shift();
-        user.message('updateSmall', num);
+        room.messageMembers('updateSmall', num);
         room.data.numbersRound.numbers.push(num);
         room.data.numbersRound.small++;
         checkNumbersLeft(room.data.numbersRound, room);

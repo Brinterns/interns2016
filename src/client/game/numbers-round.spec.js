@@ -10,13 +10,15 @@ describe('<NumbersRound />', () => {
     let props;
     beforeEach(() => {
         props = {
-            randomNumber: ''
+            randomNumber: '',
+            leader: {}
         };
     });
 
     it('calls messageGetRandomNumber on mount', () => {
         let cloakService = jasmine.createSpyObj('cloakService', ['messageGetRandomNumber']);
         rewire('cloakService', cloakService);
+        props.leader.id = 1;
 
         const wrapper = shallow(
             <NumbersRound {...props} />

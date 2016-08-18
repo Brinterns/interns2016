@@ -28,8 +28,10 @@ export class NumbersRound extends Component {
         );
 
         return (
-            <div className="col-lg-8 text-center" id="random-number">
-                {this.props.randomNumber}
+            <div>
+                <div className="col-lg-8 text-center" id="random-number">
+                    {this.props.randomNumber}
+                </div>
                 <div>
                     {this.isLeader() ? numberButtons: null}
                 </div>
