@@ -25,11 +25,11 @@ function initialRoomData(user) {
             disableConsonant: false,
             disableVowel: false
         },
-        numbersList: {
+        numbersRound: {
             numbers: [],
-            largeNumberList: numbersRound.largeNumberList,
-            smallNumberList: numbersRound.smallNumberList,
-            larger: 0,
+            largeNumberList: numbersRound.largeNumberList(),
+            smallNumberList: numbersRound.smallNumberList(),
+            large: 0,
             small: 0,
             disableLarge: false,
             disableSmall: false
@@ -51,11 +51,11 @@ function newRoundData(oldData) {
             disableConsonant: false,
             disableVowel: false
         },
-        numbersList: {
+        numbersRound: {
             numbers: [],
-            largeNumberList: numbersRound.largeNumberList,
-            smallNumberList: numbersRound.smallNumberList,
-            larger: 0,
+            largeNumberList: numbersRound.largeNumberList(),
+            smallNumberList: numbersRound.smallNumberList(),
+            large: 0,
             small: 0,
             disableLarge: false,
             disableSmall: false
