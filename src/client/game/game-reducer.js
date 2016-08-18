@@ -19,7 +19,8 @@ const initialState = {
     roundResults: false,
     finalAnswers: [],
     resetRound: false,
-    gameParams: {}
+    gameParams: {},
+    gameFinished: false
 };
 
 const game = (state = initialState, action) => {
@@ -138,6 +139,11 @@ const game = (state = initialState, action) => {
         case actionTypes.GAME_PARAMETERS:{
             return updateState(state,{
                 gameParams: action.payload
+            })
+        }
+        case actionTypes.GAME_FINISHED: {
+            return updateState(state, {
+                gameFinished: true
             })
         }
         default:

@@ -1,6 +1,7 @@
 module.exports = {
 	initialRoomData,
-	newRoundData
+	newRoundData,
+    setRounds
 }
 
 function initialRoomData(user) {
@@ -10,6 +11,7 @@ function initialRoomData(user) {
             name: user.name
         },
         userIdList: [],
+        rounds: [],
         started: false,
         answering: false,
         submitting: false,
@@ -41,4 +43,12 @@ function newRoundData(oldData) {
         possibleAnswers: {},
         finalAnswerList: {}
     });
+}
+
+function setRounds(oldData, options) {
+    var roundList = [];
+    for(var i=0; i<options.rounds.letter; i++) {
+        roundList.push('L');
+    }
+    return roundList;
 }

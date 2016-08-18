@@ -69,14 +69,24 @@ export class Game extends Component {
         return (
             <div className="col-lg-8 text-center">
                 <h3>COUNTDOWN</h3>
-                <p>Leader: {this.props.leader.name}</p>
-                {this.isLeader() ? letterButtons : null}
-                <div>
-                    {letterBoxes}
-                </div>
-                {this.props.roundResults ? <RoundResults /> :
-                    <AnswerInput answering={this.props.answering} submission={this.props.submission}/>
-                }
+                {(!this.props.gameFinished ? 
+                    <div>
+                        <p>Leader: {this.props.leader.name}</p>
+                        {this.isLeader() ? letterButtons : null}
+                        <div>
+                            {letterBoxes}
+                        </div>
+                        {(this.props.roundResults ? 
+                            <RoundResults /> 
+                        :
+                            <AnswerInput answering={this.props.answering} submission={this.props.submission}/>)
+                        }
+                    </div>
+                :
+                    <div>
+                        GAME DONE GJ GUYS
+                    </div>
+                )}
             </div>
         );
     }
@@ -91,7 +101,8 @@ const mapStateToProps = state => ({
     answering: state.game.answering,
     submission: state.game.submission,
     roundResults: state.game.roundResults,
-    resetRound: state.game.resetRound
+    resetRound: state.game.resetRound,
+    gameFinished: state.game.gameFinished
 });
 
 export default connect(

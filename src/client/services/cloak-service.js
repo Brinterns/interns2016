@@ -20,12 +20,13 @@ import {
     roundStarted,
     resetRound,
     resetFinished,
-    gameParameters
+    gameParameters,
+    gameFinished
 } from '../game/game-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
 
-import { refreshLobby, refreshRooms} from '../lobby/lobby-actions';
+import { refreshLobby, refreshRooms, roundTypes} from '../lobby/lobby-actions';
 
 export default {
     configureAndRun,
@@ -136,6 +137,15 @@ function configureAndRun(roomId) {
             },
             initialGameParams: (params) => {
                 dispatch(gameParameters(params));
+            },
+            gameFinished: () => {
+                dispatch(gameFinished());
+            },
+            roomIdForJoin: roomId => {
+                router.navigateToRoom(roomId);
+            },
+            roundTypes: types => {
+                dispatch(roundTypes(types));
             }
         },
         initialData: {
@@ -151,8 +161,8 @@ function messageSetUsername(username) {
     cloak.message('setUsername', username);
 }
 
-function messageCreateRoom(roomname) {
-    cloak.message('createRoom', roomname);
+function messageCreateRoom(roomOptions) {
+    cloak.message('createRoom', roomOptions);
 }
 
 function messageJoinRoom(roomId) {

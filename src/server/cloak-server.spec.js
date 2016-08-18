@@ -1,10 +1,16 @@
 let mockery = require('mockery');
 
-let gameParameters = {
+let parameters = {
     answerTime : 20,
     submitTime : 10,
-    numLetters : 9
+    numLetters : 9,
+    minUserNo : 2,
+    rounds : {
+        letters: true, 
+        numbers: false
+    }
 };
+
 let cloak;
 let cloakConfig;
 let lobby;
@@ -15,6 +21,7 @@ let rooms;
 let disconnect;
 let letterList;
 let solver;
+let roomDataService;
 
 describe('cloak server', () => {
     let randomConsonant;
@@ -39,7 +46,7 @@ describe('cloak server', () => {
         mockery.registerAllowable('./dictionary');
         mockery.registerAllowable('./services/room-data-service');
         mockery.registerMock('./vendor/validation/cntdn', solver);
-        mockery.registerMock('./game-parameters', gameParameters);
+        mockery.registerMock('./parameters', parameters);
         mockery.registerMock('./letters/random-consonant-picker', randomConsonant);
         mockery.registerMock('./letters/random-vowel-picker', randomVowel);
     });
@@ -49,6 +56,7 @@ describe('cloak server', () => {
         lobby = jasmine.createSpyObj('lobby', ['getMembers', 'messageMembers', 'removeMember']);
         user = jasmine.createSpyObj('user', ['getRoom', 'message']);
         room = jasmine.createSpyObj('room', ['removeMember', 'addMember', 'messageMembers', 'getMembers']);
+        roomDataService = jasmine.createSpyObj('roomDataService', ['initialRoomData', 'setRounds']);
     });
 
     beforeEach(() => {
@@ -170,11 +178,11 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             room.getMembers.and.returnValue(users);
-            room.data = makeRoom(true, ['a','b','c'], gameParameters.answerTime);
-
+            room.data = makeRoom(true, ['a','b','c'], parameters.answerTime);
+            
             cloakConfig.room.newMember.bind(room, user)();
 
-            expect(user.message).toHaveBeenCalledWith('startAnswering', gameParameters.answerTime);
+            expect(user.message).toHaveBeenCalledWith('startAnswering', parameters.answerTime);
         });
 
         it('sends stopAnswering if the game is not in the answering phase in the joined room', () => {
@@ -225,77 +233,83 @@ describe('cloak server', () => {
 
     describe('createRoom', () => {
         it('creates room with the passed argument', () => {
-            user = {name: "name", id: 0};
-            rooms = [{id:'1'}];
+            rooms = [{id: '1'}];
+            var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue({data:{creator:''}});
 
-            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
-            expect(cloak.createRoom).toHaveBeenCalledWith('TEST_ROOM_NAME');
+            cloakConfig.messages.createRoom(options, user);
+            expect(cloak.createRoom).toHaveBeenCalledWith(options.name);
         });
 
         it('updates creator', () => {
-            user = {name: "name", id: "12345-abcde"};
-            room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
+            room = {name: "Room 1", data: {creator: {id:'sa', name:'sa'}}};
             rooms = [{id:'1'}];
+            user.name = 'BOBSAGET';
+            user.id = 69; 
+            var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
+ 
+            cloakConfig.messages.createRoom(options, user);
 
-            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
-
-            expect(room.data.creator).toEqual(user);
+            expect(room.data.creator).toEqual({id: user.id, name: user.name});
         });
 
         it('sets room to not started on creation', () => {
-            user = {name: "name", id: "12345-abcde"};
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
+            var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
+
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
-
-            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+ 
+            cloakConfig.messages.createRoom(options, user);
 
             expect(room.data.started).toEqual(false);
         });
 
         it('sets room to not be in answering phase on creation', () => {
-            user = {name: "name", id: "12345-abcde"};
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
+            var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
+
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
-
-            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+ 
+            cloakConfig.messages.createRoom(options, user);
 
             expect(room.data.answering).toEqual(false);
         });
 
         it('sets list of allowed users to empty on creation', () => {
-            user = {name: "name", id: "12345-abcde"};
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
+            var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
+            
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
-
-            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+ 
+            cloakConfig.messages.createRoom(options, user);
 
             expect(room.data.userIdList).toEqual([]);
         });
 
         it('sets letterList to its initial state on creation of the room', () => {
-            user = {name: "name", id: "12345-abcde"};
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
+            var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
+
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
-
-            cloakConfig.messages.createRoom('TEST_ROOM_NAME', user);
+ 
+            cloakConfig.messages.createRoom(options, user);
 
             expect(room.data.letterList).toEqual({
                 letters: [],
@@ -448,7 +462,8 @@ describe('cloak server', () => {
                 letterList: {
                     disableConsonant: false,
                     disableVowel: true
-                }
+                },
+                rounds: []
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -467,7 +482,8 @@ describe('cloak server', () => {
                 letterList: {
                     disableConsonant: false,
                     disableVowel: true
-                }
+                },
+                rounds: []
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -480,7 +496,8 @@ describe('cloak server', () => {
                     letterList: {
                         disableConsonant: false,
                         disableVowel: true
-                    }
+                    },
+                    rounds: []
             });
         })
 
@@ -496,7 +513,8 @@ describe('cloak server', () => {
                 letterList: {
                     disableConsonant: false,
                     disableVowel: true
-                }
+                },
+                rounds: ['L']
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -521,7 +539,8 @@ describe('cloak server', () => {
                 letterList: {
                     disableConsonant: false,
                     disableVowel: true
-                }
+                },
+                rounds: []
             };
             cloak.getRooms.and.returnValue([]);
 
@@ -602,8 +621,8 @@ describe('cloak server', () => {
                     disableConsonant: false,
                     disableVowel: false
                 },
-                answerTime: gameParameters.answerTime,
-                submitTime: gameParameters.submitTime
+                answerTime: parameters.answerTime,
+                submitTime: parameters.submitTime
             }
             user.getRoom.and.returnValue(room);
         });
@@ -635,7 +654,7 @@ describe('cloak server', () => {
         it('calls startAnswering if there are 9 or more letters in the letter list', () => {
             cloakConfig.messages.getVowel('', user);
 
-            expect(room.messageMembers).toHaveBeenCalledWith('startAnswering', gameParameters.answerTime);
+            expect(room.messageMembers).toHaveBeenCalledWith('startAnswering', parameters.answerTime);
         });
 
         it('startAnswering sets room.data.answering to true', () => {
@@ -648,58 +667,58 @@ describe('cloak server', () => {
             cloakConfig.messages.getVowel('', user);
             jasmine.clock().tick(1001);
 
-            expect(room.data.answerTime).toEqual(gameParameters.answerTime - 1);
+            expect(room.data.answerTime).toEqual(parameters.answerTime - 1);
         });
 
         it('startAnswering sends stopAnswering message after timeout', () => {
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
 
             expect(room.messageMembers).toHaveBeenCalledWith('stopAnswering');
         });
 
         it('answeringFinished sets room.data.answering to false', () => {
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
 
             expect(room.data.answering).toEqual(false);
         });
 
         it('answeringFinished sends startSubmission message', () => {
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
 
-            expect(room.messageMembers).toHaveBeenCalledWith('startSubmission', gameParameters.submitTime);
+            expect(room.messageMembers).toHaveBeenCalledWith('startSubmission', parameters.submitTime);
         });
 
         it('startSubmission sets room.data.submitting to true', () => {
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
 
             expect(room.data.submitting).toEqual(true);
         });
 
         it('submitTime is updated to be in sync after every time tick', () => {
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
 
             jasmine.clock().tick(1000);
 
-            expect(room.data.submitTime).toEqual(gameParameters.submitTime - 1);
+            expect(room.data.submitTime).toEqual(parameters.submitTime - 1);
         });
 
         it('submissionFinished sends stopSubmission after the submitTime expires', () => {
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
-            jasmine.clock().tick(gameParameters.submitTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.submitTime * 1000);
 
             expect(room.messageMembers).toHaveBeenCalledWith('stopSubmission');
         });
 
         it('submissionFinished sets room.data.submitting to false after the submitTime expires', () => {
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
-            jasmine.clock().tick(gameParameters.submitTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.submitTime * 1000);
 
             expect(room.data.submitting).toEqual(false);
         });
@@ -871,7 +890,7 @@ describe('cloak server', () => {
             solver.solve_letters.and.returnValue([]);
 
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
             cloakConfig.messages.submitAnswer(0, user);
 
             expect(solver.solve_letters).toHaveBeenCalled();
@@ -897,7 +916,7 @@ describe('cloak server', () => {
             solver.solve_letters.and.returnValue(['word1']);
 
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
             cloakConfig.messages.submitAnswer(0, user);
             expect(room.data.scores).toEqual({
                 'fakeId1': 11,
@@ -928,7 +947,7 @@ describe('cloak server', () => {
             solver.solve_letters.and.returnValue(['verylongw','fakelonga']);
 
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
             cloakConfig.messages.submitAnswer(0, user);
             expect(room.data.scores).toEqual({
                 'fakeId1': 24,
@@ -960,7 +979,7 @@ describe('cloak server', () => {
             solver.solve_letters.and.returnValue([]);
 
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
             cloakConfig.messages.submitAnswer(0, user);
             expect(room.data.scores).toEqual({
                 'fakeId1': 6,
@@ -986,7 +1005,7 @@ describe('cloak server', () => {
             solver.solve_letters.and.returnValue(['word1']);
 
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
             cloakConfig.messages.submitAnswer(0, user);
             expect(room.data.roundEnded).toEqual(true);
         });
@@ -1008,7 +1027,7 @@ describe('cloak server', () => {
             solver.solve_letters.and.returnValue(['word1']);
 
             cloakConfig.messages.getVowel('', user);
-            jasmine.clock().tick(gameParameters.answerTime * 1000);
+            jasmine.clock().tick(parameters.answerTime * 1000);
             cloakConfig.messages.submitAnswer(0, user);
             expect(room.messageMembers).toHaveBeenCalledWith('submittedAnswers',{
                 fakeId1: {
