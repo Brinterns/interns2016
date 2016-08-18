@@ -38,7 +38,6 @@ module.exports = function(expressServer) {
             resetScore: resetScore,
             submitAnswer: submitAnswer,
             possibleAnswers: possibleAnswers,
-            getRandomNumber: numbersRound.getRandomNumber,
             refreshRoomList: refreshRoomList,
             getLarge: numbersRound.getLarge,
             getSmall: numbersRound.getSmall
