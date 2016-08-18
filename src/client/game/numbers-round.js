@@ -44,7 +44,8 @@ const mapStateToProps = state => ({
     leader: state.game.leader,
     numberList: state.game.numberList,
     randomNumber: state.game.randomNumber,
-    disableLarge: state.game.disableLarge    
+    disableLarge: state.game.disableLarge,
+    disableSmall: state.game.disableSmall    
 });
 
 export default connect(
