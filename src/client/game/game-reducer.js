@@ -33,6 +33,7 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 started: true,
                 disableStart: true
+                numberList: []
             });
         case actionTypes.LEAVE_GAME:
             return updateState(state, {
@@ -134,7 +135,8 @@ const game = (state = initialState, action) => {
                 roundResults: false,
                 finalAnswers: [],
                 resetRound: true,
-                randomNumber: null
+                randomNumber: null,
+                numberList: []
             });
         case actionTypes.RESET_FINISHED: {
             return updateState(state, {
