@@ -1,7 +1,6 @@
 var shuffle = require('./shuffle');
 
 module.exports =  {
-    getRandomNumber,
     generateRandomNumber,
     smallNumberList,
     largeNumberList,
@@ -9,8 +8,7 @@ module.exports =  {
     getSmall
 }
 
-function getRandomNumber(arg, user) {
-    var room = user.getRoom();
+function getRandomNumber(room) {
     var randomNumber = generateRandomNumber(1, 1000);
     room.messageMembers('setRandomNumber', randomNumber);
 }
@@ -37,6 +35,7 @@ function getLarge(arg, user) {
     user.message('updateLarge', num);
     room.data.numbersRound.numbers.push(num);
     room.data.numbersRound.large++;
+    checkNumbersLeft(room.data.numbersRound, room);
 }
 
 function getSmall(arg, user) {
@@ -45,4 +44,18 @@ function getSmall(arg, user) {
     user.message('updateSmall', num);
     room.data.numbersRound.numbers.push(num);
     room.data.numbersRound.small++;
+    checkNumbersLeft(room.data.numbersRound, room);
+}
+
+function checkNumbersLeft(numbersRound, room) {
+    if(numbersRound.large >= 4){
+        numbersRound.disableLarge = true;
+        console.log('disableLarge');
+    }
+    if(numbersRound.large + numbersRound.small === 6) {
+        numbersRound.disableLarge = true;
+        numbersRound.disableSmall = true;
+        console.log('disableall');
+        getRandomNumber(room);
+    }
 }
