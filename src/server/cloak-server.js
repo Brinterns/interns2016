@@ -39,7 +39,9 @@ module.exports = function(expressServer) {
             submitAnswer: submitAnswer,
             possibleAnswers: possibleAnswers,
             getRandomNumber: numbersRound.getRandomNumber,
-            refreshRoomList: refreshRoomList
+            refreshRoomList: refreshRoomList,
+            getLarge: getLarge,
+            getSmall: getSmall
         }
     });
     cloak.run();
@@ -537,5 +539,12 @@ function possibleAnswers(answerList, user) {
     room.data.possibleAnswers[user.id] = answerList;
 }
 
+function getLarge(arg, user) {
+    user.message('updateLarge', 100);
+}
+
+function getSmall(arg, user) {
+    user.message('updateSmall', 1);
+}
 
 

@@ -23,7 +23,8 @@ const initialState = {
     gameFinished: false,
     nextRoundType: '',
     randomNumber: null,
-    progressBarVisible: false
+    progressBarVisible: false,
+    numberList: []
 };
 
 const game = (state = initialState, action) => {
@@ -160,7 +161,17 @@ const game = (state = initialState, action) => {
         case actionTypes.SET_RANDOM_NUMBER: {
             return updateState(state, {
                 randomNumber: action.payload
-            })
+            });
+        }
+        case actionTypes.GET_LARGE: {
+            return updateState(state, {
+                numberList: [...state.numberList, action.payload]
+            });
+        }
+        case actionTypes.GET_SMALL: {
+            return updateState(state, {
+                numberList: [...state.numberList, action.payload]
+            });
         }
         default:
             return state;

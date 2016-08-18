@@ -24,6 +24,8 @@ export const GAME_PARAMETERS = 'GAME_PARAMETERS';
 export const GAME_FINISHED = 'GAME_FINISHED';
 export const NEXT_ROUND_TYPE = 'NEXT_ROUND_TYPE';
 export const SET_RANDOM_NUMBER = 'SET_RANDOM_NUMBER';
+export const GET_LARGE = 'GET_LARGE';
+export const GET_SMALL = 'GET_SMALL';
 
 export function startGame() {
     return {
@@ -190,6 +192,20 @@ export function nextRoundType(type) {
 export function setRandomNumber(number) {
 	return {
 		type: SET_RANDOM_NUMBER,
+		payload: number
+	}
+}
+
+export function getLarge(number) {
+	return {
+		type: GET_LARGE,
+		payload: number
+	}
+}
+
+export function getSmall(number) {
+	return {
+		type: GET_SMALL,
 		payload: number
 	}
 }
