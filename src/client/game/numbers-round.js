@@ -20,9 +20,9 @@ export class NumbersRound extends Component {
     render() {
         const numberButtons = (
             <div>
-                <button className="btn" onClick={() => cloakService.messageGetLarge()}
+                <button className="btn" id="get-large" onClick={() => cloakService.messageGetLarge()}
                 disabled={this.props.disableLarge}>Large</button>
-                <button className="btn" onClick={() => cloakService.messageGetSmall()}
+                <button className="btn" id="get-small" onClick={() => cloakService.messageGetSmall()}
                 disabled={this.props.disableSmall}>Small</button>
             </div>
         );
@@ -35,7 +35,7 @@ export class NumbersRound extends Component {
                 <div>
                     {this.isLeader() ? numberButtons: null}
                 </div>
-                <div>
+                <div id="number-list">
                     {this.props.numberList}
                 </div>
             </div>
