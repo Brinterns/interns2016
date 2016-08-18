@@ -54,7 +54,7 @@ function refreshRoomList(arg, user) {
 function gameStartedRefresh(user, room) {
     user.message('startGame');
     makeLeader(room.data.leaderIndex, room);
-    user.message('resetLetters', room.data.letterList.letters);
+    user.message('resetLetters', room.data.lettersRound.letters);
     if(room.data.answering) {
         user.message('startAnswering', room.data.answerTime);
     } else {
@@ -95,7 +95,7 @@ function newMember(user) {
     } else {
         gameNotStartedRefresh(this);
     }
-    
+
     user.message('initialGameParams', {
         answerTime: parameters.answerTime,
     	submitTime: parameters.submitTime
@@ -245,7 +245,7 @@ function makeLeader(leaderIndex, room) {
         return;
     }
     var roomMembers = room.getMembers();
-    var letterList = room.data.letterList;
+    var lettersRound = room.data.lettersRound;
     var leader = {
         id: 1,
         name: 'God',
@@ -255,8 +255,8 @@ function makeLeader(leaderIndex, room) {
             id: roomMembers[leaderIndex].id,
             name: roomMembers[leaderIndex].name,
             data: roomMembers[leaderIndex].data,
-            disableConsonant: letterList.disableConsonant,
-            disableVowel: letterList.disableVowel
+            disableConsonant: lettersRound.disableConsonant,
+            disableVowel: lettersRound.disableVowel
         }
     }
     room.messageMembers('setLeader', leader);
@@ -312,14 +312,14 @@ function resetScore(arg, user) {
 
 function getConsonant(arg, user) {
     var room = user.getRoom();
-    var letterList = room.data.letterList;
-    if(letterList.letters.length >= parameters.numLetters){
+    var lettersRound = room.data.lettersRound;
+    if(lettersRound.letters.length >= parameters.numLetters){
         return;
     }
-    if(letterList.consonantNum < 6) {
+    if(lettersRound.consonantNum < 6) {
         var consonant = randomConsonant();
-        letterList.letters.push(consonant);
-        letterList.consonantNum++;
+        lettersRound.letters.push(consonant);
+        lettersRound.consonantNum++;
         room.messageMembers('updateConsonant', consonant);
         checkListLength(user);
     } else {
@@ -330,15 +330,15 @@ function getConsonant(arg, user) {
 
 function getVowel(arg, user) {
     var room = user.getRoom();
-    var letterList = room.data.letterList;
-    if(letterList.letters.length >= parameters.numLetters){
+    var lettersRound = room.data.lettersRound;
+    if(lettersRound.letters.length >= parameters.numLetters){
         return;
     }
 
-    if(letterList.vowelNum < 5) {
+    if(lettersRound.vowelNum < 5) {
         var vowel = randomVowel();
-        letterList.letters.push(vowel);
-        letterList.vowelNum++;
+        lettersRound.letters.push(vowel);
+        lettersRound.vowelNum++;
         room.messageMembers('updateVowel', vowel);
         checkListLength(user);
     } else {
@@ -348,10 +348,10 @@ function getVowel(arg, user) {
 
 function checkListLength(user) {
     var room = user.getRoom();
-    var letterList = room.data.letterList;
-    if(letterList.letters.length >= parameters.numLetters){
-        letterList.disableConsonant = true;
-        letterList.disableVowel = true;
+    var lettersRound = room.data.lettersRound;
+    if(lettersRound.letters.length >= parameters.numLetters){
+        lettersRound.disableConsonant = true;
+        lettersRound.disableVowel = true;
         user.message('disableConsonant', true);
         user.message('disableVowel', true);
         startAnswering(room);
@@ -419,7 +419,7 @@ function submitAnswer(index, user) {
         var answersToScore = Object.keys(finalAnswerList).map((id)=>[id, finalAnswerList[id]]);
         clearTimeout(submissionTimers[room.id].timer);
         submissionFinished(room, submissionTimers[room.id].timeLeft);
-        validateAnswers(answersToScore, room.data.letterList.letters, room);
+        validateAnswers(answersToScore, room.data.lettersRound.letters, room);
     }
 }
 
@@ -524,7 +524,7 @@ function nextRound(room) {
     room.data = roomDataService.newRoundData(room.data);
     var nextRoundType = room.data.rounds.shift();
     if(nextRoundType){
-        room.messageMembers('nextRoundType', nextRoundType);    
+        room.messageMembers('nextRoundType', nextRoundType);
         room.messageMembers('resetRound');
         var answeringTimer = setTimeout(function() {
             room.messageMembers('resetFinished');
@@ -546,5 +546,3 @@ function getLarge(arg, user) {
 function getSmall(arg, user) {
     user.message('updateSmall', 1);
 }
-
-
