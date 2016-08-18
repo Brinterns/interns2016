@@ -4,9 +4,21 @@ import { connect } from 'react-redux';
 import cloakService from '../services/cloak-service';
 import storageService from '../services/storage-service';
 
+import style from './game.scss';
+
+const numNumbers = 6;
+
 export class NumbersRound extends Component {
     componentWillMount() {
         cloakService.messageGetRandomNumber();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        for(var i=0; i<numNumbers; i++){
+            if(nextProps.numberList[i] !== undefined){
+                this.refs[`box${i}`].className += this.refs[`box${i}`].className.includes(style.flipped) ? '' : ` ${style.flipped}` ;
+            }
+        }
     }
 
     isLeader() {
@@ -27,6 +39,23 @@ export class NumbersRound extends Component {
             </div>
         );
 
+        const numberBox = (number, index) => (
+            <div className={style.flip}>
+                <div className={style.card} ref={`box${index}`}>
+                    <div className={`${style.face} ${style.front}`}>
+                    </div>
+                    <div ref={`card${index}`} className={`${style.face} ${style.back}`}>
+                        {number}
+                    </div>
+                </div>
+            </div>
+        );
+
+        let numberBoxes = [];
+        for(let i=0; i<numNumbers; i++) {
+            numberBoxes.push(numberBox(this.props.numberList[i], i));
+        }
+
         return (
             <div>
                 <div className="col-lg-8 text-center" id="random-number">
@@ -36,7 +65,7 @@ export class NumbersRound extends Component {
                     {this.isLeader() ? numberButtons: null}
                 </div>
                 <div id="number-list">
-                    {this.props.numberList}
+                    {numberBoxes}
                 </div>
             </div>
         );
