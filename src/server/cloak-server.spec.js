@@ -41,17 +41,10 @@ describe('cloak server', () => {
     });
 
     beforeEach(() => {
-        mockery.registerAllowable('./cloak-server');
-        mockery.registerAllowable('./letters/letter-lists');
-        mockery.registerAllowable('./dictionary');
-        mockery.registerAllowable('./services/room-data-service');
-        mockery.registerAllowable('./numbers-round/numbers-round');
-        mockery.registerAllowable('../numbers-round/numbers-round');
-        mockery.registerAllowable('./shuffle');
-        mockery.registerMock('./vendor/validation/cntdn', solver);
-        mockery.registerMock('./parameters', parameters);
-        mockery.registerMock('./letters/random-consonant-picker', randomConsonant);
-        mockery.registerMock('./letters/random-vowel-picker', randomVowel);
+        mockery.registerMock('../vendor/validation/cntdn', solver);
+        mockery.registerMock('../parameters', parameters);
+        mockery.registerMock('./random-consonant-picker', randomConsonant);
+        mockery.registerMock('./random-vowel-picker', randomVowel);
     });
 
     beforeEach(() => {
