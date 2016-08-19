@@ -8,7 +8,6 @@ import style from './lobby.scss';
 
 import UserList from '../user/user-list';
 import RoomList from './room-list';
-import RoomCreator from './room-creator';
 
 export class Lobby extends Component {
     componentWillMount() {
@@ -44,7 +43,6 @@ export class Lobby extends Component {
                 <div className="container-fluid">
                     <UserList users={this.props.lobbyUsers} />
                     <RoomList roomList={this.props.activeRooms}/>
-                    <RoomCreator />
                 </div>
             </div>
         );

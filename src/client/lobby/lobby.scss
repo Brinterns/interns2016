@@ -1,5 +1,6 @@
 .room-creator-input {
-    height: 60px;
+    margin-left: 10px;
+    min-height: 60px;
     width: 250px;
 }
 
@@ -14,4 +15,26 @@
 	margin-left: 10px;
 	font-weight: normal;
 	font-family: helvetica;
+}
+
+.cogs-button {
+    color: white;
+    min-height: 60px;
+    min-width: 60px;
+    font-size: 40px;
+    vertical-align: middle; 
+}
+
+.input-slider-wrapper {
+    text-align: center;
+    margin-top: 15px;
+    margin-left: 150px;
+}
+
+.input-slider {
+    display: inline-block;
+}
+
+.round-number {
+    display: inline-block;
 }
