@@ -198,13 +198,11 @@ export class AnswerInput extends Component {
     }
 
     render() {
-
         const submitButton = (
             <div>
                 <button className="btn btn-success" onClick={() => this.submitAnswer()}>Ready</button>
             </div>
         );
-
 
         return (
             <div className="col-lg-12 text-center">

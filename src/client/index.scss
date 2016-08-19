@@ -27,11 +27,11 @@ button {
 button[disabled]::hover {
     background-color: grey;
 }
+
 button:disabled {
     background-color: grey;
     color: white !important;
 }
-
 
 li {
     min-height: 60px;
@@ -72,4 +72,8 @@ input[type=range]:focus {
 
 input[type=range]:focus::-webkit-slider-runnable-track {
     background: silver;
+}
+
+textarea {
+    resize: none;
 }

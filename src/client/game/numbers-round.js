@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import cloakService from '../services/cloak-service';
 import storageService from '../services/storage-service';
 
+import NumbersInput from './numbers-input';
+
 import style from './game.scss';
 
 const numNumbers = 6;
@@ -69,6 +71,7 @@ export class NumbersRound extends Component {
                 <div id="number-list">
                     {numberBoxes}
                 </div>
+                <NumbersInput />
             </div>
         );
     }
