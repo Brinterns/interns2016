@@ -57,12 +57,14 @@ export class NumbersRound extends Component {
         }
 
         return (
-            <div>
-                <div className="col-lg-8 text-center" id="random-number">
-                    {this.props.randomNumber}
-                </div>
+            <div className="col-lg-8 text-center">
+                <h3>COUNTDOWN</h3>
                 <div>
+                    <p>Leader: {this.props.leader.name}</p>
                     {this.isLeader() ? numberButtons: null}
+                </div>
+                <div className={style['random-number']} id="random-number">
+                    {this.props.randomNumber}
                 </div>
                 <div id="number-list">
                     {numberBoxes}
