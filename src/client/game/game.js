@@ -55,7 +55,7 @@ export class Game extends Component {
                     <div className={`${style.face} ${style.front}`}>
                     </div>
                     <div ref={`card${index}`} className={`${style.face} ${style.back}`}>
-                        {letter}
+                        <span className={style['card-inner']}>{letter}</span>
                     </div>
                 </div>
             </div>

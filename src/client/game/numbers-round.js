@@ -45,7 +45,7 @@ export class NumbersRound extends Component {
                     <div className={`${style.face} ${style.front}`}>
                     </div>
                     <div ref={`card${index}`} className={`${style.face} ${style.back}`}>
-                        {number}
+                        <span className={style['card-inner']}>{number}</span>
                     </div>
                 </div>
             </div>
