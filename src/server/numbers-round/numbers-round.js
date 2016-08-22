@@ -1,14 +1,5 @@
 var shuffle = require('./shuffle');
 
-module.exports =  {
-    generateRandomNumber,
-    getRandomNumber,
-    smallNumberList,
-    largeNumberList,
-    getLarge,
-    getSmall
-}
-
 function getRandomNumber(room) {
     var randomNumber = generateRandomNumber(1, 1000);
     room.messageMembers('setRandomNumber', randomNumber);
@@ -64,4 +55,13 @@ function checkNumbersLeft(numbersRound, room) {
         room.messageMembers('disableLarge');
         getRandomNumber(room);
     }
+}
+
+module.exports =  {
+    generateRandomNumber,
+    getRandomNumber,
+    smallNumberList,
+    largeNumberList,
+    getLarge,
+    getSmall
 }

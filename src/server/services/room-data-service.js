@@ -1,11 +1,5 @@
 var numbersRound = require('../numbers-round/numbers-round');
 
-module.exports = {
-	initialRoomData,
-	newRoundData,
-    setRounds
-}
-
 function initialRoomData(user) {
     return {
         creator: {
@@ -77,4 +71,10 @@ function setRounds(oldData, options) {
 
 
     return roundList;
+}
+
+module.exports = {
+    initialRoomData,
+    newRoundData,
+    setRounds
 }

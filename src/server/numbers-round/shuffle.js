@@ -1,5 +1,3 @@
-module.exports = shuffle;
-
 function shuffle(array) {
     var current = array.length;
     var index;
@@ -16,3 +14,5 @@ function shuffle(array) {
 
     return array;
 }
+
+module.exports = shuffle;
