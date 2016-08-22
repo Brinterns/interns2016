@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
+const TAB = 9;
 export default class NumbersInput extends Component {
     handleKeyPress(event) {
         switch (event.which) {
-            case 9: {
+            case TAB: {
                 event.preventDefault();
                 event.target.value += '    ';
                 break;

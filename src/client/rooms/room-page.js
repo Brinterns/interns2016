@@ -14,6 +14,11 @@ import storageService from '../services/storage-service';
 
 import style from './room.scss';
 
+const roundTypes = {
+    letters: 'L',
+    numbers: 'N'
+};
+
 export class RoomPage extends Component {
     componentWillMount() {
         if(cloakService.isConnected()) {
@@ -35,11 +40,11 @@ export class RoomPage extends Component {
     render() {
         let round;
         switch (this.props.nextRoundType) {
-            case 'L': {
+            case roundTypes.letters: {
                 round = <Game />
                 break;
             }
-            case 'N': {
+            case roundTypes.numbers: {
                 round = <NumbersRound />
                 break;
             }
@@ -61,9 +66,9 @@ export class RoomPage extends Component {
                         <button className={`btn  ${style['leave-game']}`} id="leave-room"
                                 onClick={leaveRoom}>Leave</button>
                     </div>
-                    {this.props.started ? 
-                        round 
-                    : 
+                    {this.props.started ?
+                        round
+                    :
                         null
                     }
                 </div>
