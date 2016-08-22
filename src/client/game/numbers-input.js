@@ -6,7 +6,6 @@ export default class NumbersInput extends Component {
             case 9: {
                 event.preventDefault();
                 event.target.value += '    ';
-                console.log(event.target);
                 break;
             }
             default: {}

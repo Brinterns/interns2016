@@ -11,10 +11,6 @@ import style from './game.scss';
 const numNumbers = 6;
 
 export class NumbersRound extends Component {
-    componentWillMount() {
-        cloakService.messageGetRandomNumber();
-    }
-
     componentWillReceiveProps(nextProps) {
         for(var i=0; i<numNumbers; i++){
             if(nextProps.numberList[i] !== undefined){

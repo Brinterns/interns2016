@@ -26,14 +26,6 @@ describe('<NumbersRound />', () => {
         resetDependency('cloakService');
     });
 
-    it('calls messageGetRandomNumber on mount', () => {
-        const wrapper = shallow(
-            <NumbersRound {...props} />
-        )
-
-        expect(cloakService.messageGetRandomNumber).toHaveBeenCalled();
-    });
-
     it('renders a random number', () => {
         props.randomNumber = 734;
 
