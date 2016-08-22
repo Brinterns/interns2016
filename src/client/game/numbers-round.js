@@ -8,11 +8,11 @@ import NumbersInput from './numbers-input';
 
 import style from './game.scss';
 
-const numNumbers = 6;
+const numberOfNumbers = 6;
 
 export class NumbersRound extends Component {
     componentWillReceiveProps(nextProps) {
-        for(var i=0; i<numNumbers; i++){
+        for(var i=0; i<numberOfNumbers; i++){
             if(nextProps.numberList[i] !== undefined){
                 this.refs[`box${i}`].className += this.refs[`box${i}`].className.includes(style.flipped) ? '' : ` ${style.flipped}` ;
             }
@@ -50,7 +50,7 @@ export class NumbersRound extends Component {
         );
 
         let numberBoxes = [];
-        for(let i=0; i<numNumbers; i++) {
+        for(let i=0; i<numberOfNumbers; i++) {
             numberBoxes.push(numberBox(this.props.numberList[i], i));
         }
 

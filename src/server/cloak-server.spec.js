@@ -41,7 +41,7 @@ describe('cloak server', () => {
     });
 
     beforeEach(() => {
-        mockery.registerMock('../vendor/validation/cntdn', solver);
+        mockery.registerMock('../vendor/validation/solver', solver);
         mockery.registerMock('../parameters', parameters);
         mockery.registerMock('./random-consonant-picker', randomConsonant);
         mockery.registerMock('./random-vowel-picker', randomVowel);

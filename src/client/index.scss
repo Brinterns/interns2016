@@ -28,7 +28,7 @@ button[disabled]::hover {
     background-color: grey;
 }
 
-button:disabled {
+button[disabled] {
     background-color: grey;
     color: white !important;
 }

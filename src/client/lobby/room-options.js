@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { updateLetterSlider, updateNumberSlider } from './lobby-actions'; 
+import { updateLetterSlider, updateNumberSlider } from './lobby-actions';
 
 import style from './lobby.scss';
 
@@ -44,7 +44,7 @@ export class RoomOptions extends Component {
         return (
             <div className={`col-lg-8 ${style['input-slider-wrapper']}`}>
                 {this.props.roundTypes.letters ? this.letterSlider() : null}
-                <br></br>
+                <br />
                 {this.props.roundTypes.numbers ? this.numberSlider() : null}
             </div>
         )

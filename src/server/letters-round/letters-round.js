@@ -1,6 +1,6 @@
 var randomConsonant = require('./random-consonant-picker');
 var randomVowel = require('./random-vowel-picker');
-var solver = require('../vendor/validation/cntdn');
+var solver = require('../vendor/validation/solver');
 var parameters = require('../parameters');
 var refreshService = require('../services/refresh-service');
 var roundResetService = require('../services/round-reset-service');
