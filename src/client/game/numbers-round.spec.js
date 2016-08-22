@@ -1,10 +1,10 @@
-import React from 'react'; 
+import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import { NumbersRound, __RewireAPI__ } from './numbers-round';
+import { normaliseRewire } from '../utils/util';
 
-const rewire = __RewireAPI__.__Rewire__;
-const resetDependency = __RewireAPI__.__ResetDependency__;
+const { rewire, resetDependency } = normaliseRewire(__RewireAPI__);
 
 describe('<NumbersRound />', () => {
     let props;
@@ -17,7 +17,7 @@ describe('<NumbersRound />', () => {
             disableLarge: false,
             disableSmall: false
         };
-        
+
         cloakService = jasmine.createSpyObj('cloakService', ['messageGetRandomNumber', 'messageGetLarge', 'messageGetSmall']);
         rewire('cloakService', cloakService);
     });
@@ -50,7 +50,7 @@ describe('<NumbersRound />', () => {
     it('displays number selection buttons if the user is the leader', () => {
         let storageService = jasmine.createSpyObj('storageService', ['getUser']);
         rewire('storageService', storageService);
-        
+
         storageService.getUser.and.returnValue({id: 69});
         props.leader.id = 69;
 
@@ -75,9 +75,9 @@ describe('<NumbersRound />', () => {
         );
 
         wrapper.find('#get-large').simulate('click');
-        
+
         expect(cloakService.messageGetLarge).toHaveBeenCalled();
-        
+
         resetDependency('storageService');
     });
 
@@ -93,9 +93,9 @@ describe('<NumbersRound />', () => {
         );
 
         wrapper.find('#get-small').simulate('click');
-        
+
         expect(cloakService.messageGetSmall).toHaveBeenCalled();
-        
+
         resetDependency('storageService');
     });
 });

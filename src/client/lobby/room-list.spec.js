@@ -2,8 +2,9 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import { RoomList, __RewireAPI__ } from './room-list';
-const rewire = __RewireAPI__.__Rewire__;
-const resetDependency = __RewireAPI__.__ResetDependency__;
+import { normaliseRewire } from '../utils/util';
+
+const { rewire, resetDependency } = normaliseRewire(__RewireAPI__);
 
 describe('<RoomList />', () => {
     let props;
@@ -81,7 +82,7 @@ describe('<RoomList />', () => {
         let RoomOptions = () => null;
         rewire('cloakService', cloakService);
         rewire('RoomOptions', RoomOptions)
-        
+
         const wrapper = mount(
             <RoomList {...props} />
         );

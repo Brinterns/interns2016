@@ -1,7 +1,7 @@
 import cloakService from './cloak-service.js';
+import { normaliseRewire } from '../utils/util';
 
-const rewire = cloakService.__Rewire__;
-const resetDependency = cloakService.__ResetDependency__;
+const { rewire, resetDependency } = normaliseRewire(cloakService);
 
 describe('cloak service', () => {
     let cloakConfig;

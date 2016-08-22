@@ -1,5 +1,5 @@
 import { UPDATE_ROOM_USERS, GET_ROOM_DATA } from './room-actions';
-import updateState from '../utils/util';
+import { updateState } from '../utils/util';
 
 const initialState = {
 	users: [],

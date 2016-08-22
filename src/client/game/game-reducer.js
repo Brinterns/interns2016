@@ -1,6 +1,6 @@
 import * as actionTypes from './game-actions';
 
-import updateState from '../utils/util';
+import { updateState } from '../utils/util';
 
 const initialState = {
 	started: false,

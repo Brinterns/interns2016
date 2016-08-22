@@ -6,7 +6,7 @@ import {
     ROUND_TYPES
 } from './lobby-actions';
 
-import updateState from '../utils/util';
+import { updateState } from '../utils/util';
 
 const initialState = {
 	rooms: [],
