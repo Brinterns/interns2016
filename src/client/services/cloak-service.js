@@ -54,6 +54,9 @@ export default {
     messageGetSmall
 };
 
+const cloak = window.cloak;
+delete window.cloak;
+
 function configureAndRun(roomId) {
     cloak.configure({
         serverEvents: {
