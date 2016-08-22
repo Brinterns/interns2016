@@ -1,4 +1,6 @@
 import * as actionTypes from './game-actions';
+import * as letterRoundActions from './letter-round-actions';
+import * as numberRoundActions from './number-round-actions';
 
 import { updateState } from '../utils/util';
 
@@ -53,69 +55,9 @@ const game = (state = initialState, action) => {
                 disableConsonant: action.payload.disableConsonant,
                 disableVowel: action.payload.disableVowel
             });
-        case actionTypes.GET_CONSONANT:
-            return updateState(state, {
-                letterList: [...state.letterList, action.payload]
-            });
-        case actionTypes.GET_VOWEL:
-            return updateState(state, {
-                letterList: [...state.letterList, action.payload]
-            });
-        case actionTypes.RESET_LETTERS:
-            return updateState(state, {
-                letterList: action.payload
-            });
-        case actionTypes.DISABLE_CONSONANT:
-            return updateState(state, {
-                disableConsonant: action.payload
-            });
-        case actionTypes.DISABLE_VOWEL:
-            return updateState(state, {
-                disableVowel: action.payload
-            });
-        case actionTypes.START_ANSWERING:
-            return updateState(state, {
-                answering: true,
-                answerTimerValue: action.payload
-            });
-        case actionTypes.STOP_ANSWERING:
-            return updateState(state, {
-                answering: false
-            });
-        case actionTypes.ANSWER_TIMER_TICK:
-            return updateState(state, {
-                answerTimerValue: state.answerTimerValue-1
-            });
-        case actionTypes.SUBMISSION_TIMER_TICK:
-            return updateState(state, {
-                submissionTimerValue: state.submissionTimerValue-1
-            });
-        case actionTypes.RESET_ANSWER_TIMER:
-            return updateState(state, {
-                answerTimerValue: null
-            });
-        case actionTypes.RESET_SUBMISSION_TIMER:
-            return updateState(state, {
-                submissionTimerValue: null
-            });
         case actionTypes.DISABLE_START:
             return updateState(state, {
                 disableStart: action.payload
-            });
-        case actionTypes.START_SUBMISSION:
-            return updateState(state, {
-                submission: true,
-                submissionTimerValue: action.payload,
-                progressBarVisible: true
-            });
-        case actionTypes.STOP_SUBMISSION:
-            return updateState(state, {
-                submission: false
-            });
-        case actionTypes.SUBMITTED_ANSWERS:
-            return updateState(state, {
-                progressBarVisible: false,
-                finalAnswers: action.payload
             });
         case actionTypes.ROUND_STARTED:
             return updateState(state, {
@@ -163,27 +105,92 @@ const game = (state = initialState, action) => {
                 nextRoundType: action.payload
             });
         }
-        case actionTypes.SET_RANDOM_NUMBER: {
+
+        //letters round actions
+        case letterRoundActions.GET_CONSONANT:
+            return updateState(state, {
+                letterList: [...state.letterList, action.payload]
+            });
+        case letterRoundActions.GET_VOWEL:
+            return updateState(state, {
+                letterList: [...state.letterList, action.payload]
+            });
+        case letterRoundActions.DISABLE_CONSONANT:
+            return updateState(state, {
+                disableConsonant: action.payload
+            });
+        case letterRoundActions.DISABLE_VOWEL:
+            return updateState(state, {
+                disableVowel: action.payload
+            });
+        case letterRoundActions.START_ANSWERING:
+            return updateState(state, {
+                answering: true,
+                answerTimerValue: action.payload
+            });
+        case letterRoundActions.STOP_ANSWERING:
+            return updateState(state, {
+                answering: false
+            });
+        case letterRoundActions.START_SUBMISSION:
+            return updateState(state, {
+                submission: true,
+                submissionTimerValue: action.payload,
+                progressBarVisible: true
+            });
+        case letterRoundActions.STOP_SUBMISSION:
+            return updateState(state, {
+                submission: false
+            });
+        case letterRoundActions.SUBMITTED_ANSWERS:
+            return updateState(state, {
+                progressBarVisible: false,
+                finalAnswers: action.payload
+            });
+        case letterRoundActions.ANSWER_TIMER_TICK:
+            return updateState(state, {
+                answerTimerValue: state.answerTimerValue-1
+            });
+        case letterRoundActions.SUBMISSION_TIMER_TICK:
+            return updateState(state, {
+                submissionTimerValue: state.submissionTimerValue-1
+            });
+        case letterRoundActions.RESET_ANSWER_TIMER:
+            return updateState(state, {
+                answerTimerValue: null
+            });
+        case letterRoundActions.RESET_SUBMISSION_TIMER:
+            return updateState(state, {
+                submissionTimerValue: null
+            });
+        case letterRoundActions.RESET_LETTERS:
+            return updateState(state, {
+                letterList: action.payload
+            });
+
+
+        //number round actions
+        case numberRoundActions.SET_RANDOM_NUMBER: {
             return updateState(state, {
                 randomNumber: action.payload
             });
         }
-        case actionTypes.GET_LARGE: {
+        case numberRoundActions.GET_LARGE: {
             return updateState(state, {
                 numberList: [...state.numberList, action.payload]
             });
         }
-        case actionTypes.GET_SMALL: {
+        case numberRoundActions.GET_SMALL: {
             return updateState(state, {
                 numberList: [...state.numberList, action.payload]
             });
         }
-        case actionTypes.DISABLE_LARGE: {
+        case numberRoundActions.DISABLE_LARGE: {
             return updateState(state, {
                 disableLarge: true
             });
         }
-        case actionTypes.DISABLE_SMALL: {
+        case numberRoundActions.DISABLE_SMALL: {
             return updateState(state, {
                 disableSmall: true
             });

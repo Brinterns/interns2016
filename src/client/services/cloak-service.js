@@ -5,30 +5,36 @@ import { dispatch } from '../store';
 import {
     startGame,
     setLeader,
-    getConsonant,
-    getVowel,
-    disableConsonant,
-    disableVowel,
-    startAnswering,
-    stopAnswering,
     disableStart,
-    resetLetters,
-    startSubmission,
-    stopSubmission,
-    submittedAnswers,
     roundEnded,
     roundStarted,
     resetRound,
     resetFinished,
     gameParameters,
     gameFinished,
-    nextRoundType,
+    nextRoundType
+} from '../game/game-actions';
+
+import {
+    getConsonant,
+    getVowel,
+    disableConsonant,
+    disableVowel,
+    startAnswering,
+    stopAnswering,
+    startSubmission,
+    stopSubmission,
+    submittedAnswers,
+    resetLetters
+} from '../game/letter-round-actions';
+
+import {
     setRandomNumber,
     getLarge,
     getSmall,
     disableLarge,
     disableSmall
-} from '../game/game-actions';
+} from '../game/number-round-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
 
