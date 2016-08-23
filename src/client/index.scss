@@ -1,19 +1,36 @@
 h1 {
-    background-color: #cce6ff;
+    background-color: #559852;
+    color: white;
 }
 
 h2 {
-    background-color: #b3d9ff;
+    background-color: #7EA77C;
+    color: white;
 }
 
 h3 {
-    background-color: #b3d9a0;
+    background-color: #A4BEA3;
+}
+
+html {
+    font-family: Helvetica;
 }
 
 button {
+    background-color: #985D14;
+    color: white;
     margin-left: 30px;
     min-height: 60px;
     min-width: 100px;
+}
+
+button[disabled]::hover {
+    background-color: grey;
+}
+
+button[disabled] {
+    background-color: grey;
+    color: white !important;
 }
 
 li {
@@ -21,34 +38,42 @@ li {
     text-align: center;
 }
 
-input[type=range] {
-    /*removes default webkit styles*/
-    -webkit-appearance: none;
-
-    /*fix for FF unable to apply focus style bug */
-    border: 1px solid white;
-
+input {
+    color: black;
 }
+
+input[type=range] {
+    -webkit-appearance: none;
+    background: #fcf8e3;
+}
+
 input[type=range]::-webkit-slider-runnable-track {
     height: 15px;
-    background: #ddd;
+    background: silver;
     border: none;
     border-radius: 3px;
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     border: none;
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    background: #5bc0de;
+    background: #7D437B;
     margin-top: -7px;
 }
+
 input[type=range]:focus {
     outline: none;
 }
+
 input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #ccc;
+    background: silver;
+}
+
+textarea {
+    resize: none;
 }

@@ -1,40 +1,46 @@
 import cloakService from './cloak-service.js';
+import { normaliseRewire } from '../utils/util';
 
-const rewire = cloakService.__Rewire__;
-const resetDependency = cloakService.__ResetDependency__;
+const { rewire, resetDependency } = normaliseRewire(cloakService);
 
 describe('cloak service', () => {
     let cloakConfig;
+    let cloak;
     beforeEach(() => {
-        window.cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'message', 'connected', 'stop']);
+        cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'message', 'connected', 'stop']);
+        rewire('cloak', cloak);
     });
 
     beforeEach(() => {
-        window.cloak.configure.and.callFake(_config_ => {
+        cloak.configure.and.callFake(_config_ => {
             cloakConfig = _config_;
         });
         cloakService.configureAndRun();
     })
 
+    afterEach(() => {
+        resetDependency('cloak');
+    })
+
     it('configures the client', () => {
-        expect(window.cloak.configure).toHaveBeenCalled();
+        expect(cloak.configure).toHaveBeenCalled();
     })
 
     it('runs the client', () => {
-        expect(window.cloak.run).toHaveBeenCalled();
+        expect(cloak.run).toHaveBeenCalled();
     })
 
     describe('serverEvents', () => {
         it('sends setUserUp to the server', () => {
             cloakConfig.serverEvents.begin();
 
-            expect(window.cloak.message).toHaveBeenCalledWith('setUserUp');
+            expect(cloak.message).toHaveBeenCalledWith('setUserUp');
         });
 
         it('does not send checkRoom if roomId is undefined', () => {
             cloakConfig.serverEvents.begin();
 
-            expect(window.cloak.message).not.toHaveBeenCalledWith('checkRoom', undefined);
+            expect(cloak.message).not.toHaveBeenCalledWith('checkRoom', undefined);
         });
 
         it('sends checkRoom if roomId is not undefined', () => {
@@ -42,7 +48,7 @@ describe('cloak service', () => {
 
             cloakConfig.serverEvents.begin();
 
-            expect(window.cloak.message).toHaveBeenCalledWith('checkRoom', 'fakeRoomId1');
+            expect(cloak.message).toHaveBeenCalledWith('checkRoom', 'fakeRoomId1');
         })
     });
 
@@ -551,7 +557,7 @@ describe('cloak service', () => {
             it('should call cloak.stop if response is false', () => {
                 cloakConfig.messages.allowedToJoin(false);
 
-                expect(window.cloak.stop).toHaveBeenCalled();
+                expect(cloak.stop).toHaveBeenCalled();
             })
 
             it('should call router.navigateToLobby if response is false', () => {
@@ -776,6 +782,129 @@ describe('cloak service', () => {
                 expect(dispatch).toHaveBeenCalledWith(params);
             });
         });
+
+        describe('gameFinished response', () => {
+            let gameFinished;
+            beforeEach(() => {
+                gameFinished = jasmine.createSpy('gameFinished');
+                rewire('gameFinished', gameFinished);
+            });
+
+            afterEach(() => {
+                resetDependency('gameFinished');
+            });
+
+            it('should call gameFinished', () => {
+                cloakConfig.messages.gameFinished();
+
+                expect(gameFinished).toHaveBeenCalled();
+            });
+
+            it('should dispatch the result of calling gameFinished', () => {
+                cloakConfig.messages.gameFinished();
+
+                expect(dispatch).toHaveBeenCalled();
+            });
+        });
+
+        describe('roomIdForJoin response', () => {
+            let router;
+            beforeEach(() => {
+                router = jasmine.createSpyObj('router', ['navigateToRoom']);
+                rewire('router', router);
+            });
+
+            afterEach(() => {
+                resetDependency('router');
+            });
+
+            it('should call router.navigateToRoom with relevant id', () => {
+                cloakConfig.messages.roomIdForJoin('fake_id');
+
+                expect(router.navigateToRoom).toHaveBeenCalledWith('fake_id');
+            });
+        });
+
+        describe('roundTypes response', () => {
+            let roundTypes;
+            let fakeRoundTypes
+            beforeEach(() => {
+                fakeRoundTypes = {letter: true};
+                roundTypes = jasmine.createSpy('roundTypes');
+                rewire('roundTypes', roundTypes);
+            });
+
+            afterEach(() => {
+                resetDependency('roundTypes');
+            });
+
+            it('should call roundTypes with given argument', () => {
+                cloakConfig.messages.roundTypes(fakeRoundTypes);
+
+                expect(roundTypes).toHaveBeenCalledWith(fakeRoundTypes);
+            });
+
+            it('should dispatch the result of calling roundTypes', () => {
+                roundTypes.and.callFake(fakeRoundTypes => fakeRoundTypes);
+                cloakConfig.messages.roundTypes(fakeRoundTypes);
+
+                expect(dispatch).toHaveBeenCalledWith(fakeRoundTypes);
+            });
+        });
+
+        describe('nextRoundType response', () => {
+            let nextRoundType;
+            let fakeRoundType;
+            beforeEach(() => {
+                fakeRoundType = 'L';
+                nextRoundType = jasmine.createSpy('nextRoundType');
+                rewire('nextRoundType', nextRoundType);
+            });
+
+            afterEach(() => {
+                resetDependency('nextRoundType');
+            });
+
+            it('should call nextRoundType with given argument', () => {
+                cloakConfig.messages.nextRoundType(fakeRoundType);
+
+                expect(nextRoundType).toHaveBeenCalledWith(fakeRoundType);
+            });
+
+            it('should dispatch the result of calling nextRoundType', () => {
+                nextRoundType.and.callFake(fakeRoundType => fakeRoundType);
+                cloakConfig.messages.nextRoundType(fakeRoundType);
+
+                expect(dispatch).toHaveBeenCalledWith(fakeRoundType);
+            });
+        });
+
+        describe('setRandomNumber response', () => {
+            let setRandomNumber;
+            let fakeNumber;
+            beforeEach(() => {
+                fakeNumber = 1;
+                setRandomNumber = jasmine.createSpy('setRandomNumber');
+                rewire('setRandomNumber', setRandomNumber);
+            });
+
+            afterEach(() => {
+                resetDependency('setRandomNumber');
+            });
+
+            it('should call setRandomNumber with given argument', () => {
+                cloakConfig.messages.setRandomNumber(fakeNumber);
+
+                expect(setRandomNumber).toHaveBeenCalledWith(fakeNumber);
+            });
+
+            it('should dispatch the result of calling setRandomNumber', () => {
+                setRandomNumber.and.callFake(fakeNumber => fakeNumber);
+                cloakConfig.messages.setRandomNumber(fakeNumber);
+
+                expect(dispatch).toHaveBeenCalledWith(fakeNumber);
+            });
+        });
     });
 
     describe('initialData', () => {
@@ -809,79 +938,85 @@ describe('cloak service', () => {
         it('messages the server setUsername when messageSetUsername is called', () => {
             cloakService.messageSetUsername('someone');
 
-            expect(window.cloak.message).toHaveBeenCalledWith('setUsername', 'someone');
+            expect(cloak.message).toHaveBeenCalledWith('setUsername', 'someone');
         });
 
         it('messages the server createRoom when messageCreateRoom is called', () => {
             cloakService.messageCreateRoom('room1');
 
-            expect(window.cloak.message).toHaveBeenCalledWith('createRoom', 'room1');
+            expect(cloak.message).toHaveBeenCalledWith('createRoom', 'room1');
         });
 
         it('messages the server joinRoom when messageJoinRoom is called', () => {
             cloakService.messageJoinRoom('roomId1');
 
-            expect(window.cloak.message).toHaveBeenCalledWith('joinRoom', 'roomId1');
+            expect(cloak.message).toHaveBeenCalledWith('joinRoom', 'roomId1');
         });
 
         it('messages the server leaveRoom when messageLeaveRoom is called', () => {
             cloakService.messageLeaveRoom();
 
-            expect(window.cloak.message).toHaveBeenCalledWith('leaveRoom');
+            expect(cloak.message).toHaveBeenCalledWith('leaveRoom');
         });
 
         it('checks with the server wether the connection is still live if isConnected is called', () => {
             cloakService.isConnected();
 
-            expect(window.cloak.connected).toHaveBeenCalled();
+            expect(cloak.connected).toHaveBeenCalled();
         });
 
         it('messages the server roomDetails when getRoomData is called', () => {
             cloakService.getRoomData('roomId1');
 
-            expect(window.cloak.message).toHaveBeenCalledWith('roomDetails', 'roomId1');
+            expect(cloak.message).toHaveBeenCalledWith('roomDetails', 'roomId1');
         });
 
         it('messages the server startGame when messageStartGame is called', () => {
             cloakService.messageStartGame();
 
-            expect(window.cloak.message).toHaveBeenCalledWith('startGame');
+            expect(cloak.message).toHaveBeenCalledWith('startGame');
         });
 
         it('messages the server getConsonant when messageGetConsonant is called', () => {
             cloakService.messageGetConsonant();
 
-            expect(window.cloak.message).toHaveBeenCalledWith('getConsonant');
+            expect(cloak.message).toHaveBeenCalledWith('getConsonant');
         });
 
         it('messages the server getVowel when messageGetVowel is called', () => {
             cloakService.messageGetVowel();
 
-            expect(window.cloak.message).toHaveBeenCalledWith('getVowel');
+            expect(cloak.message).toHaveBeenCalledWith('getVowel');
         });
 
         it('messages the server removeFromRoomList when messageRemoveFromRoomList is called', () => {
             cloakService.messageRemoveFromRoomList('roomId1');
 
-            expect(window.cloak.message).toHaveBeenCalledWith('removeFromRoomList', 'roomId1');
+            expect(cloak.message).toHaveBeenCalledWith('removeFromRoomList', 'roomId1');
         });
 
         it('messages the server resetScore when resetScore is called', () => {
             cloakService.resetScore();
 
-            expect(window.cloak.message).toHaveBeenCalledWith('resetScore');
+            expect(cloak.message).toHaveBeenCalledWith('resetScore');
         });
 
         it('messages the server possibleAnswers when messageAnswers is called', () => {
             cloakService.messageAnswers(['answer1', 'answer2', 'answer3', 'answer4', 'answer5']);
 
-            expect(window.cloak.message).toHaveBeenCalledWith('possibleAnswers', ['answer1', 'answer2', 'answer3', 'answer4', 'answer5']);
+            expect(cloak.message).toHaveBeenCalledWith('possibleAnswers', ['answer1', 'answer2', 'answer3', 'answer4', 'answer5']);
         });
 
         it('messages the server submitAnswer when messageAnswerToSubmit is called', () => {
             cloakService.messageAnswerToSubmit(7);
 
-            expect(window.cloak.message).toHaveBeenCalledWith('submitAnswer', 7);
+            expect(cloak.message).toHaveBeenCalledWith('submitAnswer', 7);
+        });
+
+        it('messages the server getRandomNumber when messageGetRandomNumber is called', () => {
+            cloakService.messageGetRandomNumber();
+
+            expect(cloak.message).toHaveBeenCalledWith('getRandomNumber');
         });
     });
 });

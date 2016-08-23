@@ -7,9 +7,17 @@ import cloakService from '../services/cloak-service';
 import UserList from '../user/user-list';
 import Game from '../game/game';
 import Progress from '../game/progress';
+import NumbersRound from '../game/numbers-round';
 
 import { leaveGame } from '../game/game-actions';
 import storageService from '../services/storage-service';
+
+import style from './room.scss';
+
+const roundTypes = {
+    letters: 'L',
+    numbers: 'N'
+};
 
 export class RoomPage extends Component {
     componentWillMount() {
@@ -30,6 +38,22 @@ export class RoomPage extends Component {
     }
 
     render() {
+        let round;
+        switch (this.props.nextRoundType) {
+            case roundTypes.letters: {
+                round = <Game />
+                break;
+            }
+            case roundTypes.numbers: {
+                round = <NumbersRound />
+                break;
+            }
+            default: {
+                round = <Game />
+                break;
+            }
+        }
+
         return (
             <div className="text-center">
                 <Progress/>
@@ -37,12 +61,16 @@ export class RoomPage extends Component {
                     <h1>{`Room: ${this.props.roomData.name}`}</h1>
                     <UserList users={this.props.roomUsers} />
                     <div className="col-lg-8" >
-                        <button className={`btn btn-success`} id="start-game" disabled={this.props.disableStart}
+                        <button className={`btn ${style.startGame}`} id="start-game" disabled={this.props.disableStart}
                                 onClick={() => {cloakService.messageStartGame()}}>Start</button>
-                        <button className={`btn btn-danger`} id="leave-room"
+                            <button className={`btn  ${style.leaveGame}`} id="leave-room"
                                 onClick={leaveRoom}>Leave</button>
                     </div>
-                    {this.props.started ? <Game /> : null}
+                    {this.props.started ?
+                        round
+                    :
+                        null
+                    }
                 </div>
             </div>
         );
@@ -57,7 +85,8 @@ const mapStateToProps = (state, ownProps) => ({
     roomUsers: state.room.users,
     roomData: state.room.data,
     started: state.game.started,
-    disableStart: state.game.disableStart
+    disableStart: state.game.disableStart,
+    nextRoundType: state.game.nextRoundType
 });
 
 const mapDispatchToProps = dispatch => ({

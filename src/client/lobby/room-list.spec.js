@@ -1,12 +1,10 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import { shallow, mount } from 'enzyme';
 
-import store from '../store';
-
 import { RoomList, __RewireAPI__ } from './room-list';
-const rewire = __RewireAPI__.__Rewire__;
-const resetDependency = __RewireAPI__.__ResetDependency__;
+import { normaliseRewire } from '../utils/util';
+
+const { rewire, resetDependency } = normaliseRewire(__RewireAPI__);
 
 describe('<RoomList />', () => {
     let props;
@@ -84,13 +82,25 @@ describe('<RoomList />', () => {
         let RoomOptions = () => null;
         rewire('cloakService', cloakService);
         rewire('RoomOptions', RoomOptions)
-        
+        props.rounds = {
+            letter: 7,
+            number: 3
+        }
+
         const wrapper = mount(
             <RoomList {...props} />
         );
 
+        wrapper.setState({roomname: 'ROOM1'})
+
         wrapper.find('#room-name-button').simulate('click');
-        expect(cloakService.messageCreateRoom).toHaveBeenCalled();
+        expect(cloakService.messageCreateRoom).toHaveBeenCalledWith({
+            name: 'ROOM1',
+            rounds: {
+                letter: 7,
+                number: 3
+            }
+        });
 
         resetDependency('cloakService');
         resetDependency('RoomOptions');

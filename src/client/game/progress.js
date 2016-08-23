@@ -19,9 +19,9 @@ export class Progress extends Component {
 
     render() {
         return (
-            <div className={style['timers']}>
+            <div className={style.timers}>
                 <div>{this.props.answering ? this.timer(this.props.answerTimerValue, this.props.gameParams.answerTime) : null}</div>
-                <div>{this.props.submission ? this.timer(this.props.submissionTimerValue, this.props.gameParams.submitTime) : null}</div>
+                <div>{this.props.progressBarVisible ? this.timer(this.props.submissionTimerValue, this.props.gameParams.submitTime) : null}</div>
             </div>
         )
     }
@@ -29,10 +29,10 @@ export class Progress extends Component {
 
 const mapStateToProps = state => ({
     answering: state.game.answering,
-    submission: state.game.submission,
     answerTimerValue: state.game.answerTimerValue,
     submissionTimerValue: state.game.submissionTimerValue,
-    gameParams: state.game.gameParams
+    gameParams: state.game.gameParams,
+    progressBarVisible: state.game.progressBarVisible
 });
 
 export default connect(

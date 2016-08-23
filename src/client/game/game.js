@@ -42,9 +42,9 @@ export class Game extends Component {
     render() {
         const letterButtons = (
             <div>
-                <button className="btn btn-info" onClick={() => cloakService.messageGetConsonant()}
+                <button className="btn" onClick={() => cloakService.messageGetConsonant()}
                 disabled={this.props.disableConsonant}>Consonant</button>
-                <button className="btn btn-primary" onClick={() => cloakService.messageGetVowel()}
+                <button className="btn" onClick={() => cloakService.messageGetVowel()}
                 disabled={this.props.disableVowel}>Vowel</button>
             </div>
         );
@@ -55,7 +55,7 @@ export class Game extends Component {
                     <div className={`${style.face} ${style.front}`}>
                     </div>
                     <div ref={`card${index}`} className={`${style.face} ${style.back}`}>
-                        {letter}
+                        <span className={style.cardInner}>{letter}</span>
                     </div>
                 </div>
             </div>
@@ -69,15 +69,15 @@ export class Game extends Component {
         return (
             <div className="col-lg-8 text-center">
                 <h3>COUNTDOWN</h3>
-                {(!this.props.gameFinished ? 
+                {(!this.props.gameFinished ?
                     <div>
                         <p>Leader: {this.props.leader.name}</p>
                         {this.isLeader() ? letterButtons : null}
                         <div>
                             {letterBoxes}
                         </div>
-                        {(this.props.roundResults ? 
-                            <RoundResults /> 
+                        {(this.props.roundResults ?
+                            <RoundResults />
                         :
                             <AnswerInput answering={this.props.answering} submission={this.props.submission}/>)
                         }
