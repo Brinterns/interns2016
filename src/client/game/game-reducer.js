@@ -105,8 +105,6 @@ const game = (state = initialState, action) => {
                 nextRoundType: action.payload
             });
         }
-
-        //letters round actions
         case letterRoundActions.GET_CONSONANT:
             return updateState(state, {
                 letterList: [...state.letterList, action.payload]
@@ -167,9 +165,6 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 letterList: action.payload
             });
-
-
-        //number round actions
         case numberRoundActions.SET_RANDOM_NUMBER: {
             return updateState(state, {
                 randomNumber: action.payload
