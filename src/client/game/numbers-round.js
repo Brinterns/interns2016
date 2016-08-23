@@ -43,7 +43,7 @@ export class NumbersRound extends Component {
                     <div className={`${style.face} ${style.front}`}>
                     </div>
                     <div ref={`card${index}`} className={`${style.face} ${style.back}`}>
-                        <span className={style['card-inner']}>{number}</span>
+                        <span className={style.cardInner}>{number}</span>
                     </div>
                 </div>
             </div>
@@ -61,7 +61,7 @@ export class NumbersRound extends Component {
                     <p>Leader: {this.props.leader.name}</p>
                     {this.isLeader() ? numberButtons: null}
                 </div>
-                <div className={style['random-number']} id="random-number">
+                <div className={style.randomNumber} id="random-number">
                     {this.props.randomNumber}
                 </div>
                 <div id="number-list">

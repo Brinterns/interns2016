@@ -33,9 +33,9 @@ export class Lobby extends Component {
                 <div className="text-center">
                     <h1>
                         Lobby
-                        <label className={style['set-username-label']}>
+                        <label className={style.setUsernameLabel}>
                             <label>Username:</label>
-                            <input className={style['set-username-input']} type="text" value={this.getUsername()}
+                            <input className={style.setUsernameInput} type="text" value={this.getUsername()}
                                 onChange={(event) => this.handleChange(event)} />
                         </label>
                     </h1>

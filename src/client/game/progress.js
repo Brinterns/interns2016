@@ -19,7 +19,7 @@ export class Progress extends Component {
 
     render() {
         return (
-            <div className={style['timers']}>
+            <div className={style.timers}>
                 <div>{this.props.answering ? this.timer(this.props.answerTimerValue, this.props.gameParams.answerTime) : null}</div>
                 <div>{this.props.progressBarVisible ? this.timer(this.props.submissionTimerValue, this.props.gameParams.submitTime) : null}</div>
             </div>
