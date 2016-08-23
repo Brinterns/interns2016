@@ -1,4 +1,5 @@
 var shuffle = require('./shuffle');
+var parameters = require('../parameters');
 
 function getRandomNumber(room) {
     var randomNumber = generateRandomNumber(1, 1000);
@@ -55,7 +56,39 @@ function checkNumbersLeft(numbersRound, user) {
         user.message('disableSmall');
         user.message('disableLarge');
         getRandomNumber(room);
+        startAnswering(room);
     }
+}
+
+function startAnswering(room){
+    room.data.answerTime = parameters.answerTime;
+    room.data.answering = true;
+    room.messageMembers('startAnswering', parameters.answerTime);
+    var timeLeft = setInterval(answerTimeTick.bind(null, room), 1000);
+    var answeringTimer = setTimeout(answeringFinished.bind(null, room, timeLeft), parameters.answerTime*1000);
+}
+
+function answerTimeTick(room) {
+    room.data.answerTime--;
+}
+
+function answeringFinished(room, timeLeft) {
+    room.messageMembers('stopAnswering');
+    room.data.answering = false;
+    clearInterval(timeLeft);
+    room.messageMembers('getEquation');
+}
+
+function submitEquation(equation, user) {
+    var room = user.getRoom();
+    room.data.finalAnswersList[user.id] = equation;
+    if(Object.keys(room.data.finalAnswersList).length === room.getMembers().length) {
+        evaluateAnswers(room.data.finalAnswersList);
+    }
+}
+
+function evaluateAnswers(answers) {
+    console.log(answers);
 }
 
 module.exports =  {
