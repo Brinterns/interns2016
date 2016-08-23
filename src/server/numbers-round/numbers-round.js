@@ -28,7 +28,7 @@ function getLarge(arg, user) {
         room.messageMembers('updateLarge', num);
         room.data.numbersRound.numbers.push(num);
         room.data.numbersRound.large++;
-        checkNumbersLeft(room.data.numbersRound, room);
+        checkNumbersLeft(room.data.numbersRound, user);
     }
 }
 
@@ -39,20 +39,21 @@ function getSmall(arg, user) {
         room.messageMembers('updateSmall', num);
         room.data.numbersRound.numbers.push(num);
         room.data.numbersRound.small++;
-        checkNumbersLeft(room.data.numbersRound, room);
+        checkNumbersLeft(room.data.numbersRound, user);
     }
 }
 
-function checkNumbersLeft(numbersRound, room) {
+function checkNumbersLeft(numbersRound, user) {
+    var room = user.getRoom();
     if(numbersRound.large >= 4){
         numbersRound.disableLarge = true;
-        room.messageMembers('disableLarge');
+        user.message('disableLarge');
     }
     if(numbersRound.large + numbersRound.small === 6) {
         numbersRound.disableLarge = true;
         numbersRound.disableSmall = true;
-        room.messageMembers('disableSmall');
-        room.messageMembers('disableLarge');
+        user.message('disableSmall');
+        user.message('disableLarge');
         getRandomNumber(room);
     }
 }
