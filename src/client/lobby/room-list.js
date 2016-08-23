@@ -42,7 +42,7 @@ export class RoomList extends Component {
                  <div className="col-lg-12 text-center">
                     <div className="col-lg-12 list-group">
                         <div className="row">
-                            <button className={`fa fa-cog fa-3x btn ${lobbyStyle['cogs-button']}`}
+                            <button className={`fa fa-cog fa-3x btn ${lobbyStyle.cogsButton}`}
                             data-toggle="collapse" data-target="#room-options"></button>
                             <input className={lobbyStyle['room-creator-input']} placeholder="Room Name" type="text"
                             onChange={(event) => this.handleRoomname(event)} onKeyDown={event => this.handleEnterPress(event)}/>
