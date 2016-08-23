@@ -82,13 +82,25 @@ describe('<RoomList />', () => {
         let RoomOptions = () => null;
         rewire('cloakService', cloakService);
         rewire('RoomOptions', RoomOptions)
+        props.rounds = {
+            letter: 7,
+            number: 3
+        }
 
         const wrapper = mount(
             <RoomList {...props} />
         );
 
+        wrapper.setState({roomname: 'ROOM1'})
+
         wrapper.find('#room-name-button').simulate('click');
-        expect(cloakService.messageCreateRoom).toHaveBeenCalled();
+        expect(cloakService.messageCreateRoom).toHaveBeenCalledWith({
+            name: 'ROOM1',
+            rounds: {
+                letter: 7,
+                number: 3
+            }
+        });
 
         resetDependency('cloakService');
         resetDependency('RoomOptions');
