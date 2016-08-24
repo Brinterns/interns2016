@@ -16,7 +16,8 @@ export class RoundResults extends Component {
 		this.setState({
 			winners: {},
 			plebs: {},
-			losers: {}
+			losers: {},
+			bestAnswer: null
 		})
 	}
 
@@ -147,12 +148,25 @@ export class RoundResults extends Component {
 		});
 	}
 
+	formatBestAnswer(bestAnswer) {
+		return(
+	        <li className={`list-group-item list-group-item-success ${style.space}`}>
+	        	<div className={`col-lg-4 ${gameStyle.resultWord}`}>
+	            	{bestAnswer}
+            	</div>		
+			</li>
+		);
+	}
+
 	render() {
 		const winnersData = this.listElem(this.state.winners, 'winners');
 		const plebsData = this.listElem(this.state.plebs, 'plebs');
 		const losersData = this.listElem(this.state.losers, 'losers');
+		const bestAnswerData = this.formatBestAnswer(this.state.bestAnswer);
 		return	(
 			<div>
+				{bestAnswerData}
+				<br></br>
 				{winnersData}
 				<br></br>
 				{plebsData}
@@ -166,7 +180,8 @@ export class RoundResults extends Component {
 
 const mapStateToProps = state => ({
     finalAnswers: state.game.finalAnswers,
-    nextRoundType: state.game.nextRoundType
+    nextRoundType: state.game.nextRoundType,
+    bestAnswer: state.game.bestAnswer
 });
 
 export default connect(

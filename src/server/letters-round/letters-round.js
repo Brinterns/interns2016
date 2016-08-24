@@ -137,6 +137,8 @@ function validateAnswers(answers, letters, room) {
         return b.length - a.length;
     });
 
+    room.messageMembers('bestAnswer', result[0]);
+
     for(var i=0; i<answers.length; i++) {
         if(result.indexOf(answers[i][1].toLowerCase()) !== -1) {
             answers[i].score = (answers[i][1].length === parameters.numLetters ? 2*answers[i][1].length : answers[i][1].length);

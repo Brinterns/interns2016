@@ -12,6 +12,7 @@ export const SUBMISSION_TIMER_TICK = 'SUBMISSION_TIMER_TICK';
 export const RESET_ANSWER_TIMER = 'RESET_ANSWER_TIMER';
 export const RESET_SUBMISSION_TIMER = 'RESET_SUBMISSION_TIMER';
 export const RESET_LETTERS = 'RESET_LETTERS';
+export const SET_BEST_ANSWER = 'SET_BEST_ANSWER';
 
 export function getConsonant(letter) {
 	return {
@@ -101,5 +102,12 @@ export function resetLetters(list) {
 	return {
 		type: RESET_LETTERS,
 		payload: list
+	}
+}
+
+export function setBestAnswer(answer) {
+	return {
+		type: SET_BEST_ANSWER,
+		payload: answer
 	}
 }
