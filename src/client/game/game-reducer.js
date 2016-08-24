@@ -28,7 +28,8 @@ const initialState = {
     progressBarVisible: false,
     disableLarge: false,
     disableSmall: false,
-    numberList: []
+    numberList: [],
+    sendEquation: false
 };
 
 const game = (state = initialState, action) => {
@@ -189,6 +190,11 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 disableSmall: true
             });
+        }
+        case numberRoundActions.GET_EQUATION: {
+            return updateState(state, {
+                sendEquation: true
+            })
         }
         default:
             return state;

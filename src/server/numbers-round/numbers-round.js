@@ -81,9 +81,9 @@ function answeringFinished(room, timeLeft) {
 
 function submitEquation(equation, user) {
     var room = user.getRoom();
-    room.data.finalAnswersList[user.id] = equation;
-    if(Object.keys(room.data.finalAnswersList).length === room.getMembers().length) {
-        evaluateAnswers(room.data.finalAnswersList);
+    room.data.finalAnswerList[user.id] = equation;
+    if(Object.keys(room.data.finalAnswerList).length === room.getMembers().length) {
+        evaluateAnswers(room.data.finalAnswerList);
     }
 }
 
@@ -97,5 +97,6 @@ module.exports =  {
     smallNumberList,
     largeNumberList,
     getLarge,
-    getSmall
+    getSmall,
+    submitEquation
 }

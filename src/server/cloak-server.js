@@ -43,7 +43,8 @@ module.exports = function(expressServer) {
 
             refreshRoomList: refreshRoomList,
             getLarge: numbersRound.getLarge,
-            getSmall: numbersRound.getSmall
+            getSmall: numbersRound.getSmall,
+            submitEquation: numbersRound.submitEquation
         }
     });
     cloak.run();

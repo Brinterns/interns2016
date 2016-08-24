@@ -33,7 +33,8 @@ import {
     getLarge,
     getSmall,
     disableLarge,
-    disableSmall
+    disableSmall,
+    getEquation
 } from '../game/number-round-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
@@ -57,7 +58,8 @@ export default {
     messageAnswerToSubmit,
     messageGetRandomNumber,
     messageGetLarge,
-    messageGetSmall
+    messageGetSmall,
+    messageSendEquation
 };
 
 const cloak = window.cloak;
@@ -186,6 +188,9 @@ function configureAndRun(roomId) {
             disableSmall: () => {
                 dispatch(disableSmall());
             },
+            getEquation: () => {
+                dispatch(getEquation());
+            }
         },
         initialData: {
             name: storageService.getUser().name,
@@ -257,5 +262,9 @@ function messageGetLarge() {
 }
 
 function messageGetSmall() {
-    cloak.message('getSmall')
+    cloak.message('getSmall');
+}
+
+function messageSendEquation(equation) {
+    cloak.message('submitEquation', equation);
 }
