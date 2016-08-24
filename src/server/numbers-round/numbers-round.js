@@ -1,9 +1,10 @@
 var shuffle = require('./shuffle');
 var parameters = require('../parameters');
+var evaluator = require('./evaluator');
 
 function getRandomNumber(room) {
-    var randomNumber = generateRandomNumber(1, 1000);
-    room.messageMembers('setRandomNumber', randomNumber);
+    room.data.numbersRound.randomNumber = generateRandomNumber(1, 1000);
+    room.messageMembers('setRandomNumber', room.data.numbersRound.randomNumber);
 }
 
 function generateRandomNumber(min, max) {
@@ -81,13 +82,37 @@ function answeringFinished(room, timeLeft) {
 
 function submitEquation(equation, user) {
     var room = user.getRoom();
-    room.data.finalAnswerList[user.id] = equation;
+    room.data.finalAnswerList[user.id] = {
+        answer: equation
+    };
     if(Object.keys(room.data.finalAnswerList).length === room.getMembers().length) {
-        evaluateAnswers(room.data.finalAnswerList);
+        evaluateAnswers(room.data.finalAnswerList, room);
     }
 }
 
-function evaluateAnswers(answers) {
+function evaluateAnswers(answers, room) {
+    var allowedNumbers = room.data.numbersRound.numbers;
+    for(var i in answers) {
+        answers[i].eval = evaluator(answers[i].answer, Array.from(allowedNumbers));
+    }
+    scoreAnswers(answers, room);
+}
+
+function scoreAnswers(answers, room) {
+    var target = room.data.numbersRound.randomNumber;
+    for(var i in answers) {
+        if(answers[i].eval === null) {
+            answers[i].score = 0;
+        } else if(answers[i].eval === target) {
+            answers[i].score = 10;
+        } else if((answers[i].eval - target <= 5) && (answers[i].eval - target >= -5)) {
+            answers[i].score = 7;
+        } else if((answers[i].eval - target <= 10) && (answers[i].eval - target >= -10)) {
+            answers[i].score = 5;
+        } else {
+            answers[i].score = 0;
+        }
+    }
     console.log(answers);
 }
 

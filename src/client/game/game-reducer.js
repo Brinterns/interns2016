@@ -45,7 +45,12 @@ const game = (state = initialState, action) => {
                 letterList: [],
                 disableConsonant: false,
                 disableVowel: false,
-                answering: false
+                answering: false,
+                numberList: [],
+                disableLarge: false,
+                disableSmall: false,
+                sendEquation: false,
+                randomNumber: null
             });
         case actionTypes.SET_LEADER:
             return updateState(state, {
