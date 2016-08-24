@@ -1,6 +1,7 @@
 var shuffle = require('./shuffle');
 var parameters = require('../parameters');
 var evaluator = require('./evaluator');
+var refreshService = require('../services/refresh-service');
 
 function getRandomNumber(room) {
     room.data.numbersRound.randomNumber = generateRandomNumber(1, 1000);
@@ -102,18 +103,38 @@ function scoreAnswers(answers, room) {
     var target = room.data.numbersRound.randomNumber;
     for(var i in answers) {
         if(answers[i].eval === null) {
+            answers[i].distance = Number.MAX_VALUE;
             answers[i].score = 0;
         } else if(answers[i].eval === target) {
+            answers[i].distance = 0;
             answers[i].score = 10;
-        } else if((answers[i].eval - target <= 5) && (answers[i].eval - target >= -5)) {
+        } else if(Math.abs(answers[i].eval - target) <= 5) {
+            answers[i].distance = Math.abs(answers[i].eval - target);
             answers[i].score = 7;
-        } else if((answers[i].eval - target <= 10) && (answers[i].eval - target >= -10)) {
+        } else if(Math.abs(answers[i].eval - target) <= 10) {
+            answers[i].distance = Math.abs(answers[i].eval - target);
             answers[i].score = 5;
         } else {
+            answers[i].distance = Math.abs(answers[i].eval - target);
             answers[i].score = 0;
         }
     }
-    console.log(answers);
+    var scoresToSort = [];
+    Object.keys(answers).map(function(item) {
+        scoresToSort.push([answers[item].distance, item]);
+    });
+    scoresToSort.sort(function(first, second) {
+        return first[0]-second[0];
+    });
+    var best = scoresToSort[0][0];
+    var bestScores = scoresToSort.filter(function(item) {
+        return item[0] === best
+    });
+    for(var i=0 ; i < bestScores.length; i++) {
+        room.data.scores[bestScores[i][1]] += answers[bestScores[i][1]].score;
+    }
+    console.log(bestScores);
+    refreshService.refreshRoomUsers(room);
 }
 
 module.exports =  {
