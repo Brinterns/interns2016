@@ -6,17 +6,45 @@ import storageService from '../services/storage-service';
 
 import NumbersInput from './numbers-input';
 
+import { answerTimerTick, resetAnswerTimer } from './letter-round-actions';
+
 import style from './game.scss';
 
 const numberOfNumbers = 6;
 
 export class NumbersRound extends Component {
+    componentWillUnmount() {
+        clearInterval(this.answerInputInterval);
+    }
+
     componentWillReceiveProps(nextProps) {
         for(var i=0; i<numberOfNumbers; i++){
             if(nextProps.numberList[i] !== undefined){
                 this.refs[`box${i}`].className += this.refs[`box${i}`].className.includes(style.flipped) ? '' : ` ${style.flipped}` ;
             }
         }
+
+        if(this.props.answering === nextProps.answering) {
+            return;
+        }
+
+        if(nextProps.answering) {
+            this.startAnsweringTimer();
+            return;
+        }
+    }
+
+    answeringTimerTick() {
+        if(this.props.answerTimerValue > 0){
+            this.props.answerTimerTick();
+        } else {
+            clearInterval(this.answerInputInterval);
+            this.props.resetAnswerTimer();
+        }
+    }
+
+    startAnsweringTimer() {
+        this.answerInputInterval = setInterval(() => this.answeringTimerTick(), 1000);
     }
 
     isLeader() {
@@ -78,9 +106,22 @@ const mapStateToProps = state => ({
     numberList: state.game.numberList,
     randomNumber: state.game.randomNumber,
     disableLarge: state.game.disableLarge,
-    disableSmall: state.game.disableSmall
+    disableSmall: state.game.disableSmall,
+    answerTimerValue: state.game.answerTimerValue,
+    answering: state.game.answering
 });
 
+const mapDispatchToProps = dispatch => ({
+    answerTimerTick() {
+        dispatch(answerTimerTick());
+    },
+    resetAnswerTimer() {
+        dispatch(resetAnswerTimer());
+    }
+});
+
+
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(NumbersRound)

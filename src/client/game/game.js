@@ -79,7 +79,7 @@ export class Game extends Component {
                         {(this.props.roundResults ?
                             <RoundResults />
                         :
-                            <AnswerInput answering={this.props.answering} submission={this.props.submission}/>)
+                            <AnswerInput />)
                         }
                     </div>
                 :
