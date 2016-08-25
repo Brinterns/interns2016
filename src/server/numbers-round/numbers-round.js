@@ -1,4 +1,3 @@
-var shuffle = require('./shuffle');
 var parameters = require('../parameters');
 var evaluator = require('./evaluator');
 var refreshService = require('../services/refresh-service');
@@ -10,18 +9,6 @@ function getRandomNumber(room) {
 
 function generateRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
-}
-
-function largeNumberList() {
-    var largeNumberList = [25, 50, 75, 100];
-    largeNumberList = shuffle(largeNumberList);
-    return largeNumberList;
-}
-
-function smallNumberList() {
-    var smallNumberList = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10];
-    smallNumberList = shuffle(smallNumberList);
-    return smallNumberList;
 }
 
 function getLarge(arg, user) {
@@ -140,8 +127,6 @@ function scoreAnswers(answers, room) {
 module.exports =  {
     generateRandomNumber,
     getRandomNumber,
-    smallNumberList,
-    largeNumberList,
     getLarge,
     getSmall,
     submitEquation

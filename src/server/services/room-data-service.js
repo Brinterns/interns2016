@@ -1,4 +1,4 @@
-var numbersRound = require('../numbers-round/numbers-round');
+var shuffle = require('../numbers-round/shuffle');
 
 function initialRoomData(user) {
     return {
@@ -21,8 +21,8 @@ function initialRoomData(user) {
         },
         numbersRound: {
             numbers: [],
-            largeNumberList: numbersRound.largeNumberList(),
-            smallNumberList: numbersRound.smallNumberList(),
+            largeNumberList: largeNumberList(),
+            smallNumberList: smallNumberList(),
             large: 0,
             small: 0,
             disableLarge: false,
@@ -47,8 +47,8 @@ function newRoundData(oldData) {
         },
         numbersRound: {
             numbers: [],
-            largeNumberList: numbersRound.largeNumberList(),
-            smallNumberList: numbersRound.smallNumberList(),
+            largeNumberList: largeNumberList(),
+            smallNumberList: smallNumberList(),
             large: 0,
             small: 0,
             disableLarge: false,
@@ -69,8 +69,19 @@ function setRounds(oldData, options) {
         roundList.push('N');
     }
 
-
     return roundList;
+}
+
+function largeNumberList() {
+    var largeNumberList = [25, 50, 75, 100];
+    largeNumberList = shuffle(largeNumberList);
+    return largeNumberList;
+}
+
+function smallNumberList() {
+    var smallNumberList = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10];
+    smallNumberList = shuffle(smallNumberList);
+    return smallNumberList;
 }
 
 module.exports = {
