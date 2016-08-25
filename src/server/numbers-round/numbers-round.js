@@ -1,6 +1,7 @@
 var parameters = require('../parameters');
 var evaluator = require('./evaluator');
 var refreshService = require('../services/refresh-service');
+var roundResetService = require('../services/round-reset-service');
 
 function getRandomNumber(room) {
     room.data.numbersRound.randomNumber = generateRandomNumber(1, 1000);
@@ -120,9 +121,34 @@ function scoreAnswers(answers, room) {
     for(var i=0 ; i < bestScores.length; i++) {
         room.data.scores[bestScores[i][1]] += answers[bestScores[i][1]].score;
     }
-    console.log(bestScores);
     refreshService.refreshRoomUsers(room);
+    room.messageMembers('roundEnded');
+    sendAnswersBack(room, answers);
 }
+
+function sendAnswersBack(room, answers){
+    var toSend = {};
+    var roomMembers = room.getMembers(true);
+
+    for(var i in answers) {
+        for(var j=0; j<roomMembers.length; j++) {
+            if(roomMembers[j].id === i) {
+                toSend[i] = {
+                    name: roomMembers[j].name,
+                    word: answers[i].answer,
+                    score: answers[i].score
+                };
+                break;
+            }
+        }
+    }
+    room.data.roundResults = toSend;
+
+    room.messageMembers('submittedAnswers', toSend);
+
+    roundResetService.startRoundResetTimer(room);
+}
+
 
 module.exports =  {
     generateRandomNumber,
