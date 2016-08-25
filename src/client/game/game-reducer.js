@@ -78,7 +78,6 @@ const game = (state = initialState, action) => {
                 letterList: [],
                 answerTimerValue: null,
                 submissionTimerValue: null,
-                disableStart: true,
                 answering: false,
                 submission: false,
                 roundResults: false,
@@ -86,7 +85,11 @@ const game = (state = initialState, action) => {
                 resetRound: true,
                 randomNumber: null,
                 numberList: [],
-                sendEquation: false
+                sendEquation: false,
+                disableConsonant: true,
+                disableVowel: true,
+                disableLarge: true,
+                disableSmall: true
             });
         case actionTypes.RESET_FINISHED: {
             return updateState(state, {

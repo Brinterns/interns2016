@@ -1,7 +1,9 @@
 var leaderService = require('./leader-service');
 var roomDataService = require('./room-data-service');
+var parameters = require('../parameters');
+
 function startRoundResetTimer(room) {
-    var roundResetTimer = setTimeout(nextRound.bind(null, room), 7000);
+    var roundResetTimer = setTimeout(nextRound.bind(null, room), parameters.roundResetTime * 1000);
 }
 
 function nextRound(room) {

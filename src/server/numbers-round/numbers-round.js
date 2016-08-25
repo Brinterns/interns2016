@@ -40,7 +40,7 @@ function checkNumbersLeft(numbersRound, user) {
         numbersRound.disableLarge = true;
         user.message('disableLarge');
     }
-    if(numbersRound.large + numbersRound.small === 6) {
+    if(numbersRound.large + numbersRound.small === parameters.numOfNumbers) {
         numbersRound.disableLarge = true;
         numbersRound.disableSmall = true;
         user.message('disableSmall');
@@ -80,7 +80,6 @@ function submitEquation(equation, user) {
 }
 
 function evaluateAnswers(answers, room) {
-    console.log('here');
     var allowedNumbers = room.data.numbersRound.numbers;
     for(var i in answers) {
         answers[i].eval = evaluator(answers[i].answer, Array.from(allowedNumbers));
