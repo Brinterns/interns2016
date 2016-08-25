@@ -105,9 +105,9 @@ export function resetLetters(list) {
 	}
 }
 
-export function setBestAnswer(answer) {
+export function setBestAnswer(bestAnswerObj) {
 	return {
 		type: SET_BEST_ANSWER,
-		payload: answer
+		payload: bestAnswerObj
 	}
 }

@@ -153,10 +153,9 @@ function validateAnswers(answers, letters, room) {
 }
 
 function bestAnswerDefinition(word, room) {
-    var definition = getDefinition(word).then((def) => {
-        room.messageMembers('bestAnswer', word);    
+    getDefinition(word).then(definition => {
+        room.messageMembers('bestAnswer', {word: word.charAt(0).toUpperCase() + word.slice(1), definition: definition});    
     });
-    
 }
 
 function scoreRound(answers, room) {

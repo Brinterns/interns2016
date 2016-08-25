@@ -147,8 +147,8 @@ function configureAndRun(roomId) {
             submittedAnswers: finalAnswerList => {
                 dispatch(submittedAnswers(finalAnswerList));
             },
-            bestAnswer: answer => {
-                dispatch(setBestAnswer(answer));
+            bestAnswer: bestAnswerObj => {
+                dispatch(setBestAnswer(bestAnswerObj));
             },
             roundEnded: () => {
                 dispatch(roundEnded());

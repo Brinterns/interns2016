@@ -17,7 +17,7 @@ export class RoundResults extends Component {
 			winners: {},
 			plebs: {},
 			losers: {},
-			bestAnswer: null
+			bestAnswer: {}
 		})
 	}
 
@@ -151,8 +151,11 @@ export class RoundResults extends Component {
 	formatBestAnswer(bestAnswer) {
 		return(
 	        <li className={`list-group-item list-group-item-success ${style.space}`}>
-	        	<div className={`col-lg-4 ${gameStyle.resultWord}`}>
-	            	{bestAnswer}
+	        	<div className={`col-lg-4 ${gameStyle['best-word']}`}>
+	            	{bestAnswer.word}
+            	</div>
+            	<div className={`${gameStyle['best-definition']}`}>
+            		{bestAnswer.definition}
             	</div>		
 			</li>
 		);

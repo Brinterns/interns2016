@@ -9,7 +9,6 @@ function getDefinition(word) {
                 return response.json();
             })
             .then(response => {
-                console.log(response.tuc[0].meanings[0].text);
                 return(response.tuc[0].meanings[0].text);
             })
             .catch(error => {
