@@ -4,6 +4,7 @@ var solver = require('../vendor/validation/solver');
 var parameters = require('../parameters');
 var refreshService = require('../services/refresh-service');
 var roundResetService = require('../services/round-reset-service');
+var getDefinition = require('./get-definition');
 
 function getConsonant(arg, user) {
     var room = user.getRoom();
@@ -137,11 +138,11 @@ function validateAnswers(answers, letters, room) {
         return b.length - a.length;
     });
 
-    room.messageMembers('bestAnswer', result[0]);
+    bestAnswerDefinition(result[0], room);
 
     for(var i=0; i<answers.length; i++) {
-        if(result.indexOf(answers[i][1].toLowerCase()) !== -1) {
-            answers[i].score = (answers[i][1].length === parameters.numLetters ? 2*answers[i][1].length : answers[i][1].length);
+        if(result.indexOf(answers[i][1].toLowerCase()) !== -1) 
+{            answers[i].score = (answers[i][1].length === parameters.numLetters ? 2*answers[i][1].length : answers[i][1].length);
         }
         else {
             answers[i].score = 0;
@@ -149,6 +150,13 @@ function validateAnswers(answers, letters, room) {
     }
 
     scoreRound(answers, room);
+}
+
+function bestAnswerDefinition(word, room) {
+    var definition = getDefinition(word).then((def) => {
+        room.messageMembers('bestAnswer', word);    
+    });
+    
 }
 
 function scoreRound(answers, room) {
