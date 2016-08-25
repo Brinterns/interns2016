@@ -136,7 +136,8 @@ function sendAnswersBack(room, answers){
                 toSend[i] = {
                     name: roomMembers[j].name,
                     word: answers[i].answer,
-                    score: answers[i].score
+                    score: answers[i].score,
+                    distance: answers[i].distance
                 };
                 break;
             }

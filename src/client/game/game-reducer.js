@@ -50,7 +50,8 @@ const game = (state = initialState, action) => {
                 disableLarge: false,
                 disableSmall: false,
                 sendEquation: false,
-                randomNumber: null
+                randomNumber: null,
+                gameFinished: false
             });
         case actionTypes.SET_LEADER:
             return updateState(state, {
