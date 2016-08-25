@@ -101,7 +101,8 @@ const mapStateToProps = (state, ownProps) => ({
     started: state.game.started,
     disableStart: state.game.disableStart,
     nextRoundType: state.game.nextRoundType,
-    gameFinished: state.game.gameFinished
+    gameFinished: state.game.gameFinished,
+    bestAnswer: state.game.bestAnswer
 });
 
 const mapDispatchToProps = dispatch => ({

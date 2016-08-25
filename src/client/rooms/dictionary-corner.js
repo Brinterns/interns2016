@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import style from './room.scss';
+
 export class DictionaryCorner extends Component {
     componentWillMount() {
         this.setState({
@@ -13,23 +15,30 @@ export class DictionaryCorner extends Component {
             this.setState({
                 bestAnswer: nextProps.bestAnswer
             });
+    
+            this.refs['dict-corner'].className += ' ' + style['fadein'];
         }
+
     }
 
     render() {
         return (
-            <div className="col-lg-12">
-                <h2>Fakkin SUSIE comin at ya</h2>
-                <div>
+            <div className={`col-lg-12 ${style['dictionary-corner']}`} ref="dict-corner">
+                {this.state.bestAnswer.word !== undefined ? 
+                    <h2>Dictionary Corner</h2>
+                :
+                    null
+                }
+                <div className={style['dictionary-corner-word']}>
                     {this.state.bestAnswer.word ?
-                        'CHECK dis word fam: ' + this.state.bestAnswer.word
+                        this.state.bestAnswer.word
                     :
                         null
                     }
                 </div>
-                <div>
+                <div className={style['dictionary-corner-definition']}>
                     {this.state.bestAnswer.definition ?
-                        'WHAT u kno about definitions blad: ' + this.state.bestAnswer.definition
+                        this.state.bestAnswer.definition
                     :
                         null
                     }

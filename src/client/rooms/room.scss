@@ -22,3 +22,22 @@ h1 {
   color: white;
   margin-bottom: 10px;
 }
+
+.dictionary-corner {
+  opacity: 0;
+  transition: opacity .25s ease-in-out;
+   -moz-transition: opacity .25s ease-in-out;
+   -webkit-transition: opacity .25s ease-in-out;
+}
+
+.fadein {
+  opacity: 1;
+}
+
+.dictionary-corner-word {
+  font-weight: bold;
+}
+
+.dictionary-corner-definition {
+  font-style: italic;
+}

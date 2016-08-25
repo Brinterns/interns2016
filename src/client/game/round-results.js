@@ -17,7 +17,6 @@ export class RoundResults extends Component {
 			winners: {},
 			plebs: {},
 			losers: {},
-			bestAnswer: {}
 		})
 	}
 
@@ -148,28 +147,12 @@ export class RoundResults extends Component {
 		});
 	}
 
-	formatBestAnswer(bestAnswer) {
-		return(
-	        <li className={`list-group-item list-group-item-success ${style.space}`}>
-	        	<div className={`col-lg-4 ${gameStyle['best-word']}`}>
-	            	{bestAnswer.word}
-            	</div>
-            	<div className={`${gameStyle['best-definition']}`}>
-            		{bestAnswer.definition}
-            	</div>		
-			</li>
-		);
-	}
-
 	render() {
 		const winnersData = this.listElem(this.state.winners, 'winners');
 		const plebsData = this.listElem(this.state.plebs, 'plebs');
 		const losersData = this.listElem(this.state.losers, 'losers');
-		const bestAnswerData = this.formatBestAnswer(this.state.bestAnswer);
 		return	(
 			<div>
-				{bestAnswerData}
-				<br></br>
 				{winnersData}
 				<br></br>
 				{plebsData}
