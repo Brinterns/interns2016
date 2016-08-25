@@ -85,7 +85,8 @@ const game = (state = initialState, action) => {
                 finalAnswers: [],
                 resetRound: true,
                 randomNumber: null,
-                numberList: []
+                numberList: [],
+                sendEquation: false
             });
         case actionTypes.RESET_FINISHED: {
             return updateState(state, {

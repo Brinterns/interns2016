@@ -18,6 +18,12 @@ export class NumbersInput extends Component {
         if(nextProps.sendEquation !== this.props.sendEquation && nextProps.sendEquation){
             cloakService.messageSendEquation(this.state.answer);
         }
+
+        if(nextProps.resetRound !== this.props.resetRound && nextProps.resetRound) {
+            this.setState({
+                answer: ''
+            });
+        }
     }
 
     handleKeyPress(event) {
@@ -55,7 +61,8 @@ export class NumbersInput extends Component {
 }
 
 const mapStateToProps = state => ({
-    sendEquation: state.game.sendEquation
+    sendEquation: state.game.sendEquation,
+    resetRound: state.game.resetRound
 });
 
 export default connect(

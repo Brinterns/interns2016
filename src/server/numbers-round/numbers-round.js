@@ -80,6 +80,7 @@ function submitEquation(equation, user) {
 }
 
 function evaluateAnswers(answers, room) {
+    console.log('here');
     var allowedNumbers = room.data.numbersRound.numbers;
     for(var i in answers) {
         answers[i].eval = evaluator(answers[i].answer, Array.from(allowedNumbers));

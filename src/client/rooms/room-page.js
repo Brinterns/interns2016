@@ -73,10 +73,12 @@ export class RoomPage extends Component {
                             <button className={`btn  ${style.leaveGame}`} id="leave-room"
                                 onClick={leaveRoom}>Leave</button>
                     </div>
-                    {this.props.started ?
-                        round
+                    {!this.props.gameFinished ?
+                        (this.props.started ? round : null)
                     :
-                        null
+                        <div>
+                            GAME DONE GJ GUYS
+                        </div>
                     }
                 </div>
             </div>
@@ -93,7 +95,8 @@ const mapStateToProps = (state, ownProps) => ({
     roomData: state.room.room,
     started: state.game.started,
     disableStart: state.game.disableStart,
-    nextRoundType: state.game.nextRoundType
+    nextRoundType: state.game.nextRoundType,
+    gameFinished: state.game.gameFinished
 });
 
 const mapDispatchToProps = dispatch => ({
