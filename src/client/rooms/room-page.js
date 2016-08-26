@@ -59,6 +59,13 @@ export class RoomPage extends Component {
                 <Progress/>
                 <div>
                     <h1>{`Room: ${this.props.roomData.name}`}</h1>
+                    <div className={`col-lg-12 ${style.roomCreator}`}>
+                        {!this.props.started ? 
+                            `Room Creator: ${this.props.roomData.data.creator.name}`
+                        :
+                            null
+                        }
+                    </div>
                     <UserList users={this.props.roomUsers} />
                     <div className="col-lg-8" >
                         <button className={`btn ${style.startGame}`} id="start-game" disabled={this.props.disableStart}
@@ -83,7 +90,7 @@ function leaveRoom() {
 
 const mapStateToProps = (state, ownProps) => ({
     roomUsers: state.room.users,
-    roomData: state.room.data,
+    roomData: state.room.room,
     started: state.game.started,
     disableStart: state.game.disableStart,
     nextRoundType: state.game.nextRoundType
