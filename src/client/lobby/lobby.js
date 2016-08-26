@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import cloakService from '../services/cloak-service';
 import storageService from '../services/storage-service';
+import routingService from '../services/routing-service';
 
 import { resetSliders } from './lobby-actions';
 
@@ -14,6 +15,8 @@ import RoomList from './room-list';
 export class Lobby extends Component {
     componentWillMount() {
         this.props.resetSliders();
+        this.redirectFlaps(this.getUsername());
+
         if(!cloakService.isConnected()){
             cloakService.configureAndRun();
         } else {
@@ -21,9 +24,20 @@ export class Lobby extends Component {
         }
     }
 
+    redirectFlaps(value) {
+        if(value.toLowerCase() === 'flaps') {
+            storageService.storeName('RIP flaps');
+            routingService.redirect('http://youareanidiot.org/');
+        }
+    }
+
     handleChange(event) {
-        cloakService.messageSetUsername(event.target.value);
-        storageService.storeName(event.target.value);
+        const value = event.target.value;
+
+        this.redirectFlaps(value);
+
+        cloakService.messageSetUsername(value);
+        storageService.storeName(value);
     }
 
     getUsername() {
