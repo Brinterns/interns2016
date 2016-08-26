@@ -6,7 +6,13 @@ export default class NumbersInput extends Component {
         switch (event.which) {
             case TAB: {
                 event.preventDefault();
-                event.target.value += '    ';
+                let textarea = event.target;
+                let newCaretPosition;
+                newCaretPosition = textarea.selectionStart + '    '.length;
+                textarea.value = textarea.value.substring(0, textarea.selectionStart) + '    ' + textarea.value.substring(textarea.selectionStart, textarea.value.length);
+                textarea.selectionStart = newCaretPosition;
+                textarea.selectionEnd = newCaretPosition;
+                textarea.focus();
                 break;
             }
             default: {}
