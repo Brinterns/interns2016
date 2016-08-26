@@ -38,13 +38,13 @@ function checkNumbersLeft(numbersRound, user) {
     var room = user.getRoom();
     if(numbersRound.large >= 4){
         numbersRound.disableLarge = true;
-        user.message('disableLarge');
+        room.messageMembers('disableLarge');
     }
     if(numbersRound.large + numbersRound.small === parameters.numOfNumbers) {
         numbersRound.disableLarge = true;
         numbersRound.disableSmall = true;
-        user.message('disableSmall');
-        user.message('disableLarge');
+        room.messageMembers('disableSmall');
+        room.messageMembers('disableLarge');
         getRandomNumber(room);
         startAnswering(room);
     }
