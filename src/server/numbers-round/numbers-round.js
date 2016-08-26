@@ -135,7 +135,7 @@ function sendAnswersBack(room, answers){
             if(roomMembers[j].id === i) {
                 toSend[i] = {
                     name: roomMembers[j].name,
-                    word: answers[i].answer,
+                    word: answers[i].answer + ' = ' + answers[i].eval,
                     score: answers[i].score,
                     distance: answers[i].distance
                 };
