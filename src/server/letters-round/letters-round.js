@@ -18,7 +18,7 @@ function getConsonant(arg, user) {
         room.messageMembers('updateConsonant', consonant);
         checkListLength(user);
     } else {
-        user.message('disableConsonant', true);
+        room.messageMembers('disableConsonant', true);
     }
 }
 
@@ -37,18 +37,26 @@ function getVowel(arg, user) {
         room.messageMembers('updateVowel', vowel);
         checkListLength(user);
     } else {
-        user.message('disableVowel', true);
+        room.messageMembers('disableVowel', true);
     }
 }
 
 function checkListLength(user) {
     var room = user.getRoom();
     var lettersRound = room.data.lettersRound;
+    if(lettersRound.consonantNum >= 6){
+        room.messageMembers('disableConsonant', true);
+        lettersRound.disableConsonant = true;
+    }
+    if(lettersRound.vowelNum >= 5){
+        room.messageMembers('disableVowel', true);
+        lettersRound.disableVowel = true;
+    }
     if(lettersRound.letters.length >= parameters.numLetters){
         lettersRound.disableConsonant = true;
         lettersRound.disableVowel = true;
-        user.message('disableConsonant', true);
-        user.message('disableVowel', true);
+        room.messageMembers('disableConsonant', true);
+        room.messageMembers('disableVowel', true);
         startAnswering(room);
         return;
     }

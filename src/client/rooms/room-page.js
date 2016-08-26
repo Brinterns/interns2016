@@ -9,7 +9,7 @@ import Game from '../game/game';
 import Progress from '../game/progress';
 import NumbersRound from '../game/numbers-round';
 
-import { leaveGame } from '../game/game-actions';
+import { leaveGame, reInitialiseState } from '../game/game-actions';
 import storageService from '../services/storage-service';
 
 import style from './room.scss';
@@ -21,6 +21,7 @@ const roundTypes = {
 
 export class RoomPage extends Component {
     componentWillMount() {
+        this.props.reInitialiseState();
         if(cloakService.isConnected()) {
             cloakService.messageJoinRoom(this.props.params.data);
             cloakService.getRoomData(this.props.params.data);
@@ -73,10 +74,12 @@ export class RoomPage extends Component {
                             <button className={`btn  ${style.leaveGame}`} id="leave-room"
                                 onClick={leaveRoom}>Leave</button>
                     </div>
-                    {this.props.started ?
-                        round
+                    {!this.props.gameFinished ?
+                        (this.props.started ? round : null)
                     :
-                        null
+                        <div>
+                            GAME DONE GJ GUYS
+                        </div>
                     }
                 </div>
             </div>
@@ -93,12 +96,16 @@ const mapStateToProps = (state, ownProps) => ({
     roomData: state.room.room,
     started: state.game.started,
     disableStart: state.game.disableStart,
-    nextRoundType: state.game.nextRoundType
+    nextRoundType: state.game.nextRoundType,
+    gameFinished: state.game.gameFinished
 });
 
 const mapDispatchToProps = dispatch => ({
     leaveGame() {
         dispatch(leaveGame());
+    },
+    reInitialiseState() {
+        dispatch(reInitialiseState());
     }
 });
 

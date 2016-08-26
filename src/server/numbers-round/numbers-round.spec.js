@@ -4,9 +4,16 @@ var min = 1;
 var max = 1000;
 
 describe('Numbers Round', () => {
+    let room;
+    let user;
+    beforeEach(() => {
+        user = jasmine.createSpyObj('user', ['getRoom']);
+        room = jasmine.createSpyObj('room', ['messageMembers']);
+    })
     it('messages all room members with a random number', () => {
-        var user = jasmine.createSpyObj('user', ['getRoom']);
-        var room = jasmine.createSpyObj('room', ['messageMembers']);
+        room.data = {
+            numbersRound: {}
+        };
         user.getRoom.and.returnValue(room);
 
         numbersRound.getRandomNumber(room);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import NumbersInput, { __RewireAPI__ } from './numbers-input';
+import { NumbersInput, __RewireAPI__ } from './numbers-input';
 import { handleTab, normaliseRewire } from '../utils/util';
 
 const { rewire, resetDependency } = normaliseRewire(__RewireAPI__);

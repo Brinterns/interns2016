@@ -9,7 +9,7 @@ export const RESET_FINISHED = 'RESET_FINISHED';
 export const GAME_PARAMETERS = 'GAME_PARAMETERS';
 export const GAME_FINISHED = 'GAME_FINISHED';
 export const NEXT_ROUND_TYPE = 'NEXT_ROUND_TYPE';
-
+export const REINITIALISE_STATE = 'REINITIALISE_STATE';
 
 export function startGame() {
     return {
@@ -79,4 +79,10 @@ export function nextRoundType(type) {
 		type: NEXT_ROUND_TYPE,
 		payload: type
 	}
+}
+
+export function reInitialiseState() {
+    return {
+        type: REINITIALISE_STATE
+    }
 }

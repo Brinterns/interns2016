@@ -28,11 +28,14 @@ const initialState = {
     progressBarVisible: false,
     disableLarge: false,
     disableSmall: false,
-    numberList: []
+    numberList: [],
+    sendEquation: false
 };
 
 const game = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.REINITIALISE_STATE: 
+            return initialState;
         case actionTypes.START_GAME:
             return updateState(state, {
                 started: true,
@@ -44,7 +47,13 @@ const game = (state = initialState, action) => {
                 letterList: [],
                 disableConsonant: false,
                 disableVowel: false,
-                answering: false
+                answering: false,
+                numberList: [],
+                disableLarge: false,
+                disableSmall: false,
+                sendEquation: false,
+                randomNumber: null,
+                gameFinished: false
             });
         case actionTypes.SET_LEADER:
             return updateState(state, {
@@ -72,14 +81,18 @@ const game = (state = initialState, action) => {
                 letterList: [],
                 answerTimerValue: null,
                 submissionTimerValue: null,
-                disableStart: true,
                 answering: false,
                 submission: false,
                 roundResults: false,
                 finalAnswers: [],
                 resetRound: true,
                 randomNumber: null,
-                numberList: []
+                numberList: [],
+                sendEquation: false,
+                disableConsonant: true,
+                disableVowel: true,
+                disableLarge: true,
+                disableSmall: true
             });
         case actionTypes.RESET_FINISHED: {
             return updateState(state, {
@@ -189,6 +202,11 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 disableSmall: true
             });
+        }
+        case numberRoundActions.GET_EQUATION: {
+            return updateState(state, {
+                sendEquation: true
+            })
         }
         default:
             return state;

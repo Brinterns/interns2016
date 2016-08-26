@@ -20,7 +20,7 @@ describe('<Lobby />', () => {
         })
         rewire('cloakService', cloakService);
         rewire('storageService', storageService);
-        wrapper = shallow(<Lobby />);
+        wrapper = shallow(<Lobby resetSliders={()=>{}}/>);
     });
 
     afterEach(() => {
@@ -34,14 +34,14 @@ describe('<Lobby />', () => {
 
     it('calls configureAndRun if not connected', () => {
         cloakService.isConnected.and.callFake(() => false);
-        wrapper = shallow(<Lobby />);
+        wrapper = shallow(<Lobby resetSliders={()=>{}}/>);
 
         expect(cloakService.configureAndRun).toHaveBeenCalled();
     })
 
     it('calls resetScore if connected', () => {
         cloakService.isConnected.and.callFake(() => true);
-        wrapper = shallow(<Lobby />);
+        wrapper = shallow(<Lobby resetSliders={()=>{}}/>);
 
         expect(cloakService.resetScore).toHaveBeenCalled();
     })
