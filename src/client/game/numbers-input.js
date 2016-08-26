@@ -21,7 +21,7 @@ export default class NumbersInput extends Component {
             <div className="col-lg-12 text-center">
                 <h3>Answer</h3>
                 <div>
-                    <textarea rows="5" size="200" placeholder="Answer here"
+                    <textarea rows="20" cols="100" size="1000" placeholder="Answer here"
                     onKeyDown={event => this.handleKeyPress(event)} />
                 </div>
             </div>
