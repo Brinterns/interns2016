@@ -51,7 +51,7 @@ export class NumbersInput extends Component {
             <div className="col-lg-12 text-center">
                 <h3>Answer</h3>
                 <div>
-                    <textarea rows="20" size="1000" placeholder="Answer here"
+                    <textarea rows="20" cols="100" size="1000" placeholder="Answer here"
                     onKeyDown={event => this.handleKeyPress(event)}
                     onChange={event => this.handleChange(event)}/>
                 </div>
