@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
 
+import { handleTab } from '../utils/util';
+
 const TAB = 9;
+
 export default class NumbersInput extends Component {
     handleKeyPress(event) {
         switch (event.which) {
             case TAB: {
                 event.preventDefault();
-                let textarea = event.target;
-                let newCaretPosition;
-                newCaretPosition = textarea.selectionStart + '    '.length;
-                textarea.value = textarea.value.substring(0, textarea.selectionStart) + '    ' + textarea.value.substring(textarea.selectionStart, textarea.value.length);
-                textarea.selectionStart = newCaretPosition;
-                textarea.selectionEnd = newCaretPosition;
-                textarea.focus();
+                handleTab(event);
                 break;
             }
             default: {}
