@@ -59,7 +59,7 @@ export class RoomPage extends Component {
                 <Progress/>
                 <div>
                     <h1>{`Room: ${this.props.roomData.name}`}</h1>
-                    <div className={`col-lg-12 ${style['room-creator']}`}>
+                    <div className={`col-lg-12 ${style.roomCreator}`}>
                         {!this.props.started ? 
                             `Room Creator: ${this.props.roomData.data.creator.name}`
                         :
