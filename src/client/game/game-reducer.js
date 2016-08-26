@@ -34,6 +34,8 @@ const initialState = {
 
 const game = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.REINITIALISE_STATE: 
+            return initialState;
         case actionTypes.START_GAME:
             return updateState(state, {
                 started: true,

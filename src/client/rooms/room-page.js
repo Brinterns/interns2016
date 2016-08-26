@@ -9,7 +9,7 @@ import Game from '../game/game';
 import Progress from '../game/progress';
 import NumbersRound from '../game/numbers-round';
 
-import { leaveGame } from '../game/game-actions';
+import { leaveGame, reInitialiseState } from '../game/game-actions';
 import storageService from '../services/storage-service';
 
 import style from './room.scss';
@@ -21,6 +21,7 @@ const roundTypes = {
 
 export class RoomPage extends Component {
     componentWillMount() {
+        this.props.reInitialiseState();
         if(cloakService.isConnected()) {
             cloakService.messageJoinRoom(this.props.params.data);
             cloakService.getRoomData(this.props.params.data);
@@ -102,6 +103,9 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
     leaveGame() {
         dispatch(leaveGame());
+    },
+    reInitialiseState() {
+        dispatch(reInitialiseState());
     }
 });
 

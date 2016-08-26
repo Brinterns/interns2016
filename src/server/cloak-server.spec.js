@@ -557,7 +557,7 @@ describe('cloak server', () => {
             }
             cloakConfig.messages.getConsonant('', user);
 
-            expect(user.message).toHaveBeenCalledWith('disableConsonant', true);
+            expect(room.messageMembers).toHaveBeenCalledWith('disableConsonant', true);
         });
 
         it('sends updateConsonant if there are less than 6 consonants', () =>{
@@ -588,7 +588,7 @@ describe('cloak server', () => {
             }
             cloakConfig.messages.getVowel('', user);
 
-            expect(user.message).toHaveBeenCalledWith('disableVowel', true);
+            expect(room.messageMembers).toHaveBeenCalledWith('disableVowel', true);
         });
 
         it('sends updateVowel if there are less than 5 vowels', () =>{
@@ -626,13 +626,13 @@ describe('cloak server', () => {
         it('sends user disableConsonant message if there are 9 or more letters in the lettersRound', () => {
             cloakConfig.messages.getVowel('', user);
 
-            expect(user.message).toHaveBeenCalledWith('disableConsonant', true);
+            expect(room.messageMembers).toHaveBeenCalledWith('disableConsonant', true);
         });
 
         it('sends user disableVowel message if there are 9 or more letters in the lettersRound', () => {
             cloakConfig.messages.getVowel('', user);
 
-            expect(user.message).toHaveBeenCalledWith('disableVowel', true);
+            expect(room.messageMembers).toHaveBeenCalledWith('disableVowel', true);
         });
 
         it('sets disableConsonant to true if there are 9 or more letters in the letter list', () => {
