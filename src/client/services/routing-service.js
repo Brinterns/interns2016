@@ -8,6 +8,10 @@ class RoutingService {
 	navigateToLobby() {
 		browserHistory.push('/');
 	}
+
+	redirect(path) {
+		window.location = path;
+	}
 }
 
 var router = new RoutingService();
