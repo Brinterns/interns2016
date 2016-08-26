@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Progress from './progress';
 
-import { answerTimerTick, submissionTimerTick, resetAnswerTimer, resetSubmissionTimer } from './game-actions';
+import { answerTimerTick, submissionTimerTick, resetAnswerTimer, resetSubmissionTimer } from './letter-round-actions';
 
 import cloakService from '../services/cloak-service';
 
@@ -24,7 +24,7 @@ export class AnswerInput extends Component {
 
     componentDidMount() {
         this.refs[`radio${this.state.answerToSubmit}`].checked = true;
-        this.refs[this.state.answerToSubmit].className = style['answer-boxes-checked'];
+        this.refs[this.state.answerToSubmit].className = style.answerBoxesChecked;
     }
 
     componentWillUnmount() {
@@ -111,7 +111,7 @@ export class AnswerInput extends Component {
                     this.refs[i].className = '';
                 }
 
-                this.refs[focusIndex].className = style['answer-boxes-checked'];
+                this.refs[focusIndex].className = style.answerBoxesChecked;
 
                 this.setAnswer();
 
@@ -198,13 +198,11 @@ export class AnswerInput extends Component {
     }
 
     render() {
-
         const submitButton = (
             <div>
                 <button className="btn btn-success" onClick={() => this.submitAnswer()}>Ready</button>
             </div>
         );
-
 
         return (
             <div className="col-lg-12 text-center">
@@ -218,7 +216,9 @@ export class AnswerInput extends Component {
 
 const mapStateToProps = state => ({
     answerTimerValue: state.game.answerTimerValue,
-    submissionTimerValue: state.game.submissionTimerValue
+    submissionTimerValue: state.game.submissionTimerValue,
+    answering: state.game.answering,
+    submission: state.game.submission
 });
 
 const mapDispatchToProps = dispatch => ({

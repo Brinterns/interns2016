@@ -1,9 +1,5 @@
 var dictionary = require('./dictionary');
 
-module.exports = {
-    solve_letters
-}
-
 function _recurse_solve_letters(letters, node, used_letter, cb, answer) {
     if (node[0])
         cb(answer, node[0]);
@@ -271,4 +267,8 @@ function solve_numbers(numbers, target, trickshot) {
     }
 
     return stringify_result(serialise_result(tidyup_result(_solve_numbers(numbers, target, trickshot))), target);
+}
+
+module.exports = {
+    solve_letters
 }

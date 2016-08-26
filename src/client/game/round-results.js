@@ -6,6 +6,11 @@ import storageService from '../services/storage-service';
 import style from '../common/common.scss'
 import gameStyle from './game.scss';
 
+const roundTypes = {
+    letters: 'L',
+    numbers: 'N'
+};
+
 export class RoundResults extends Component {
 	componentWillMount(){
 		this.setState({
@@ -16,26 +21,40 @@ export class RoundResults extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		let sortedKeys = Object.keys(nextProps.finalAnswers);
-		sortedKeys.sort((a,b) => {
-			return nextProps.finalAnswers[b].score - nextProps.finalAnswers[a].score;
+		let keys = Object.keys(nextProps.finalAnswers);
+
+        switch(this.props.nextRoundType) {
+            case roundTypes.letters:
+                this.processLettersRoundResults(keys, nextProps.finalAnswers);
+                break;
+            case roundTypes.numbers:
+                this.processNumbersRoundResults(keys, nextProps.finalAnswers);
+                break;
+            default:
+                break;
+        }
+	}
+
+    processNumbersRoundResults(keys, finalAnswers) {
+        keys.sort((a,b) => {
+			return finalAnswers[a].distance - finalAnswers[b].distance;
 		});
 
-		let winners = sortedKeys.reduce((result, id) => {
-			if(nextProps.finalAnswers[id].score === nextProps.finalAnswers[sortedKeys[0]].score && nextProps.finalAnswers[id].score !== 0)
-				result[id] = nextProps.finalAnswers[id];
+		let winners = keys.reduce((result, id) => {
+			if(finalAnswers[id].distance === finalAnswers[keys[0]].distance && finalAnswers[id].score !== 0)
+				result[id] = finalAnswers[id];
 			return result;
 		}, {});
 
-		let plebs = sortedKeys.reduce((result, id) => {
-			if(nextProps.finalAnswers[id].score !== nextProps.finalAnswers[sortedKeys[0]].score && nextProps.finalAnswers[id].score !== 0)
-				result[id] = nextProps.finalAnswers[id];
+		let plebs = keys.reduce((result, id) => {
+			if(finalAnswers[id].distance !== finalAnswers[keys[0]].distance && finalAnswers[id].score !== 0)
+				result[id] = finalAnswers[id];
 			return result;
 		}, {});
 
-		let losers = sortedKeys.reduce((result, id) => {
-			if(nextProps.finalAnswers[id].score === 0 )
-				result[id] = nextProps.finalAnswers[id];
+		let losers = keys.reduce((result, id) => {
+			if(finalAnswers[id].score === 0 )
+				result[id] = finalAnswers[id];
 			return result;
 		}, {});
 
@@ -44,7 +63,37 @@ export class RoundResults extends Component {
 			plebs: plebs,
 			losers: losers
 		});
-	}
+    }
+
+    processLettersRoundResults(keys, finalAnswers) {
+        keys.sort((a,b) => {
+			return finalAnswers[b].score - finalAnswers[a].score;
+		});
+
+		let winners = keys.reduce((result, id) => {
+			if(finalAnswers[id].score === finalAnswers[keys[0]].score && finalAnswers[id].score !== 0)
+				result[id] = finalAnswers[id];
+			return result;
+		}, {});
+
+		let plebs = keys.reduce((result, id) => {
+			if(finalAnswers[id].score !== finalAnswers[keys[0]].score && finalAnswers[id].score !== 0)
+				result[id] = finalAnswers[id];
+			return result;
+		}, {});
+
+		let losers = keys.reduce((result, id) => {
+			if(finalAnswers[id].score === 0 )
+				result[id] = finalAnswers[id];
+			return result;
+		}, {});
+
+		this.setState({
+			winners: winners,
+			plebs: plebs,
+			losers: losers
+		});
+    }
 
 	listElem(data, type) {
 		let buttonType;
@@ -78,19 +127,19 @@ export class RoundResults extends Component {
 			id === userId ? pointer = 'YOU' : null;
 			return(
 		        <li className={`list-group-item list-group-item-${buttonType} ${style.space}`}>
-		            <div className={`col-lg-1 ${gameStyle['result-pointer']}`}>
+		            <div className={`col-lg-1 ${gameStyle.resultPointer}`}>
 		            	{pointer}
 		            </div>
-		            <div className={`col-lg-1 ${gameStyle['result-crown']}`}>
+		            <div className={`col-lg-1 ${gameStyle.resultCrown}`}>
 		            	{crown}
 		            </div>
-		            <div className={`col-lg-4 ${gameStyle['result-name']}`}>
+		            <div className={`col-lg-4 ${gameStyle.resultName}`}>
 		            	{data[id].name}
 		            </div>
-		            <div className={`col-lg-4 ${gameStyle['result-word']}`}>
+		            <div className={`col-lg-4 ${gameStyle.resultWord}`}>
 		            	{data[id].word}
 	            	</div>
-		            <div className={`col-lg-2 ${gameStyle['result-score']}`}>
+		            <div className={`col-lg-2 ${gameStyle.resultScore}`}>
 	            		{data[id].score}
             		</div>
 		        </li>
@@ -116,7 +165,8 @@ export class RoundResults extends Component {
 
 
 const mapStateToProps = state => ({
-    finalAnswers: state.game.finalAnswers
+    finalAnswers: state.game.finalAnswers,
+    nextRoundType: state.game.nextRoundType
 });
 
 export default connect(

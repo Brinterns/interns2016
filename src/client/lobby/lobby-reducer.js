@@ -1,12 +1,13 @@
-import { 
-    UPDATE_LOBBY_LIST, 
-    UPDATE_ROOM_LIST, 
+import {
+    UPDATE_LOBBY_LIST,
+    UPDATE_ROOM_LIST,
     UPDATE_LETTER_SLIDER,
     UPDATE_NUMBER_SLIDER,
-    ROUND_TYPES
+    ROUND_TYPES,
+    RESET_SLIDERS
 } from './lobby-actions';
 
-import updateState from '../utils/util';
+import { updateState } from '../utils/util';
 
 const initialState = {
 	rooms: [],
@@ -18,6 +19,11 @@ const initialState = {
 
 const lobby = (state = initialState, action) => {
     switch(action.type) {
+        case RESET_SLIDERS:
+            return updateState(state, {
+                letterSlider: 5,
+                numberSlider: 5
+            })
         case UPDATE_ROOM_LIST:
         	return updateState(state, {
         		rooms: action.payload
@@ -38,9 +44,12 @@ const lobby = (state = initialState, action) => {
             });
         }
         case ROUND_TYPES: {
-            return updateState(state, {
+            let newState = {
                 roundTypes: action.payload
-            })
+            };
+            newState.letterSlider = ! action.payload.letters ? 0 : state.letterSlider;
+            newState.numberSlider = ! action.payload.numbers ? 0 : state.numberSlider;
+            return updateState(state, newState);
         }
         default:{
             return state;

@@ -6,7 +6,7 @@ let parameters = {
     numLetters : 9,
     minUserNo : 2,
     rounds : {
-        letters: true, 
+        letters: true,
         numbers: false
     }
 };
@@ -19,7 +19,7 @@ let room;
 let users;
 let rooms;
 let disconnect;
-let letterList;
+let lettersRound;
 let solver;
 let roomDataService;
 
@@ -41,14 +41,10 @@ describe('cloak server', () => {
     });
 
     beforeEach(() => {
-        mockery.registerAllowable('./cloak-server');
-        mockery.registerAllowable('./letters/letter-lists');
-        mockery.registerAllowable('./dictionary');
-        mockery.registerAllowable('./services/room-data-service');
-        mockery.registerMock('./vendor/validation/cntdn', solver);
-        mockery.registerMock('./parameters', parameters);
-        mockery.registerMock('./letters/random-consonant-picker', randomConsonant);
-        mockery.registerMock('./letters/random-vowel-picker', randomVowel);
+        mockery.registerMock('../vendor/validation/solver', solver);
+        mockery.registerMock('../parameters', parameters);
+        mockery.registerMock('./random-consonant-picker', randomConsonant);
+        mockery.registerMock('./random-vowel-picker', randomVowel);
     });
 
     beforeEach(() => {
@@ -131,7 +127,7 @@ describe('cloak server', () => {
                     id: ''
                 },
                 scores: [],
-                letterList: {
+                lettersRound: {
                     letters: letters,
                     consonantNum: 0,
                     vowelNum: 0,
@@ -179,7 +175,7 @@ describe('cloak server', () => {
             cloak.getRoom.and.returnValue({data:''});
             room.getMembers.and.returnValue(users);
             room.data = makeRoom(true, ['a','b','c'], parameters.answerTime);
-            
+
             cloakConfig.room.newMember.bind(room, user)();
 
             expect(user.message).toHaveBeenCalledWith('startAnswering', parameters.answerTime);
@@ -247,12 +243,12 @@ describe('cloak server', () => {
             room = {name: "Room 1", data: {creator: {id:'sa', name:'sa'}}};
             rooms = [{id:'1'}];
             user.name = 'BOBSAGET';
-            user.id = 69; 
+            user.id = 69;
             var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
- 
+
             cloakConfig.messages.createRoom(options, user);
 
             expect(room.data.creator).toEqual({id: user.id, name: user.name});
@@ -266,7 +262,7 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
- 
+
             cloakConfig.messages.createRoom(options, user);
 
             expect(room.data.started).toEqual(false);
@@ -280,7 +276,7 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
- 
+
             cloakConfig.messages.createRoom(options, user);
 
             expect(room.data.answering).toEqual(false);
@@ -290,17 +286,17 @@ describe('cloak server', () => {
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
             var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
-            
+
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
- 
+
             cloakConfig.messages.createRoom(options, user);
 
             expect(room.data.userIdList).toEqual([]);
         });
 
-        it('sets letterList to its initial state on creation of the room', () => {
+        it('sets lettersRound to its initial state on creation of the room', () => {
             room = {name: "Room 1",data:{creator:{id:'sa',name:'sa'}}};
             rooms = [{id:'1'}];
             var options = {name: 'TEST_ROOM_NAME', rounds: {letter: 5}};
@@ -308,10 +304,10 @@ describe('cloak server', () => {
             cloak.getRooms.and.returnValue(rooms);
             cloak.getRoom.and.returnValue({data:''});
             cloak.createRoom.and.returnValue(room);
- 
+
             cloakConfig.messages.createRoom(options, user);
 
-            expect(room.data.letterList).toEqual({
+            expect(room.data.lettersRound).toEqual({
                 letters: [],
                 consonantNum: 0,
                 vowelNum: 0,
@@ -459,7 +455,7 @@ describe('cloak server', () => {
             room.data = {
                 leaderIndex: '',
                 started: false,
-                letterList: {
+                lettersRound: {
                     disableConsonant: false,
                     disableVowel: true
                 },
@@ -479,7 +475,7 @@ describe('cloak server', () => {
             room.data = {
                 leaderIndex: '',
                 started: false,
-                letterList: {
+                lettersRound: {
                     disableConsonant: false,
                     disableVowel: true
                 },
@@ -493,7 +489,7 @@ describe('cloak server', () => {
                     leaderIndex: 0,
                     leaderId: '1232445',
                     started: true,
-                    letterList: {
+                    lettersRound: {
                         disableConsonant: false,
                         disableVowel: true
                     },
@@ -510,7 +506,7 @@ describe('cloak server', () => {
             room.data = {
                 leaderIndex: '',
                 started: false,
-                letterList: {
+                lettersRound: {
                     disableConsonant: false,
                     disableVowel: true
                 },
@@ -536,7 +532,7 @@ describe('cloak server', () => {
             room.data = {
                 leaderIndex: '',
                 started: false,
-                letterList: {
+                lettersRound: {
                     disableConsonant: false,
                     disableVowel: true
                 },
@@ -554,14 +550,14 @@ describe('cloak server', () => {
         it('sends disableConsonant if there are 6 or more consonants', () =>{
             user.getRoom.and.returnValue(room);
             room.data = {
-                letterList: {
+                lettersRound: {
                     letters: [],
                     consonantNum: 7
                 }
             }
             cloakConfig.messages.getConsonant('', user);
 
-            expect(user.message).toHaveBeenCalledWith('disableConsonant', true);
+            expect(room.messageMembers).toHaveBeenCalledWith('disableConsonant', true);
         });
 
         it('sends updateConsonant if there are less than 6 consonants', () =>{
@@ -570,7 +566,7 @@ describe('cloak server', () => {
 
             user.getRoom.and.returnValue(room);
             room.data = {
-                letterList: {
+                lettersRound: {
                     letters: [],
                     consonantNum: 3
                 }
@@ -585,14 +581,14 @@ describe('cloak server', () => {
         it('sends disableVowel if there are 5 or more vowels', () =>{
             user.getRoom.and.returnValue(room);
             room.data = {
-                letterList: {
+                lettersRound: {
                     letters: [],
                     vowelNum: 6
                 }
             }
             cloakConfig.messages.getVowel('', user);
 
-            expect(user.message).toHaveBeenCalledWith('disableVowel', true);
+            expect(room.messageMembers).toHaveBeenCalledWith('disableVowel', true);
         });
 
         it('sends updateVowel if there are less than 5 vowels', () =>{
@@ -601,7 +597,7 @@ describe('cloak server', () => {
 
             user.getRoom.and.returnValue(room);
             room.data = {
-                letterList: {
+                lettersRound: {
                     letters: [],
                     vowelNum: 4
                 }
@@ -615,7 +611,7 @@ describe('cloak server', () => {
     describe('checkListLength', () => {
         beforeEach(() => {
             room.data = {
-                letterList: {
+                lettersRound: {
                     letters: ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'],
                     vowelNum: 4,
                     disableConsonant: false,
@@ -627,28 +623,28 @@ describe('cloak server', () => {
             user.getRoom.and.returnValue(room);
         });
 
-        it('sends user disableConsonant message if there are 9 or more letters in the letterList', () => {
+        it('sends user disableConsonant message if there are 9 or more letters in the lettersRound', () => {
             cloakConfig.messages.getVowel('', user);
 
-            expect(user.message).toHaveBeenCalledWith('disableConsonant', true);
+            expect(room.messageMembers).toHaveBeenCalledWith('disableConsonant', true);
         });
 
-        it('sends user disableVowel message if there are 9 or more letters in the letterList', () => {
+        it('sends user disableVowel message if there are 9 or more letters in the lettersRound', () => {
             cloakConfig.messages.getVowel('', user);
 
-            expect(user.message).toHaveBeenCalledWith('disableVowel', true);
+            expect(room.messageMembers).toHaveBeenCalledWith('disableVowel', true);
         });
 
         it('sets disableConsonant to true if there are 9 or more letters in the letter list', () => {
             cloakConfig.messages.getVowel('', user);
 
-            expect(room.data.letterList.disableConsonant).toEqual(true);
+            expect(room.data.lettersRound.disableConsonant).toEqual(true);
         });
 
         it('sets disableVowel to true if there are 9 or more letters in the letter list', () => {
             cloakConfig.messages.getVowel('', user);
 
-            expect(room.data.letterList.disableVowel).toEqual(true);
+            expect(room.data.lettersRound.disableVowel).toEqual(true);
         });
 
         it('calls startAnswering if there are 9 or more letters in the letter list', () => {
@@ -832,7 +828,7 @@ describe('cloak server', () => {
     describe('submitAnswer ', () =>{
         beforeEach( () => {
             room.data = {
-                letterList:{
+                lettersRound:{
                     letters: ['W', 'O', 'R', 'D', 'E', 'F', 'G', 'H'],
                     vowelNum: 4,
                     disableConsonant: false,

@@ -24,7 +24,7 @@ export class Game extends Component {
     componentWillReceiveProps(nextProps) {
         for(var i=0; i<numLetters; i++){
             if(nextProps.letterList[i] !== undefined){
-                this.refs[`box${i}`].className += this.refs[`box${i}`].className.includes(style.flipped) ? '' : ` ${style.flipped}` ;
+                this.refs[`letterBox${i}`].className += this.refs[`letterBox${i}`].className.includes(style.flipped) ? '' : ` ${style.flipped}` ;
             }
         }
 
@@ -35,27 +35,27 @@ export class Game extends Component {
 
     resetLetterBoxes() {
         for(let i=0; i<numLetters; i++) {
-            this.refs[`box${i}`].className = style.card;
+            this.refs[`letterBox${i}`].className = style.card;
         }
     }
 
     render() {
         const letterButtons = (
             <div>
-                <button className="btn btn-info" onClick={() => cloakService.messageGetConsonant()}
+                <button className="btn" onClick={() => cloakService.messageGetConsonant()}
                 disabled={this.props.disableConsonant}>Consonant</button>
-                <button className="btn btn-primary" onClick={() => cloakService.messageGetVowel()}
+                <button className="btn" onClick={() => cloakService.messageGetVowel()}
                 disabled={this.props.disableVowel}>Vowel</button>
             </div>
         );
 
         const letterBox = (letter, index) => (
             <div className={style.flip}>
-                <div className={style.card} ref={`box${index}`}>
+                <div className={style.card} ref={`letterBox${index}`}>
                     <div className={`${style.face} ${style.front}`}>
                     </div>
-                    <div ref={`card${index}`} className={`${style.face} ${style.back}`}>
-                        {letter}
+                    <div ref={`letterCard${index}`} className={`${style.face} ${style.back}`}>
+                        <span className={style.cardInner}>{letter}</span>
                     </div>
                 </div>
             </div>
@@ -69,24 +69,18 @@ export class Game extends Component {
         return (
             <div className="col-lg-8 text-center">
                 <h3>COUNTDOWN</h3>
-                {(!this.props.gameFinished ? 
+                <div>
+                    <p>Leader: {this.props.leader.name}</p>
+                    {this.isLeader() ? letterButtons : null}
                     <div>
-                        <p>Leader: {this.props.leader.name}</p>
-                        {this.isLeader() ? letterButtons : null}
-                        <div>
-                            {letterBoxes}
-                        </div>
-                        {(this.props.roundResults ? 
-                            <RoundResults /> 
-                        :
-                            <AnswerInput answering={this.props.answering} submission={this.props.submission}/>)
-                        }
+                        {letterBoxes}
                     </div>
-                :
-                    <div>
-                        GAME DONE GJ GUYS
-                    </div>
-                )}
+                    {this.props.roundResults ?
+                        <RoundResults />
+                    :
+                        <AnswerInput />
+                    }
+                </div>
             </div>
         );
     }
@@ -101,8 +95,7 @@ const mapStateToProps = state => ({
     answering: state.game.answering,
     submission: state.game.submission,
     roundResults: state.game.roundResults,
-    resetRound: state.game.resetRound,
-    gameFinished: state.game.gameFinished
+    resetRound: state.game.resetRound
 });
 
 export default connect(

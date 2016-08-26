@@ -1,9 +1,13 @@
 import { UPDATE_ROOM_USERS, GET_ROOM_DATA } from './room-actions';
-import updateState from '../utils/util';
+import { updateState } from '../utils/util';
 
 const initialState = {
 	users: [],
-	data: {},
+	room: {
+        data: {
+            creator: {}
+        }
+    },
 	username: '',
 	roomname: ''
 };
@@ -16,7 +20,7 @@ const room = (state = initialState, action) => {
         	});
         case GET_ROOM_DATA:
             return updateState(state, {
-            	data: action.payload
+            	room: action.payload
             });
         default:
             return state;

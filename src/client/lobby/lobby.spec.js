@@ -1,18 +1,50 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
-import { Lobby } from './lobby';
+import { normaliseRewire } from '../utils/util';
+
+import { Lobby, __RewireAPI__ } from './lobby';
+const { rewire, resetDependency } = normaliseRewire(__RewireAPI__);
 
 describe('<Lobby />', () => {
     let wrapper;
+    let cloakService;
+    let storageService;
     beforeEach(() => {
-        window.cloak = jasmine.createSpyObj('cloak', ['configure', 'run', 'connected', 'message']);
-        wrapper = shallow(<Lobby />);
+        cloakService = jasmine.createSpyObj('cloakService', ['configureAndRun', 'isConnected', 'resetScore', 'messageSetUsername']);
+        storageService = jasmine.createSpyObj('storageService', ['storeName', 'getUser']);
+        storageService.getUser.and.callFake(() => {
+            return {
+                name: 'fakeUser'
+            }
+        })
+        rewire('cloakService', cloakService);
+        rewire('storageService', storageService);
+        wrapper = shallow(<Lobby resetSliders={()=>{}}/>);
     });
+
+    afterEach(() => {
+        resetDependency('cloakService');
+        resetDependency('storageService');
+    })
 
     it('contains "Lobby" heading', () => {
         expect(wrapper.find('h1').text()).toEqual('LobbyUsername:');
     });
+
+    it('calls configureAndRun if not connected', () => {
+        cloakService.isConnected.and.callFake(() => false);
+        wrapper = shallow(<Lobby resetSliders={()=>{}}/>);
+
+        expect(cloakService.configureAndRun).toHaveBeenCalled();
+    })
+
+    it('calls resetScore if connected', () => {
+        cloakService.isConnected.and.callFake(() => true);
+        wrapper = shallow(<Lobby resetSliders={()=>{}}/>);
+
+        expect(cloakService.resetScore).toHaveBeenCalled();
+    })
 
     it('sends the setUsername message when the set username button listener is called', () => {
         let component = wrapper.instance();
@@ -21,7 +53,7 @@ describe('<Lobby />', () => {
             target:{value: 'testingUser'}
         }, 'username')
 
-        expect(cloak.message).toHaveBeenCalledWith('setUsername', 'testingUser');
+        expect(cloakService.messageSetUsername).toHaveBeenCalledWith('testingUser');
     });
 
     it('stores the new username in local storage when setUsername is called', () => {
@@ -31,6 +63,6 @@ describe('<Lobby />', () => {
             target:{value: 'testingUser'}
         }, 'username')
 
-        expect(localStorage.name).toEqual('testingUser');
+        expect(storageService.storeName).toHaveBeenCalledWith('testingUser');
     });
 });

@@ -5,24 +5,37 @@ import { dispatch } from '../store';
 import {
     startGame,
     setLeader,
+    disableStart,
+    roundEnded,
+    roundStarted,
+    resetRound,
+    resetFinished,
+    gameParameters,
+    gameFinished,
+    nextRoundType
+} from '../game/game-actions';
+
+import {
     getConsonant,
     getVowel,
     disableConsonant,
     disableVowel,
     startAnswering,
     stopAnswering,
-    disableStart,
-    resetLetters,
     startSubmission,
     stopSubmission,
     submittedAnswers,
-    roundEnded,
-    roundStarted,
-    resetRound,
-    resetFinished,
-    gameParameters,
-    gameFinished
-} from '../game/game-actions';
+    resetLetters
+} from '../game/letter-round-actions';
+
+import {
+    setRandomNumber,
+    getLarge,
+    getSmall,
+    disableLarge,
+    disableSmall,
+    getEquation
+} from '../game/number-round-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
 
@@ -42,8 +55,15 @@ export default {
     messageRemoveFromRoomList,
     resetScore,
     messageAnswers,
-    messageAnswerToSubmit
+    messageAnswerToSubmit,
+    messageGetRandomNumber,
+    messageGetLarge,
+    messageGetSmall,
+    messageSendEquation
 };
+
+const cloak = window.cloak;
+delete window.cloak;
 
 function configureAndRun(roomId) {
     cloak.configure({
@@ -53,6 +73,9 @@ function configureAndRun(roomId) {
                 if(roomId !== undefined) {
                     cloak.message('checkRoom', roomId);
                 }
+            },
+            roomDeleted: () => {
+                cloak.message('refreshRoomList');
             }
         },
         messages: {
@@ -146,6 +169,27 @@ function configureAndRun(roomId) {
             },
             roundTypes: types => {
                 dispatch(roundTypes(types));
+            },
+            nextRoundType: type => {
+                dispatch(nextRoundType(type));
+            },
+            setRandomNumber: number => {
+                dispatch(setRandomNumber(number));
+            },
+            updateLarge: number => {
+                dispatch(getLarge(number));
+            },
+            updateSmall: number => {
+                dispatch(getSmall(number));
+            },
+            disableLarge: () => {
+                dispatch(disableLarge());
+            },
+            disableSmall: () => {
+                dispatch(disableSmall());
+            },
+            getEquation: () => {
+                dispatch(getEquation());
             }
         },
         initialData: {
@@ -207,4 +251,20 @@ function messageAnswers(answerList) {
 
 function messageAnswerToSubmit(index) {
     cloak.message('submitAnswer', index);
+}
+
+function messageGetRandomNumber() {
+    cloak.message('getRandomNumber');
+}
+
+function messageGetLarge() {
+    cloak.message('getLarge');
+}
+
+function messageGetSmall() {
+    cloak.message('getSmall');
+}
+
+function messageSendEquation(equation) {
+    cloak.message('submitEquation', equation);
 }

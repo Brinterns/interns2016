@@ -19,16 +19,24 @@
 
 .cogs-button {
     color: white;
+    background-color: #7D437B;
     min-height: 60px;
     min-width: 60px;
     font-size: 40px;
-    vertical-align: middle; 
+    vertical-align: middle;
 }
 
 .input-slider-wrapper {
-    text-align: center;
+    color: black;
+    background-color: #fcf8e3;
+    padding-top: 5px;
+    padding-bottom: 5px;
     margin-top: 15px;
     margin-left: 150px;
+    font-size: 110%;
+    border-radius: 5px 5px;
+    text-align: center;
+    border: 1px solid #e1e1ea;
 }
 
 .input-slider {
@@ -36,5 +44,6 @@
 }
 
 .round-number {
+    font-size: 125%;
     display: inline-block;
 }

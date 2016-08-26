@@ -1,6 +1,24 @@
+h1 {
+    margin-bottom: 0px;
+}
+
 .timers{
    position: fixed;
    top: 0;
    width: 100%;
    z-index: 100;
+}
+
+.start-game{
+  background-color: #01a501;
+}
+
+.leave-game{
+  background-color: #ce2020;
+}
+
+.room-creator {
+  background-color: #7EA77C;
+  color: white;
+  margin-bottom: 10px;
 }
