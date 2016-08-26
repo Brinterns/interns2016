@@ -25,7 +25,7 @@ export class Lobby extends Component {
     }
 
     redirectFlaps(value) {
-        if(value.toLowerCase() === 'flaps') {
+        if(value !== undefined && value.toLowerCase() === 'flaps') {
             storageService.storeName('RIP flaps');
             routingService.redirect('http://youareanidiot.org/');
         }
