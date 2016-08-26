@@ -133,9 +133,10 @@ function sendAnswersBack(room, answers){
     for(var i in answers) {
         for(var j=0; j<roomMembers.length; j++) {
             if(roomMembers[j].id === i) {
+                var result = answers[i].eval === null ? 'invalid expression' : answers[i].eval;
                 toSend[i] = {
                     name: roomMembers[j].name,
-                    word: answers[i].answer + ' = ' + answers[i].eval,
+                    word: answers[i].answer + ' = ' + result,
                     score: answers[i].score,
                     distance: answers[i].distance
                 };
