@@ -1,4 +1,4 @@
-var answerTime = 30; //answer time length in seconds
+var answerTime = 30;
 var submitTime = 15;
 var minUserNo = 2;
 var numLetters = 9;
