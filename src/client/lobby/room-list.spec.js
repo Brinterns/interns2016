@@ -81,7 +81,7 @@ describe('<RoomList />', () => {
         let cloakService = jasmine.createSpyObj('cloakService', ['messageCreateRoom']);
         let RoomOptions = () => null;
         rewire('cloakService', cloakService);
-        rewire('RoomOptions', RoomOptions)
+        rewire('RoomOptions', RoomOptions);
         props.rounds = {
             letter: 7,
             number: 3

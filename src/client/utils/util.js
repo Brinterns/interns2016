@@ -9,4 +9,15 @@ function normaliseRewire(__RewireAPI__) {
     }
 }
 
-export { updateState , normaliseRewire };
+function handleTab(event) {
+    let textarea = event.target;
+    let newCaretPosition = textarea.selectionStart + 4;
+    textarea.value = textarea.value.substring(0, textarea.selectionStart) 
+                        + '    ' 
+                        + textarea.value.substring(textarea.selectionStart, textarea.value.length);
+    textarea.selectionStart = newCaretPosition;
+    textarea.selectionEnd = newCaretPosition;
+    textarea.focus();
+}
+
+export { updateState , normaliseRewire, handleTab };
