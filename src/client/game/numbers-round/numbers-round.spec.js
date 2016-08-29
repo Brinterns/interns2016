@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import { NumbersRound, __RewireAPI__ } from './numbers-round';
-import { normaliseRewire } from '../utils/util';
+import { normaliseRewire } from '../../utils/util';
 
 const { rewire, resetDependency } = normaliseRewire(__RewireAPI__);
 

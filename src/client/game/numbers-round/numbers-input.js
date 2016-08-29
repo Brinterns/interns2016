@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import cloakService from '../services/cloak-service';
+import cloakService from '../../services/cloak-service';
 
-import { handleTab } from '../utils/util';
+import { handleTab } from '../../utils/util';
 
 const TAB = 9;
 

@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import AnswerInput from './answer-input';
-import RoundResults from './round-results';
+import AnswerInput from './letters-input';
+import RoundResults from '../round-results';
 
-import cloakService from '../services/cloak-service';
+import cloakService from '../../services/cloak-service';
 
-import storageService from '../services/storage-service';
+import storageService from '../../services/storage-service';
 
-import style from './game.scss';
+import style from '../game.scss';
 
 const numLetters = 9;
 
-export class Game extends Component {
+export class LettersRound extends Component {
     isLeader() {
         let userId = storageService.getUser().id;
         if(userId === this.props.leader.id) {
@@ -100,4 +100,4 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps
-)(Game);
+)(LettersRound);

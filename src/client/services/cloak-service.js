@@ -27,7 +27,7 @@ import {
     submittedAnswers,
     resetLetters,
     setBestAnswer
-} from '../game/letter-round-actions';
+} from '../game/letters-round/letter-round-actions';
 
 import {
     setRandomNumber,
@@ -36,7 +36,7 @@ import {
     disableLarge,
     disableSmall,
     getEquation
-} from '../game/number-round-actions';
+} from '../game/numbers-round/number-round-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
 

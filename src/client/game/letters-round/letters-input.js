@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Progress from './progress';
+import Progress from '../progress';
 
 import { answerTimerTick, submissionTimerTick, resetAnswerTimer, resetSubmissionTimer } from './letter-round-actions';
 
-import cloakService from '../services/cloak-service';
+import cloakService from '../../services/cloak-service';
 
-import style from './game.scss';
+import style from '../game.scss';
 
 const SPACE_KEY = 32;
 const ENTER_KEY = 13;
