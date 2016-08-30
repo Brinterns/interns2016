@@ -12,7 +12,7 @@ describe('<NumbersInput />', () => {
 
     beforeEach(() => {
         props = {};
-    })
+    });
 
     it('Renders "Answer" h3', () => {
         let wrapper = shallow(
