@@ -27,20 +27,20 @@ export class DictionaryCorner extends Component {
                 {this.state.bestAnswer.word !== undefined ? 
                     <div className={style['susie-section']}>
                         <h2>Dictionary Corner</h2>
-                        <img className={style.susie} src="http://wemeantwell.com/blog/wp-content/uploads/2013/03/kim-jong-un.jpg"/>
+                        <img className={style.susie} id="yung-suze" src="http://wemeantwell.com/blog/wp-content/uploads/2013/03/kim-jong-un.jpg"/>
                     </div>
                 :
                     null
                 }
                 <div className={style.bubble}>
-                    <div className={style['dictionary-corner-word']}>
+                    <div id="best-answer-word" className={style['dictionary-corner-word']}>
                         {this.state.bestAnswer.word ?
                             this.state.bestAnswer.word
                         :
                             null
                         }
                     </div>
-                    <div className={style['dictionary-corner-definition']}>
+                    <div id="best-answer-definition" className={style['dictionary-corner-definition']}>
                         {this.state.bestAnswer.definition ?
                             this.state.bestAnswer.definition
                         :
