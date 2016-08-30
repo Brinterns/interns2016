@@ -8,7 +8,8 @@ const { rewire, resetDependency } = normaliseRewire(__RewireAPI__);
 
 describe('<NumbersRound />', () => {
     let props;
-    let cloakService
+    let cloakService;
+    let storageService;
     beforeEach(() => {
         props = {
             randomNumber: '',
@@ -19,14 +20,18 @@ describe('<NumbersRound />', () => {
         };
 
         cloakService = jasmine.createSpyObj('cloakService', ['messageGetRandomNumber', 'messageGetLarge', 'messageGetSmall']);
+        storageService = jasmine.createSpyObj('storageService', ['getUser']);
         rewire('cloakService', cloakService);
+        rewire('storageService', storageService);
     });
 
     afterEach(() => {
         resetDependency('cloakService');
+        resetDependency('storageService');
     });
 
     it('renders a random number', () => {
+        storageService.getUser.and.returnValue({id: 69});
         props.randomNumber = 734;
 
         const wrapper = shallow(
@@ -37,6 +42,7 @@ describe('<NumbersRound />', () => {
     });
 
     it('renders numbers as they are sent from the server', () => {
+        storageService.getUser.and.returnValue({id: 69});
         props.numberList.push(1);
         props.numberList.push(6969696969696969);
 
@@ -48,7 +54,7 @@ describe('<NumbersRound />', () => {
     });
 
     it('displays number selection buttons if the user is the leader', () => {
-        let storageService = jasmine.createSpyObj('storageService', ['getUser']);
+
         rewire('storageService', storageService);
 
         storageService.getUser.and.returnValue({id: 69});
@@ -64,9 +70,6 @@ describe('<NumbersRound />', () => {
     });
 
     it('clicking the "large" button calls messageGetLarge', () => {
-        let storageService = jasmine.createSpyObj('storageService', ['getUser']);
-        rewire('storageService', storageService);
-
         storageService.getUser.and.returnValue({id: 69});
         props.leader.id = 69;
 
@@ -77,14 +80,9 @@ describe('<NumbersRound />', () => {
         wrapper.find('#get-large').simulate('click');
 
         expect(cloakService.messageGetLarge).toHaveBeenCalled();
-
-        resetDependency('storageService');
     });
 
     it('clicking the "small" button calls messageGetSmall', () => {
-        let storageService = jasmine.createSpyObj('storageService', ['getUser']);
-        rewire('storageService', storageService);
-
         storageService.getUser.and.returnValue({id: 69});
         props.leader.id = 69;
 
@@ -95,7 +93,5 @@ describe('<NumbersRound />', () => {
         wrapper.find('#get-small').simulate('click');
 
         expect(cloakService.messageGetSmall).toHaveBeenCalled();
-
-        resetDependency('storageService');
     });
 });

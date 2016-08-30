@@ -13,7 +13,7 @@ const ENTER_KEY = 13;
 const UP_KEY = 38;
 const DOWN_KEY = 40;
 
-export class AnswerInput extends Component {
+export class LettersInput extends Component {
     componentWillMount() {
         this.setState({
             answerList: [''],
@@ -239,4 +239,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(AnswerInput);
+)(LettersInput);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import AnswerInput from './letters-input';
+import LettersInput from './letters-input';
 import RoundResults from '../round-results';
 
 import cloakService from '../../services/cloak-service';
@@ -78,7 +78,7 @@ export class LettersRound extends Component {
                     {this.props.roundResults ?
                         <RoundResults />
                     :
-                        <AnswerInput />
+                        <LettersInput />
                     }
                 </div>
             </div>
