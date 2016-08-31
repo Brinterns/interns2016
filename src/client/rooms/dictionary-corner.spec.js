@@ -28,7 +28,7 @@ describe('<DictionaryCorner />', () => {
                 <DictionaryCorner {...props} />
             );
 
-            wrapper.setState({ bestAnswer: bestAnswer });
+            wrapper.setState({ bestAnswer });
 
             expect(wrapper.find('h2').text()).toEqual('Dictionary Corner');
         });
@@ -38,7 +38,7 @@ describe('<DictionaryCorner />', () => {
                 <DictionaryCorner {...props} />
             );
 
-            wrapper.setState({ bestAnswer: bestAnswer });
+            wrapper.setState({ bestAnswer });
 
             expect(wrapper.find('#yung-suze').length).toEqual(1);
         });
@@ -48,7 +48,7 @@ describe('<DictionaryCorner />', () => {
                 <DictionaryCorner {...props} />
             );
 
-            wrapper.setState({ bestAnswer: bestAnswer });
+            wrapper.setState({ bestAnswer });
 
             expect(wrapper.find('#best-answer-word').text()).toEqual('Flange');
         });
@@ -58,7 +58,7 @@ describe('<DictionaryCorner />', () => {
                 <DictionaryCorner {...props} />
             );
 
-            wrapper.setState({ bestAnswer: bestAnswer });
+            wrapper.setState({ bestAnswer });
 
             expect(wrapper.find('#best-answer-definition').text()).toEqual('Something quite flange-y');
         });

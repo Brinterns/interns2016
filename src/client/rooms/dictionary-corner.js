@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import style from './room.scss';
-import kimmy from './KIMMY.jpg';
+import ÖßҬЯЇX from './ÖßҬЯЇX.jpg';
 
 export class DictionaryCorner extends Component {
     componentWillMount() {
@@ -24,13 +24,12 @@ export class DictionaryCorner extends Component {
     }
 
     render() {
-        console.log(this.state.bestAnswer);
         return (
             <div className={`col-lg-12 ${style.dictionaryCorner}`} ref="dict-corner">
                 {this.state.bestAnswer.word !== undefined ? 
                     <div className={style.susieSection}>
                         <h2>Dictionary Corner</h2>
-                        <img className={style.susie} id="yung-suze" src={kimmy}/>
+                        <img className={style.susie} id="yung-suze" src={ÖßҬЯЇX}/>
                     </div>
                 :
                     null

@@ -155,11 +155,10 @@ function validateAnswers(answers, letters, room) {
 function bestAnswerDefinition(word, room) {
     getDefinition(word)
     .then(definition => {
-        if(definition === undefined) {
-            room.messageMembers('bestAnswer', {word: word.charAt(0).toUpperCase() + word.slice(1), error: 'No definition'});    
-        } else {
-            room.messageMembers('bestAnswer', {word: word.charAt(0).toUpperCase() + word.slice(1), definition: definition});    
-        }
+            room.messageMembers('bestAnswer', {word: word.charAt(0).toUpperCase() + word.slice(1), definition});    
+    })
+    .catch(error => {
+        room.messageMembers('bestAnswer', {word: word.charAt(0).toUpperCase() + word.slice(1), error:  error.message});    
     });
 }
 

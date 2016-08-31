@@ -43,7 +43,13 @@ describe('cloak server', () => {
     });
 
     beforeEach(() => {
-        getDefinition.and.callFake(() => ({ then: () => 'It means no worries, for the rest of your days.' }));
+        getDefinition.and.callFake(
+            () => ({ 
+                then: () => ({ 
+                    catch: () => 'Wow nice error' 
+                })
+            })
+        );
     });
     
     beforeEach(() => {

@@ -13,9 +13,6 @@ function getDefinition(word) {
             .then(response => {
                 return(response.tuc[0].meanings[0].text);
             })
-            .catch(error => {
-                console.error(error);
-            })
 }
 
 module.exports = getDefinition;
