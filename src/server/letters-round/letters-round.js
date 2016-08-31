@@ -141,8 +141,8 @@ function validateAnswers(answers, letters, room) {
     bestAnswerDefinition(result[0], room);
 
     for(var i=0; i<answers.length; i++) {
-        if(result.indexOf(answers[i][1].toLowerCase()) !== -1) 
-{            answers[i].score = (answers[i][1].length === parameters.numLetters ? 2*answers[i][1].length : answers[i][1].length);
+        if(result.indexOf(answers[i][1].toLowerCase()) !== -1) {
+            answers[i].score = (answers[i][1].length === parameters.numLetters ? 2*answers[i][1].length : answers[i][1].length);
         }
         else {
             answers[i].score = 0;
@@ -153,8 +153,13 @@ function validateAnswers(answers, letters, room) {
 }
 
 function bestAnswerDefinition(word, room) {
-    getDefinition(word).then(definition => {
-        room.messageMembers('bestAnswer', {word: word.charAt(0).toUpperCase() + word.slice(1), definition: definition});    
+    getDefinition(word)
+    .then(definition => {
+        if(definition === undefined) {
+            room.messageMembers('bestAnswer', {word: word.charAt(0).toUpperCase() + word.slice(1), error: 'No definition'});    
+        } else {
+            room.messageMembers('bestAnswer', {word: word.charAt(0).toUpperCase() + word.slice(1), definition: definition});    
+        }
     });
 }
 

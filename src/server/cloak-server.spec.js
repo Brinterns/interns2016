@@ -28,11 +28,13 @@ describe('cloak server', () => {
     let randomVowel;
     let setIntervalSpy;
     let setTimeoutSpy;
+    let getDefinition;
 
     beforeEach(() => {
         randomConsonant = jasmine.createSpy('randomConsonant');
         randomVowel = jasmine.createSpy('randomVowel');
         solver = jasmine.createSpyObj('solver', ['solve_letters']);
+        getDefinition = jasmine.createSpy('getDefinition');
         jasmine.clock().install();
     });
 
@@ -41,10 +43,15 @@ describe('cloak server', () => {
     });
 
     beforeEach(() => {
+        getDefinition.and.callFake(() => ({ then: () => 'It means no worries, for the rest of your days.' }));
+    });
+    
+    beforeEach(() => {
         mockery.registerMock('../vendor/validation/solver', solver);
         mockery.registerMock('../parameters', parameters);
         mockery.registerMock('./random-consonant-picker', randomConsonant);
         mockery.registerMock('./random-vowel-picker', randomVowel);
+        mockery.registerMock('./get-definition', getDefinition);
     });
 
     beforeEach(() => {

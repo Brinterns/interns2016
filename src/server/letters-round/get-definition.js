@@ -4,7 +4,9 @@ function getDefinition(word) {
     return fetch('https://glosbe.com/gapi/translate?from=eng&dest=eng&format=json&phrase=' + word + '&pretty=true')
             .then(response => {
                 if (response.status >= 400) {
-                    throw new Error('Fakkin Error m9');
+                    throw new Error('Bad request');
+                } else if(response.tuc === undefined) {
+                    throw new Error('No definition');
                 }
                 return response.json();
             })
@@ -12,7 +14,7 @@ function getDefinition(word) {
                 return(response.tuc[0].meanings[0].text);
             })
             .catch(error => {
-                console.Error(error);
+                console.error(error);
             })
 }
 

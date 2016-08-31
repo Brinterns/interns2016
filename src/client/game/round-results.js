@@ -16,7 +16,7 @@ export class RoundResults extends Component {
 		this.setState({
 			winners: {},
 			plebs: {},
-			losers: {},
+			losers: {}
 		})
 	}
 

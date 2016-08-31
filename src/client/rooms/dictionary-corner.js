@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import style from './room.scss';
+import kimmy from './KIMMY.jpg';
 
 export class DictionaryCorner extends Component {
     componentWillMount() {
@@ -15,36 +16,38 @@ export class DictionaryCorner extends Component {
             this.setState({
                 bestAnswer: nextProps.bestAnswer
             });
-    
-            this.refs['dict-corner'].className += ' ' + style['fadein'];
+            
+            if(!this.refs['dict-corner'].className.includes(style.fadeIn)) {
+                this.refs['dict-corner'].className += ' ' + style.fadeIn;
+            }
         }
-
     }
 
     render() {
+        console.log(this.state.bestAnswer);
         return (
-            <div className={`col-lg-12 ${style['dictionary-corner']}`} ref="dict-corner">
+            <div className={`col-lg-12 ${style.dictionaryCorner}`} ref="dict-corner">
                 {this.state.bestAnswer.word !== undefined ? 
-                    <div className={style['susie-section']}>
+                    <div className={style.susieSection}>
                         <h2>Dictionary Corner</h2>
-                        <img className={style.susie} id="yung-suze" src="http://wemeantwell.com/blog/wp-content/uploads/2013/03/kim-jong-un.jpg"/>
+                        <img className={style.susie} id="yung-suze" src={kimmy}/>
                     </div>
                 :
                     null
                 }
                 <div className={style.bubble}>
-                    <div id="best-answer-word" className={style['dictionary-corner-word']}>
+                    <div id="best-answer-word" className={style.dictionaryCornerWord}>
                         {this.state.bestAnswer.word ?
                             this.state.bestAnswer.word
                         :
                             null
                         }
                     </div>
-                    <div id="best-answer-definition" className={style['dictionary-corner-definition']}>
+                    <div id="best-answer-definition" className={style.dictionaryCornerDefinition}>
                         {this.state.bestAnswer.definition ?
                             this.state.bestAnswer.definition
                         :
-                            null
+                            this.state.bestAnswer.error
                         }
                     </div>
                 </div>
