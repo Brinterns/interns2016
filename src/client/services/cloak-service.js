@@ -25,7 +25,8 @@ import {
     startSubmission,
     stopSubmission,
     submittedAnswers,
-    resetLetters
+    resetLetters,
+    setBestAnswer
 } from '../game/letter-round-actions';
 
 import {
@@ -145,6 +146,9 @@ function configureAndRun(roomId) {
             },
             submittedAnswers: finalAnswerList => {
                 dispatch(submittedAnswers(finalAnswerList));
+            },
+            bestAnswer: bestAnswerObj => {
+                dispatch(setBestAnswer(bestAnswerObj));
             },
             roundEnded: () => {
                 dispatch(roundEnded());

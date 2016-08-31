@@ -34,6 +34,8 @@
     "gulp-load-plugins": "^1.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
+    "image-webpack-loader": "^2.0.0",
+    "isomorphic-fetch": "^2.2.1",
     "jquery": "^2.2.0",
     "lodash": "^4.13.1",
     "node-sass": "^3.7.0",

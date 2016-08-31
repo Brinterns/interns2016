@@ -8,6 +8,7 @@ import UserList from '../user/user-list';
 import Game from '../game/game';
 import Progress from '../game/progress';
 import NumbersRound from '../game/numbers-round';
+import DictionaryCorner from './dictionary-corner';
 
 import { leaveGame, reInitialiseState } from '../game/game-actions';
 import storageService from '../services/storage-service';
@@ -67,7 +68,10 @@ export class RoomPage extends Component {
                             null
                         }
                     </div>
-                    <UserList users={this.props.roomUsers} />
+                    <div className="col-lg-4">
+                        <UserList users={this.props.roomUsers} />
+                        <DictionaryCorner />
+                    </div>
                     <div className="col-lg-8" >
                         <button className={`btn ${style.startGame}`} id="start-game" disabled={this.props.disableStart}
                                 onClick={() => {cloakService.messageStartGame()}}>Start</button>
@@ -97,7 +101,8 @@ const mapStateToProps = (state, ownProps) => ({
     started: state.game.started,
     disableStart: state.game.disableStart,
     nextRoundType: state.game.nextRoundType,
-    gameFinished: state.game.gameFinished
+    gameFinished: state.game.gameFinished,
+    bestAnswer: state.game.bestAnswer
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -29,7 +29,8 @@ const initialState = {
     disableLarge: false,
     disableSmall: false,
     numberList: [],
-    sendEquation: false
+    sendEquation: false,
+    bestAnswer: null
 };
 
 const game = (state = initialState, action) => {
@@ -158,6 +159,11 @@ const game = (state = initialState, action) => {
                 progressBarVisible: false,
                 finalAnswers: action.payload
             });
+        case letterRoundActions.SET_BEST_ANSWER: {
+            return updateState(state, {
+                bestAnswer: action.payload
+            });
+        }
         case letterRoundActions.ANSWER_TIMER_TICK:
             return updateState(state, {
                 answerTimerValue: state.answerTimerValue-1

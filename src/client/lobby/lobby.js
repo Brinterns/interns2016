@@ -57,10 +57,10 @@ export class Lobby extends Component {
                         </label>
                     </h1>
                 </div>
-                <div className="container-fluid">
+                <div className="col-lg-4 container-fluid">
                     <UserList users={this.props.lobbyUsers} />
-                    <RoomList roomList={this.props.activeRooms}/>
                 </div>
+                <RoomList roomList={this.props.activeRooms}/>
             </div>
         );
     }

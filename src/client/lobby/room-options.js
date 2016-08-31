@@ -18,9 +18,9 @@ export class RoomOptions extends Component {
         return(
             <div>
                 Letters
-                <input className={style['input-slider']} type="range" min="1" max="9" value={this.props.sliders.letterSlider}
+                <input className={style.inputSlider} type="range" min="1" max="9" value={this.props.sliders.letterSlider}
                     onChange={(event) => this.handleLetterSliderChange(event)} />
-                <div className={style['round-number']}>
+                <div className={style.roundNumber}>
                     {this.props.sliders.letterSlider}
                 </div>
             </div>
@@ -31,9 +31,9 @@ export class RoomOptions extends Component {
         return(
             <div>
                 Numbers
-                <input className={style['input-slider']} type="range" min="1" max="9" value={this.props.sliders.numberSlider}
+                <input className={style.inputSlider} type="range" min="1" max="9" value={this.props.sliders.numberSlider}
                 onChange={(event) => this.handleNumberSliderChange(event)}/>
-                <div className={style['round-number']}>
+                <div className={style.roundNumber}>
                     {this.props.sliders.numberSlider}
                 </div>
             </div>
@@ -42,7 +42,7 @@ export class RoomOptions extends Component {
 
     render() {
         return (
-            <div className={`col-lg-8 ${style['input-slider-wrapper']}`}>
+            <div className={`col-lg-8 ${style.inputSliderWrapper}`}>
                 {this.props.roundTypes.letters ? this.letterSlider() : null}
                 <br />
                 {this.props.roundTypes.numbers ? this.numberSlider() : null}
