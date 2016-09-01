@@ -21,6 +21,7 @@ export class RoomList extends Component {
 
     createRoom() {
         cloakService.messageCreateRoom({name: this.state.roomname, rounds: this.props.rounds});
+        console.log(this.props.rounds)
     }
 
     handleRoomname(event) {
@@ -81,7 +82,8 @@ const mapStateToProps = state => ({
     roomList: state.lobby.rooms,
     rounds: {
         letter: state.lobby.letterSlider,
-        number: state.lobby.numberSlider
+        number: state.lobby.numberSlider,
+        conundrum: state.lobby.conundrumSlider
     }
 });
 

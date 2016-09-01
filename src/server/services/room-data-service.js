@@ -69,6 +69,10 @@ function setRounds(oldData, options) {
         roundList.push('N');
     }
 
+    for(var i=0; i<options.rounds.conundrum; i++) {
+        roundList.push('C');
+    }
+    
     return roundList;
 }
 
