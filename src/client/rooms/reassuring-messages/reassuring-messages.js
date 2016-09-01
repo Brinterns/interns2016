@@ -10,7 +10,7 @@ let messageInterval;
 export default class ReassuringMessages extends Component {
     componentWillMount() {
         this.setState({
-            reassurance: 'Welcome to the room!'
+            reassurance: { message: 'Welcome to the room!', person: 'DON\'T WORRY ITS JUST COUNTDOWN'}
         });
         this.messageInterval();
     }
@@ -31,8 +31,13 @@ export default class ReassuringMessages extends Component {
 
     render() {
         return (
-            <div className={`container-fluid col-lg-6 ${style.reassurances}`}>
-                {this.state.reassurance}
+            <div className={`list-group-item container-fluid col-lg-6 ${style['reassurances-wrapper']}`}>
+                <div className={style['reassurances-message']}>
+                    "{this.state.reassurance.message}"
+                </div>
+                <div className={style['reassurances-person']}>
+                    - {this.state.reassurance.person}
+                </div>
             </div>
         );
     };
