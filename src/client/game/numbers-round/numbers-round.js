@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import cloakService from '../services/cloak-service';
-import storageService from '../services/storage-service';
+import cloakService from '../../services/cloak-service';
+import storageService from '../../services/storage-service';
 
 import NumbersInput from './numbers-input';
-import RoundResults from './round-results';
+import RoundResults from '../round-results';
 
-import { answerTimerTick, resetAnswerTimer } from './letter-round-actions';
+import { answerTimerTick, resetAnswerTimer } from '../letters-round/letter-round-actions';
 
-import style from './game.scss';
+import style from '../game.scss';
 
 const numberOfNumbers = 6;
 

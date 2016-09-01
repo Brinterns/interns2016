@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Progress from './progress';
+import Progress from '../progress';
 
 import { answerTimerTick, submissionTimerTick, resetAnswerTimer, resetSubmissionTimer } from './letter-round-actions';
 
-import cloakService from '../services/cloak-service';
+import cloakService from '../../services/cloak-service';
 
-import style from './game.scss';
+import style from '../game.scss';
 
 const SPACE_KEY = 32;
 const ENTER_KEY = 13;
 const UP_KEY = 38;
 const DOWN_KEY = 40;
 
-export class AnswerInput extends Component {
+export class LettersInput extends Component {
     componentWillMount() {
         this.setState({
             answerList: [''],
@@ -239,4 +239,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(AnswerInput);
+)(LettersInput);

@@ -1,6 +1,6 @@
 import * as actionTypes from './game-actions';
-import * as letterRoundActions from './letter-round-actions';
-import * as numberRoundActions from './number-round-actions';
+import * as letterRoundActions from './letters-round/letter-round-actions';
+import * as numberRoundActions from './numbers-round/number-round-actions';
 
 import { updateState } from '../utils/util';
 

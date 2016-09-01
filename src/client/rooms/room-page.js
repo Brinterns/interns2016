@@ -5,10 +5,10 @@ import router from '../services/routing-service';
 import cloakService from '../services/cloak-service';
 
 import UserList from '../user/user-list';
-import Game from '../game/game';
+import Game from '../game/letters-round/letters-round';
 import Progress from '../game/progress';
-import NumbersRound from '../game/numbers-round';
 import DictionaryCorner from './dictionary-corner';
+import NumbersRound from '../game/numbers-round/numbers-round';
 
 import { leaveGame, reInitialiseState } from '../game/game-actions';
 import storageService from '../services/storage-service';
