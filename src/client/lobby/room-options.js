@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { updateLetterSlider, updateNumberSlider } from './lobby-actions';
+import { updateLetterSlider, updateNumberSlider, updateConundrumSlider } from './lobby-actions';
 
 import style from './lobby.scss';
 
@@ -12,6 +12,10 @@ export class RoomOptions extends Component {
 
     handleNumberSliderChange(event) {
         this.props.updateNumberSlider(event.target.value);
+    }
+
+    handleConundrumSliderChange(event) {
+        this.props.updateConundrumSlider(event.target.value);
     }
 
     letterSlider() {
@@ -40,12 +44,27 @@ export class RoomOptions extends Component {
         );
     }
 
+    conundrumSlider() {
+        return(
+            <div>
+                Conundrums
+                <input className={style.inputSlider} type="range" min="1" max="9" value={this.props.sliders.conundrumSlider}
+                onChange={(event) => this.handleConundrumSliderChange(event)}/>
+                <div className={style.roundNumber}>
+                    {this.props.sliders.conundrumSlider}
+                </div>
+            </div>
+        );
+    }
+
     render() {
         return (
             <div className={`col-lg-8 ${style.inputSliderWrapper}`}>
                 {this.props.roundTypes.letters ? this.letterSlider() : null}
                 <br />
                 {this.props.roundTypes.numbers ? this.numberSlider() : null}
+                <br />
+                {this.props.roundTypes.conundrum ? this.conundrumSlider() : null}
             </div>
         )
     }
@@ -54,7 +73,8 @@ export class RoomOptions extends Component {
 const mapStateToProps = state => ({
     sliders: {
         letterSlider: state.lobby.letterSlider,
-        numberSlider: state.lobby.numberSlider
+        numberSlider: state.lobby.numberSlider,
+        conundrumSlider: state.lobby.conundrumSlider
     },
     roundTypes: state.lobby.roundTypes
 })
@@ -65,6 +85,9 @@ const mapDispatchToProps = dispatch => ({
     },
     updateNumberSlider(value) {
         dispatch(updateNumberSlider(value));
+    },
+    updateConundrumSlider(value) {
+        dispatch(updateConundrumSlider(value));
     }
 })
 
