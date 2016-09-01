@@ -7,8 +7,9 @@ import cloakService from '../services/cloak-service';
 import UserList from '../user/user-list';
 import Game from '../game/letters-round/letters-round';
 import Progress from '../game/progress';
-import DictionaryCorner from './dictionary-corner';
+import DictionaryCorner from './dictionary-corner/dictionary-corner';
 import NumbersRound from '../game/numbers-round/numbers-round';
+import ReassuringMessages from './reassuring-messages/reassuring-messages';
 
 import { leaveGame, reInitialiseState } from '../game/game-actions';
 import storageService from '../services/storage-service';
@@ -79,7 +80,7 @@ export class RoomPage extends Component {
                                 onClick={leaveRoom}>Leave</button>
                     </div>
                     {!this.props.gameFinished ?
-                        (this.props.started ? round : null)
+                        (this.props.started ? round : <ReassuringMessages />)
                     :
                         <div>
                             GAME DONE GJ GUYS

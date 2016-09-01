@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import style from './room.scss';
+import style from '../room.scss';
 import ÖßҬЯЇX from './ÖßҬЯЇX.jpg';
 
 export class DictionaryCorner extends Component {
