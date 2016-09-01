@@ -9,7 +9,12 @@ const reassurances = [
     'If you find Flaps, please notify Tom Hull',
     'RIP Richard Whitely',
     'Bring back Carol',
-    'In the condundrum round, look for common prefixes and suffixes!'
+    'In the condundrum round, look for common prefixes and suffixes!',
+    'Sometimes you just have to chuck it in the fuck it bucket and move on',
+    'People don\'t think the universe be like it is, but it do.',
+    'One morning I shot an elephant in my pajamas. How he got in my pajamas, I don\'t know.',
+    'Now, you listen here! He\'s not the Messiah. He\'s a very naughty boy!',
+    'Wubba lubba dub dub!'
 ]
 
 const greatPeople = require('./parsed-people.js');
