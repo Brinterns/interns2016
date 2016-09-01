@@ -1,4 +1,6 @@
 var shuffle = require('../numbers-round/shuffle');
+var getConundrum = require('../conundrum-round/conundrum-generator');
+var _  = require('underscore')
 
 function initialRoomData(user) {
     return {
@@ -29,7 +31,8 @@ function initialRoomData(user) {
             disableSmall: false
         },
         possibleAnswers: {},
-        finalAnswerList: {}
+        finalAnswerList: {},
+        conundrums: []
     }
 }
 
@@ -72,8 +75,19 @@ function setRounds(oldData, options) {
     for(var i=0; i<options.rounds.conundrum; i++) {
         roundList.push('C');
     }
-    
+    _.defer(() => {
+
+        getConundrums(options.rounds.conundrum, oldData.conundrums);
+        console.log(oldData.conundrums)
+    })
+
     return roundList;
+}
+
+function getConundrums(amount, holder) {
+    for(var i=0; i<amount; i++) {
+        holder.push(getConundrum());
+    }
 }
 
 function largeNumberList() {
