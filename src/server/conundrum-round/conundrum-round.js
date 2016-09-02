@@ -1,5 +1,6 @@
 var parameters = require('../parameters');
 var solver = require('../vendor/validation/solver');
+var refreshService = require('../services/refresh-service');
 
 var answeringTimer;
 var timeLeft;
@@ -45,6 +46,8 @@ function submitAnagram(anagram, user) {
                 }, 
                 solution: anagram
             });
+            room.data.scores[user.id] += 10;
+            refreshService.refreshRoomUsers(room);
             room.messageMembers('roundEnded');
         } else {
             incorrectAnagram(room);
