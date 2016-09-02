@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import style from './room.scss';
+import style from '../room.scss';
 import ÖßҬЯЇX from './ÖßҬЯЇX.jpg';
 
 export class DictionaryCorner extends Component {
@@ -29,6 +29,9 @@ export class DictionaryCorner extends Component {
                 {this.state.bestAnswer.word !== undefined ? 
                     <div className={style.susieSection}>
                         <h2>Dictionary Corner</h2>
+                        <p className={style.glosbe}>
+                            Definitions from Glosbe - https://glosbe.com/
+                        </p>
                         <img className={style.susie} id="yung-suze" src={ÖßҬЯЇX}/>
                     </div>
                 :
