@@ -227,6 +227,9 @@ function startGame(arg, user) {
     room.messageMembers('startGame');
     room.messageMembers('roundStarted');
     leaderService.makeLeader(room.data.leaderIndex, room);
+    if(nextRoundType === 'C') {
+        room.messageMembers('setConundrum', room.data.conundrums.shift())
+    }
     fireRoomListReload();
 }
 

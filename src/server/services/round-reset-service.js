@@ -16,6 +16,9 @@ function nextRound(room) {
         var answeringTimer = setTimeout(function() {
             room.messageMembers('resetFinished');
         }, 2000);
+        if(nextRoundType === 'C') {
+            room.messageMembers('setConundrum', room.data.conundrums.shift());
+        }
     } else {
         room.messageMembers('gameFinished');
     }
