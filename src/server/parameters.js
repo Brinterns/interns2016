@@ -7,8 +7,8 @@ var numLetters = 9;
 var numOfNumbers = 6;
 var roundResetTime = 7;
 var rounds = {
-    letters: false,
-    numbers: false,
+    letters: true,
+    numbers: true,
     conundrum: true
 }
 

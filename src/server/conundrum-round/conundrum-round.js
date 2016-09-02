@@ -101,6 +101,10 @@ function incorrectAnagram(room) {
 }
 
 function verifyAnswer(room, answer) {
+    if(answer === null) {
+        return false;
+    }
+
     if(answer.length !== parameters.conundrumLength) {
         return false;
     }

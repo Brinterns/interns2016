@@ -14,11 +14,11 @@ export class ConundrumInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.answering !== this.props.answering) {
+        if(nextProps.answering !== this.props.answering && nextProps.answering) {
             this.startAnsweringTimer();
         }
 
-        if(nextProps.roundResults !== this.props.roundResults && nextProps.roundResults) {
+        if(nextProps.roundResults !== this.props.roundResults && this.props.roundResults) {
             clearInterval(this.answerInputInterval);
             this.props.resetAnswerTimer();
         }
