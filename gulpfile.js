@@ -22,7 +22,6 @@ gulp.task('dev', gulp.series(
     gulp.parallel(
         watchServer,
         inspect,
-        test(),
         gulp.series(
             build(),
             startServer,

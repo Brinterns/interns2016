@@ -38,6 +38,11 @@ import {
     getEquation
 } from '../game/numbers-round/number-round-actions';
 
+import { 
+    setConundrum,
+    correctAnagram 
+} from '../game/conundrum-round/conundrum-round-actions';
+
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
 
 import { refreshLobby, refreshRooms, roundTypes} from '../lobby/lobby-actions';
@@ -60,7 +65,8 @@ export default {
     messageGetRandomNumber,
     messageGetLarge,
     messageGetSmall,
-    messageSendEquation
+    messageSendEquation,
+    messageSubmitAnagram
 };
 
 const cloak = window.cloak;
@@ -194,6 +200,12 @@ function configureAndRun(roomId) {
             },
             getEquation: () => {
                 dispatch(getEquation());
+            },
+            setConundrum: anagram => {
+                dispatch(setConundrum(anagram));
+            },
+            correctAnagram: results => {
+                dispatch(correctAnagram(results));
             }
         },
         initialData: {
@@ -271,4 +283,8 @@ function messageGetSmall() {
 
 function messageSendEquation(equation) {
     cloak.message('submitEquation', equation);
+}
+
+function messageSubmitAnagram(anagram) {
+    cloak.message('submitAnagram', anagram);
 }

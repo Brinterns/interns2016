@@ -5,6 +5,7 @@ var numbersRound = require('./numbers-round/numbers-round');
 var refreshService = require('./services/refresh-service');
 var lettersRound = require('./letters-round/letters-round');
 var leaderService = require('./services/leader-service');
+var conundrumRound = require('./conundrum-round/conundrum-round');
 
 var fiveMinutes = 300000;
 module.exports = function(expressServer) {
@@ -40,11 +41,12 @@ module.exports = function(expressServer) {
             submitAnswer: lettersRound.submitAnswer,
             possibleAnswers: lettersRound.possibleAnswers,
 
-
             refreshRoomList: refreshRoomList,
             getLarge: numbersRound.getLarge,
             getSmall: numbersRound.getSmall,
-            submitEquation: numbersRound.submitEquation
+            submitEquation: numbersRound.submitEquation,
+
+            submitAnagram: conundrumRound.submitAnagram
         }
     });
     cloak.run();
@@ -101,7 +103,8 @@ function newMember(user) {
 
     user.message('initialGameParams', {
         answerTime: parameters.answerTime,
-    	submitTime: parameters.submitTime
+    	submitTime: parameters.submitTime,
+        conundrumTime: parameters.conundrumTime
     });
 }
 
@@ -227,6 +230,13 @@ function startGame(arg, user) {
     room.messageMembers('startGame');
     room.messageMembers('roundStarted');
     leaderService.makeLeader(room.data.leaderIndex, room);
+    if(nextRoundType === 'C') {
+        var conundrum = room.data.conundrums.shift();
+        room.data.conundrumRound.anagram = conundrum.first + conundrum.second;
+        room.data.conundrumRound.solution = conundrum.solution;
+        room.messageMembers('setConundrum', room.data.conundrumRound.anagram.toUpperCase());
+        conundrumRound.startAnswering(room);
+    }
     fireRoomListReload();
 }
 

@@ -1,6 +1,7 @@
 import * as actionTypes from './game-actions';
 import * as letterRoundActions from './letters-round/letter-round-actions';
 import * as numberRoundActions from './numbers-round/number-round-actions';
+import * as conundrumRoundActions from './conundrum-round/conundrum-round-actions';
 
 import { updateState } from '../utils/util';
 
@@ -30,7 +31,9 @@ const initialState = {
     disableSmall: false,
     numberList: [],
     sendEquation: false,
-    bestAnswer: null
+    bestAnswer: null,
+    conundrum: '',
+    conundrumResults: {}
 };
 
 const game = (state = initialState, action) => {
@@ -93,7 +96,9 @@ const game = (state = initialState, action) => {
                 disableConsonant: true,
                 disableVowel: true,
                 disableLarge: true,
-                disableSmall: true
+                disableSmall: true,
+                conundrum: '',
+                conundrumResults: {}
             });
         case actionTypes.RESET_FINISHED: {
             return updateState(state, {
@@ -212,6 +217,16 @@ const game = (state = initialState, action) => {
         case numberRoundActions.GET_EQUATION: {
             return updateState(state, {
                 sendEquation: true
+            });
+        }
+        case conundrumRoundActions.SET_CONUNDRUM: {
+            return updateState(state, {
+                conundrum: action.payload
+            });
+        }
+        case conundrumRoundActions.CORRECT_ANAGRAM: {
+            return updateState(state, {
+                conundrumResults: action.payload
             })
         }
         default:

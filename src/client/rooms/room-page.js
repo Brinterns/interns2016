@@ -5,11 +5,12 @@ import router from '../services/routing-service';
 import cloakService from '../services/cloak-service';
 
 import UserList from '../user/user-list';
-import Game from '../game/letters-round/letters-round';
+import LettersRound from '../game/letters-round/letters-round';
 import Progress from '../game/progress';
 import DictionaryCorner from './dictionary-corner/dictionary-corner';
 import NumbersRound from '../game/numbers-round/numbers-round';
 import ReassuringMessages from './reassuring-messages/reassuring-messages';
+import ConundrumRound from '../game/conundrum-round/conundrum-round';
 
 import { leaveGame, reInitialiseState } from '../game/game-actions';
 import storageService from '../services/storage-service';
@@ -18,7 +19,8 @@ import style from './room.scss';
 
 const roundTypes = {
     letters: 'L',
-    numbers: 'N'
+    numbers: 'N',
+    conundrum: 'C'
 };
 
 export class RoomPage extends Component {
@@ -44,15 +46,19 @@ export class RoomPage extends Component {
         let round;
         switch (this.props.nextRoundType) {
             case roundTypes.letters: {
-                round = <Game />
+                round = <LettersRound />
                 break;
             }
             case roundTypes.numbers: {
                 round = <NumbersRound />
                 break;
             }
+            case roundTypes.conundrum: {
+                round = <ConundrumRound />
+                break;
+            }
             default: {
-                round = <Game />
+                round = <LettersRound />
                 break;
             }
         }
@@ -63,7 +69,7 @@ export class RoomPage extends Component {
                 <div>
                     <h1>{`Room: ${this.props.roomData.name}`}</h1>
                     <div className={`col-lg-12 ${style.roomCreator}`}>
-                        {!this.props.started ? 
+                        {!this.props.started ?
                             `Room Creator: ${this.props.roomData.data.creator.name}`
                         :
                             null

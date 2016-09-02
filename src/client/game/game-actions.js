@@ -11,6 +11,7 @@ export const GAME_FINISHED = 'GAME_FINISHED';
 export const NEXT_ROUND_TYPE = 'NEXT_ROUND_TYPE';
 export const REINITIALISE_STATE = 'REINITIALISE_STATE';
 
+
 export function startGame() {
     return {
         type: START_GAME
