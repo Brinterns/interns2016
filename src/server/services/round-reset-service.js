@@ -1,6 +1,7 @@
 var leaderService = require('./leader-service');
 var roomDataService = require('./room-data-service');
 var parameters = require('../parameters');
+var conundrumRound = require('../conundrum-round/conundrum-round');
 
 function startRoundResetTimer(room) {
     var roundResetTimer = setTimeout(nextRound.bind(null, room), parameters.roundResetTime * 1000);

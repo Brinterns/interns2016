@@ -2,6 +2,35 @@ var parameters = require('../parameters');
 var solver = require('../vendor/validation/solver');
 var refreshService = require('../services/refresh-service');
 
+var leaderService = require('../services/leader-service');
+var roomDataService = require('../services/room-data-service');
+
+function startRoundResetTimer(room) {
+    var roundResetTimer = setTimeout(nextRound.bind(null, room), parameters.roundResetTime * 1000);
+}
+
+function nextRound(room) {
+    leaderService.setNextLeader(room);
+    room.data = roomDataService.newRoundData(room.data);
+    var nextRoundType = room.data.rounds.shift();
+    if(nextRoundType){
+        room.messageMembers('nextRoundType', nextRoundType);
+        room.messageMembers('resetRound');
+        var answeringTimer = setTimeout(function() {
+            room.messageMembers('resetFinished');
+        }, 2000);
+        if(nextRoundType === 'C') {
+            var conundrum = room.data.conundrums.shift();
+            room.data.conundrumRound.anagram = conundrum.first + conundrum.second;
+            room.data.conundrumRound.solution = conundrum.solution;
+            room.messageMembers('setConundrum', room.data.conundrumRound.anagram.toUpperCase());
+            startAnswering(room);
+        }
+    } else {
+        room.messageMembers('gameFinished');
+    }
+}
+
 var answeringTimer;
 var timeLeft;
 
@@ -20,6 +49,7 @@ function timerCallback(room) {
         solution: room.data.conundrumRound.solution
     });
     room.messageMembers('roundEnded');
+    startRoundResetTimer(room);
 }
 
 function answeringFinished(room) {
@@ -49,6 +79,7 @@ function submitAnagram(anagram, user) {
             room.data.scores[user.id] += 10;
             refreshService.refreshRoomUsers(room);
             room.messageMembers('roundEnded');
+            startRoundResetTimer(room);
         } else {
             incorrectAnagram(room);
         }
@@ -65,6 +96,7 @@ function incorrectAnagram(room) {
             solution: room.data.conundrumRound.solution
         });
         room.messageMembers('roundEnded');
+        startRoundResetTimer(room);
     }
 }
 
