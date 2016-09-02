@@ -17,7 +17,10 @@ function nextRound(room) {
             room.messageMembers('resetFinished');
         }, 2000);
         if(nextRoundType === 'C') {
-            room.messageMembers('setConundrum', room.data.conundrums.shift());
+            var conundrum = room.data.conundrums.shift();
+            room.data.conundrumRound.anagram = conundrum.first + conundrum.second;
+            room.data.conundrumRound.solution = conundrum.solution;
+            room.messageMembers('setConundrum', room.data.conundrumRound.anagram);
         }
     } else {
         room.messageMembers('gameFinished');

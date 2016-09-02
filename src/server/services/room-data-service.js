@@ -30,6 +30,10 @@ function initialRoomData(user) {
             disableLarge: false,
             disableSmall: false
         },
+        conundrumRound: {
+            solution: null,
+            anagram:  null
+        },
         possibleAnswers: {},
         finalAnswerList: {},
         conundrums: []
@@ -56,6 +60,10 @@ function newRoundData(oldData) {
             small: 0,
             disableLarge: false,
             disableSmall: false
+        },
+        conundrumRound: {
+            solution: null,
+            anagram:  null
         },
         possibleAnswers: {},
         finalAnswerList: {}
