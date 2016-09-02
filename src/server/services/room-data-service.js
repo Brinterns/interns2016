@@ -1,4 +1,6 @@
 var shuffle = require('../numbers-round/shuffle');
+var _  = require('underscore');
+var conundrumList = require('../conundrum-round/conundrum-list');
 
 function initialRoomData(user) {
     return {
@@ -28,8 +30,13 @@ function initialRoomData(user) {
             disableLarge: false,
             disableSmall: false
         },
+        conundrumRound: {
+            solution: null,
+            anagram:  null
+        },
         possibleAnswers: {},
-        finalAnswerList: {}
+        finalAnswerList: {},
+        conundrums: []
     }
 }
 
@@ -54,12 +61,17 @@ function newRoundData(oldData) {
             disableLarge: false,
             disableSmall: false
         },
+        conundrumRound: {
+            solution: null,
+            anagram:  null
+        },
         possibleAnswers: {},
         finalAnswerList: {}
     });
 }
 
 function setRounds(oldData, options) {
+    var conundrums = Array.from(conundrumList);
     var roundList = [];
     for(var i=0; i<options.rounds.letter; i++) {
         roundList.push('L');
@@ -69,6 +81,11 @@ function setRounds(oldData, options) {
         roundList.push('N');
     }
 
+    for(var i=0; i<options.rounds.conundrum; i++) {
+        var index = Math.floor(Math.random() * (conundrums.length - 0));
+        oldData.conundrums.push(conundrums.splice(index, 1)[0]);
+        roundList.push('C');
+    }
     return roundList;
 }
 

@@ -1,6 +1,7 @@
 var leaderService = require('./leader-service');
 var roomDataService = require('./room-data-service');
 var parameters = require('../parameters');
+var conundrumRound = require('../conundrum-round/conundrum-round');
 
 function startRoundResetTimer(room) {
     var roundResetTimer = setTimeout(nextRound.bind(null, room), parameters.roundResetTime * 1000);
@@ -16,6 +17,13 @@ function nextRound(room) {
         var answeringTimer = setTimeout(function() {
             room.messageMembers('resetFinished');
         }, 2000);
+        if(nextRoundType === 'C') {
+            var conundrum = room.data.conundrums.shift();
+            room.data.conundrumRound.anagram = conundrum.first + conundrum.second;
+            room.data.conundrumRound.solution = conundrum.solution;
+            room.messageMembers('setConundrum', room.data.conundrumRound.anagram.toUpperCase());
+            conundrumRound.startAnswering(room);
+        }
     } else {
         room.messageMembers('gameFinished');
     }

@@ -14,7 +14,7 @@ export default function UserList({ users }) {
     ));
 
     return (
-        <div className="col-lg-4 text-center">
+        <div className="text-center">
             <h2>Users</h2>
             <div className="col-lg-12 pre-scrollable list-group">
                 <ul>{userItems}</ul>

@@ -166,7 +166,8 @@ export class RoundResults extends Component {
 
 const mapStateToProps = state => ({
     finalAnswers: state.game.finalAnswers,
-    nextRoundType: state.game.nextRoundType
+    nextRoundType: state.game.nextRoundType,
+    bestAnswer: state.game.bestAnswer
 });
 
 export default connect(

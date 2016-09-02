@@ -25,8 +25,9 @@ import {
     startSubmission,
     stopSubmission,
     submittedAnswers,
-    resetLetters
-} from '../game/letter-round-actions';
+    resetLetters,
+    setBestAnswer
+} from '../game/letters-round/letter-round-actions';
 
 import {
     setRandomNumber,
@@ -35,7 +36,12 @@ import {
     disableLarge,
     disableSmall,
     getEquation
-} from '../game/number-round-actions';
+} from '../game/numbers-round/number-round-actions';
+
+import { 
+    setConundrum,
+    correctAnagram 
+} from '../game/conundrum-round/conundrum-round-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
 
@@ -59,7 +65,8 @@ export default {
     messageGetRandomNumber,
     messageGetLarge,
     messageGetSmall,
-    messageSendEquation
+    messageSendEquation,
+    messageSubmitAnagram
 };
 
 const cloak = window.cloak;
@@ -146,6 +153,9 @@ function configureAndRun(roomId) {
             submittedAnswers: finalAnswerList => {
                 dispatch(submittedAnswers(finalAnswerList));
             },
+            bestAnswer: bestAnswerObj => {
+                dispatch(setBestAnswer(bestAnswerObj));
+            },
             roundEnded: () => {
                 dispatch(roundEnded());
             },
@@ -190,6 +200,12 @@ function configureAndRun(roomId) {
             },
             getEquation: () => {
                 dispatch(getEquation());
+            },
+            setConundrum: anagram => {
+                dispatch(setConundrum(anagram));
+            },
+            correctAnagram: results => {
+                dispatch(correctAnagram(results));
             }
         },
         initialData: {
@@ -267,4 +283,8 @@ function messageGetSmall() {
 
 function messageSendEquation(equation) {
     cloak.message('submitEquation', equation);
+}
+
+function messageSubmitAnagram(anagram) {
+    cloak.message('submitAnagram', anagram);
 }

@@ -81,7 +81,8 @@ const mapStateToProps = state => ({
     roomList: state.lobby.rooms,
     rounds: {
         letter: state.lobby.letterSlider,
-        number: state.lobby.numberSlider
+        number: state.lobby.numberSlider,
+        conundrum: state.lobby.conundrumSlider
     }
 });
 

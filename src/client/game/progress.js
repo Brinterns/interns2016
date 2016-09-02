@@ -18,9 +18,14 @@ export class Progress extends Component {
     }
 
     render() {
+        const conundrum = 'C';
+        let answerTime = this.props.gameParams.answerTime;
+        if(this.props.nextRoundType === conundrum) {
+            answerTime = this.props.gameParams.conundrumTime;
+        }
         return (
             <div className={style.timers}>
-                <div>{this.props.answering ? this.timer(this.props.answerTimerValue, this.props.gameParams.answerTime) : null}</div>
+                <div>{this.props.answering ? this.timer(this.props.answerTimerValue, answerTime) : null}</div>
                 <div>{this.props.progressBarVisible ? this.timer(this.props.submissionTimerValue, this.props.gameParams.submitTime) : null}</div>
             </div>
         )
@@ -32,7 +37,8 @@ const mapStateToProps = state => ({
     answerTimerValue: state.game.answerTimerValue,
     submissionTimerValue: state.game.submissionTimerValue,
     gameParams: state.game.gameParams,
-    progressBarVisible: state.game.progressBarVisible
+    progressBarVisible: state.game.progressBarVisible,
+    nextRoundType: state.game.nextRoundType
 });
 
 export default connect(

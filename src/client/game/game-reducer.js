@@ -1,6 +1,7 @@
 import * as actionTypes from './game-actions';
-import * as letterRoundActions from './letter-round-actions';
-import * as numberRoundActions from './number-round-actions';
+import * as letterRoundActions from './letters-round/letter-round-actions';
+import * as numberRoundActions from './numbers-round/number-round-actions';
+import * as conundrumRoundActions from './conundrum-round/conundrum-round-actions';
 
 import { updateState } from '../utils/util';
 
@@ -29,7 +30,10 @@ const initialState = {
     disableLarge: false,
     disableSmall: false,
     numberList: [],
-    sendEquation: false
+    sendEquation: false,
+    bestAnswer: null,
+    conundrum: '',
+    conundrumResults: {}
 };
 
 const game = (state = initialState, action) => {
@@ -92,7 +96,9 @@ const game = (state = initialState, action) => {
                 disableConsonant: true,
                 disableVowel: true,
                 disableLarge: true,
-                disableSmall: true
+                disableSmall: true,
+                conundrum: '',
+                conundrumResults: {}
             });
         case actionTypes.RESET_FINISHED: {
             return updateState(state, {
@@ -158,6 +164,11 @@ const game = (state = initialState, action) => {
                 progressBarVisible: false,
                 finalAnswers: action.payload
             });
+        case letterRoundActions.SET_BEST_ANSWER: {
+            return updateState(state, {
+                bestAnswer: action.payload
+            });
+        }
         case letterRoundActions.ANSWER_TIMER_TICK:
             return updateState(state, {
                 answerTimerValue: state.answerTimerValue-1
@@ -206,6 +217,16 @@ const game = (state = initialState, action) => {
         case numberRoundActions.GET_EQUATION: {
             return updateState(state, {
                 sendEquation: true
+            });
+        }
+        case conundrumRoundActions.SET_CONUNDRUM: {
+            return updateState(state, {
+                conundrum: action.payload
+            });
+        }
+        case conundrumRoundActions.CORRECT_ANAGRAM: {
+            return updateState(state, {
+                conundrumResults: action.payload
             })
         }
         default:
