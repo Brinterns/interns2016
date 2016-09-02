@@ -38,7 +38,10 @@ import {
     getEquation
 } from '../game/numbers-round/number-round-actions';
 
-import { setConundrum } from '../game/conundrum-round/conundrum-round-actions';
+import { 
+    setConundrum,
+    correctAnagram 
+} from '../game/conundrum-round/conundrum-round-actions';
 
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
 
@@ -200,6 +203,9 @@ function configureAndRun(roomId) {
             },
             setConundrum: anagram => {
                 dispatch(setConundrum(anagram));
+            },
+            correctAnagram: results => {
+                dispatch(correctAnagram(results));
             }
         },
         initialData: {

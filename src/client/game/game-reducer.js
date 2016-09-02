@@ -32,7 +32,8 @@ const initialState = {
     numberList: [],
     sendEquation: false,
     bestAnswer: null,
-    conundrum: ''
+    conundrum: '',
+    conundrumResults: {}
 };
 
 const game = (state = initialState, action) => {
@@ -95,7 +96,9 @@ const game = (state = initialState, action) => {
                 disableConsonant: true,
                 disableVowel: true,
                 disableLarge: true,
-                disableSmall: true
+                disableSmall: true,
+                conundrum: '',
+                conundrumResults: {}
             });
         case actionTypes.RESET_FINISHED: {
             return updateState(state, {
@@ -220,6 +223,11 @@ const game = (state = initialState, action) => {
             return updateState(state, {
                 conundrum: action.payload
             });
+        }
+        case conundrumRoundActions.CORRECT_ANAGRAM: {
+            return updateState(state, {
+                conundrumResults: action.payload
+            })
         }
         default:
             return state;

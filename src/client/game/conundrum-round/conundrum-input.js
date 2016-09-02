@@ -17,6 +17,16 @@ export class ConundrumInput extends Component {
         if(nextProps.answering !== this.props.answering) {
             this.startAnsweringTimer();
         }
+
+        if(nextProps.roundResults !== this.props.roundResults && nextProps.roundResults) {
+            clearInterval(this.answerInputInterval);
+            this.props.resetAnswerTimer();
+        }
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.answerInputInterval);
+        this.props.resetAnswerTimer();
     }
 
     startAnsweringTimer() {
@@ -66,7 +76,8 @@ export class ConundrumInput extends Component {
 
 const mapStateToProps = state => ({
     answerTimerValue: state.game.answerTimerValue,
-    answering: state.game.answering
+    answering: state.game.answering,
+    roundResults: state.game.roundResults
 });
 
 const mapDispatchToProps = dispatch => ({

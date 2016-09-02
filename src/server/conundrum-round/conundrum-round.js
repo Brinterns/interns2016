@@ -1,7 +1,7 @@
 var parameters = require('../parameters');
 var solver = require('../vendor/validation/solver');
 
-var answerTimer;
+var answeringTimer;
 var timeLeft;
 
 function startAnswering(room) {
@@ -10,10 +10,18 @@ function startAnswering(room) {
     room.data.answering = true;
     room.messageMembers('startAnswering', parameters.conundrumTime);
     timeLeft = setInterval(answerTimeTick.bind(null, room), 1000);
-    answeringTimer = setTimeout(answeringFinished.bind(null, room, timeLeft), parameters.conundrumTime*1000);
+    answeringTimer = setTimeout(timerCallback.bind(null, room), parameters.conundrumTime*1000);
 }
 
-function answeringFinished(room, timeLeft) {
+function timerCallback(room) {
+    answeringFinished(room);
+    room.messageMembers('correctAnagram', { 
+        solution: room.data.conundrumRound.solution
+    });
+    room.messageMembers('roundEnded');
+}
+
+function answeringFinished(room) {
     room.messageMembers('stopAnswering');
     room.data.answering = false;
     clearInterval(timeLeft);
@@ -28,12 +36,32 @@ function submitAnagram(anagram, user) {
     if(room.data.possibleAnswers[user.id] === undefined) {
         room.data.possibleAnswers[user.id] = anagram;
         if(verifyAnswer(room, anagram)) {
-            //correct
-            console.log('gud'+ user.id);
+            answeringFinished(room);
+            clearTimeout(answeringTimer);
+            room.messageMembers('correctAnagram', { 
+                winner: { 
+                    name: user.name,
+                    id: user.id
+                }, 
+                solution: anagram
+            });
+            room.messageMembers('roundEnded');
         } else {
-            console.log('bad'+ user.id);
-            //incorrect
+            incorrectAnagram(room);
         }
+    }
+}
+
+function incorrectAnagram(room) {
+    var roomUsers = room.getMembers();
+    var numAnswers = Object.keys(room.data.possibleAnswers).length;
+    if(numAnswers === roomUsers.length) {
+        answeringFinished(room);
+        clearTimeout(answeringTimer);
+        room.messageMembers('correctAnagram', { 
+            solution: room.data.conundrumRound.solution
+        });
+        room.messageMembers('roundEnded');
     }
 }
 

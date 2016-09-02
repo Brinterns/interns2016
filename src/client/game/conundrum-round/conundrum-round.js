@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import ConundrumInput from './conundrum-input';
+import ConundrumResults from './conundrum-results';
 
 import style from '../game.scss';
 
 export class ConundrumRound extends Component {
     componentWillReceiveProps(nextProps) {
         if(nextProps.conundrum !== this.props.conundrum) {
-            let conundrumTimer = setTimeout(this.flipLetters.bind(this), 1000);
-        }        
+            this.conundrumTimer = setTimeout(this.flipLetters.bind(this), 1000);
+        }
     }
 
     flipLetters() {
@@ -42,14 +43,20 @@ export class ConundrumRound extends Component {
                     Conundrum
                 </h3>
                 {letterBoxes}
-                <ConundrumInput />
+                
+                {!this.props.roundResults? 
+                    <ConundrumInput />
+                :
+                    <ConundrumResults />
+                }
             </div>
         );
     }
 }
 
 const mapStateToProps = state => ({
-    conundrum: state.game.conundrum
+    conundrum: state.game.conundrum,
+    roundResults: state.game.roundResults
 });
 
 export default connect(
