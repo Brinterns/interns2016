@@ -1,5 +1,6 @@
 var answerTime = 30;
 var conundrumTime = 35;
+var conundrumLength = 10;
 var submitTime = 15;
 var minUserNo = 2;
 var numLetters = 9;
@@ -19,5 +20,7 @@ module.exports = {
     numLetters,
     numOfNumbers,
     roundResetTime,
-    rounds
+    rounds,
+    conundrumTime,
+    conundrumLength
 };

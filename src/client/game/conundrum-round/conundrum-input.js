@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
 import style from '../game.scss';
+import cloakService from '../../services/cloak-service';
 
 export default class ConundrumInput extends Component {
     submitAnswer() {
-        console.log(this.state.answer);
+        cloakService.messageSubmitAnagram(this.state.answer);
     }
 
     handleChange(event) {

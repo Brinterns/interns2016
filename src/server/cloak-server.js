@@ -5,6 +5,7 @@ var numbersRound = require('./numbers-round/numbers-round');
 var refreshService = require('./services/refresh-service');
 var lettersRound = require('./letters-round/letters-round');
 var leaderService = require('./services/leader-service');
+var conundrumRound = require('./conundrum-round/conundrum-round');
 
 var fiveMinutes = 300000;
 module.exports = function(expressServer) {
@@ -43,7 +44,9 @@ module.exports = function(expressServer) {
             refreshRoomList: refreshRoomList,
             getLarge: numbersRound.getLarge,
             getSmall: numbersRound.getSmall,
-            submitEquation: numbersRound.submitEquation
+            submitEquation: numbersRound.submitEquation,
+
+            submitAnagram: conundrumRound.submitAnagram
         }
     });
     cloak.run();

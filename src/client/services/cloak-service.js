@@ -63,6 +63,7 @@ export default {
     messageGetLarge,
     messageGetSmall,
     messageSendEquation,
+    messageSubmitAnagram
 };
 
 const cloak = window.cloak;
@@ -276,4 +277,8 @@ function messageGetSmall() {
 
 function messageSendEquation(equation) {
     cloak.message('submitEquation', equation);
+}
+
+function messageSubmitAnagram(anagram) {
+    cloak.message('submitAnagram', anagram);
 }
