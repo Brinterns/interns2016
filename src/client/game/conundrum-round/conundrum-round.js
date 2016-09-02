@@ -8,7 +8,7 @@ import style from '../game.scss';
 export class ConundrumRound extends Component {
     componentWillReceiveProps(nextProps) {
         if(nextProps.conundrum !== this.props.conundrum) {
-            let conundrumTimer = setTimeout(this.flipLetters.bind(this), 3000);
+            let conundrumTimer = setTimeout(this.flipLetters.bind(this), 1000);
         }        
     }
 

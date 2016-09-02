@@ -17,7 +17,6 @@ function answeringFinished(room, timeLeft) {
     room.messageMembers('stopAnswering');
     room.data.answering = false;
     clearInterval(timeLeft);
-    startSubmission(room);
 }
 
 function answerTimeTick(room) {

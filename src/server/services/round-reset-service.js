@@ -21,6 +21,7 @@ function nextRound(room) {
             room.data.conundrumRound.anagram = conundrum.first + conundrum.second;
             room.data.conundrumRound.solution = conundrum.solution;
             room.messageMembers('setConundrum', room.data.conundrumRound.anagram.toUpperCase());
+            conundrumRound.startAnswering(room);
         }
     } else {
         room.messageMembers('gameFinished');

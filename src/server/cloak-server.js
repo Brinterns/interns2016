@@ -103,7 +103,8 @@ function newMember(user) {
 
     user.message('initialGameParams', {
         answerTime: parameters.answerTime,
-    	submitTime: parameters.submitTime
+    	submitTime: parameters.submitTime,
+        conundrumTime: parameters.conundrumTime
     });
 }
 
@@ -234,6 +235,7 @@ function startGame(arg, user) {
         room.data.conundrumRound.anagram = conundrum.first + conundrum.second;
         room.data.conundrumRound.solution = conundrum.solution;
         room.messageMembers('setConundrum', room.data.conundrumRound.anagram.toUpperCase());
+        conundrumRound.startAnswering(room);
     }
     fireRoomListReload();
 }

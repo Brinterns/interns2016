@@ -1,13 +1,35 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { answerTimerTick, resetAnswerTimer } from '../letters-round/letter-round-actions';
 
 import cloakService from '../../services/cloak-service';
 import style from '../game.scss';
 
-export default class ConundrumInput extends Component {
+export class ConundrumInput extends Component {
     componentWillMount() {
         this.setState({
             submitted: false
         });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.answering !== this.props.answering) {
+            this.startAnsweringTimer();
+        }
+    }
+
+    startAnsweringTimer() {
+        this.answerInputInterval = setInterval(() => this.answeringTimerTick(), 1000);
+    }
+
+    answeringTimerTick() {
+        if(this.props.answerTimerValue > 0){
+            this.props.answerTimerTick();
+        } else {
+            clearInterval(this.answerInputInterval);
+            this.props.resetAnswerTimer();
+        }
     }
 
     submitAnswer() {
@@ -24,6 +46,7 @@ export default class ConundrumInput extends Component {
     }
 
     render() {
+        console.log(this.props.answerTimerValue);
         const submitButton = (
             <div>
                 <button className={`btn btn-success ${style['submit-button']}`} onClick={() => this.submitAnswer.bind(this)()}>Submit</button>
@@ -40,3 +63,22 @@ export default class ConundrumInput extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    answerTimerValue: state.game.answerTimerValue,
+    answering: state.game.answering
+});
+
+const mapDispatchToProps = dispatch => ({
+    answerTimerTick() {
+        dispatch(answerTimerTick());
+    },
+    resetAnswerTimer() {
+        dispatch(resetAnswerTimer());
+    }
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ConundrumInput)
