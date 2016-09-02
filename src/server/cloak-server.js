@@ -230,7 +230,7 @@ function startGame(arg, user) {
         var conundrum = room.data.conundrums.shift();
         room.data.conundrumRound.anagram = conundrum.first + conundrum.second;
         room.data.conundrumRound.solution = conundrum.solution;
-        room.messageMembers('setConundrum', room.data.conundrumRound.anagram);
+        room.messageMembers('setConundrum', room.data.conundrumRound.anagram.toUpperCase());
     }
     fireRoomListReload();
 }

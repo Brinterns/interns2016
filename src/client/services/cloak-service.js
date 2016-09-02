@@ -197,8 +197,8 @@ function configureAndRun(roomId) {
             getEquation: () => {
                 dispatch(getEquation());
             },
-            setConundrum: conundrum => {
-                console.log(conundrum);
+            setConundrum: anagram => {
+                dispatch(setConundrum(anagram));
             }
         },
         initialData: {
