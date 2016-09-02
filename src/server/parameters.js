@@ -1,5 +1,5 @@
 var answerTime = 30;
-var conundrumTime = 35;
+var conundrumTime = 3;
 var conundrumLength = 10;
 var submitTime = 15;
 var minUserNo = 2;

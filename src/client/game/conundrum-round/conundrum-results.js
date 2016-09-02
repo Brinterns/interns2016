@@ -9,7 +9,7 @@ export class ConundrumResults extends Component {
         const name = this.props.conundrumResults.winner !== undefined ? this.props.conundrumResults.winner.name : null;
         return (
             <div className="col-lg-12 text-center">
-                {name + ' ' + this.props.conundrumResults.solution}    
+                {name} {this.props.conundrumResults.solution}    
             </div>
         );
     }
