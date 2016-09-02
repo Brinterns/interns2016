@@ -38,6 +38,8 @@ import {
     getEquation
 } from '../game/numbers-round/number-round-actions';
 
+import { setConundrum } from '../game/conundrum-round/conundrum-round-actions';
+
 import { getRoomDetails, refreshRoomUsers } from '../rooms/room-actions';
 
 import { refreshLobby, refreshRooms, roundTypes} from '../lobby/lobby-actions';
@@ -60,7 +62,7 @@ export default {
     messageGetRandomNumber,
     messageGetLarge,
     messageGetSmall,
-    messageSendEquation
+    messageSendEquation,
 };
 
 const cloak = window.cloak;
@@ -194,6 +196,9 @@ function configureAndRun(roomId) {
             },
             getEquation: () => {
                 dispatch(getEquation());
+            },
+            setConundrum: conundrum => {
+                console.log(conundrum);
             }
         },
         initialData: {

@@ -40,7 +40,6 @@ module.exports = function(expressServer) {
             submitAnswer: lettersRound.submitAnswer,
             possibleAnswers: lettersRound.possibleAnswers,
 
-
             refreshRoomList: refreshRoomList,
             getLarge: numbersRound.getLarge,
             getSmall: numbersRound.getSmall,
