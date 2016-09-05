@@ -5,12 +5,14 @@ function getDefinition(word) {
             .then(response => {
                 if (response.status >= 400) {
                     throw new Error('Bad request');
-                } else if(response.tuc === undefined) {
-                    throw new Error('No definition');
                 }
+
                 return response.json();
             })
             .then(response => {
+                if(response.tuc.length === 0) {
+                    throw new Error('No definition');
+                }
                 return(response.tuc[0].meanings[0].text);
             })
 }

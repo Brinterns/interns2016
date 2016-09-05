@@ -1,7 +1,7 @@
 var parameters = require('../parameters');
 var solver = require('../vendor/validation/solver');
 var refreshService = require('../services/refresh-service');
-
+var getDefinition = require('../letters-round/get-definition');
 var leaderService = require('../services/leader-service');
 var roomDataService = require('../services/room-data-service');
 
@@ -45,10 +45,11 @@ function startAnswering(room) {
 
 function timerCallback(room) {
     answeringFinished(room);
-    room.messageMembers('correctAnagram', { 
+    room.messageMembers('correctAnagram', {
         solution: room.data.conundrumRound.solution
     });
     room.messageMembers('roundEnded');
+    bestAnswerDefinition(room.data.conundrumRound.solution, room)
     startRoundResetTimer(room);
 }
 
@@ -69,13 +70,14 @@ function submitAnagram(anagram, user) {
         if(verifyAnswer(room, anagram)) {
             answeringFinished(room);
             clearTimeout(answeringTimer);
-            room.messageMembers('correctAnagram', { 
-                winner: { 
+            room.messageMembers('correctAnagram', {
+                winner: {
                     name: user.name,
                     id: user.id
-                }, 
+                },
                 solution: anagram
             });
+            bestAnswerDefinition(anagram, room)
             room.data.scores[user.id] += 10;
             refreshService.refreshRoomUsers(room);
             room.messageMembers('roundEnded');
@@ -92,9 +94,10 @@ function incorrectAnagram(room) {
     if(numAnswers === roomUsers.length) {
         answeringFinished(room);
         clearTimeout(answeringTimer);
-        room.messageMembers('correctAnagram', { 
+        room.messageMembers('correctAnagram', {
             solution: room.data.conundrumRound.solution
         });
+        bestAnswerDefinition(room.data.conundrumRound.solution, room)
         room.messageMembers('roundEnded');
         startRoundResetTimer(room);
     }
@@ -116,6 +119,16 @@ function verifyAnswer(room, answer) {
     }
 
     return false;
+}
+
+function bestAnswerDefinition(word, room) {
+    getDefinition(word)
+    .then(definition => {
+            room.messageMembers('bestAnswer', {word: word.charAt(0).toUpperCase() + word.slice(1), definition});
+    })
+    .catch(error => {
+        room.messageMembers('bestAnswer', {word: word.charAt(0).toUpperCase() + word.slice(1), error:  error.message});
+    });
 }
 
 module.exports = {
