@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import DDoris from './ddoris';
+
 import style from '../game.scss';
 import bannerStyles from './conundrum-round.scss';
 
@@ -41,12 +43,19 @@ export class ConundrumResults extends Component {
 
         return (
             <div className="col-lg-12 text-center">
-                <div className="row">
-                    {letterBoxes}
-                </div>
-                <div className={`${bannerStyles.banner} ${bannerStyles.ribbon} ${bannerStyles.colours}`}>
-                    TEST
-                </div>
+                {name !== null ?
+                    <div>
+                        <div className="row">
+                            {letterBoxes}
+                        </div>
+                        <div className={`${bannerStyles.banner} ${bannerStyles.ribbon} ${bannerStyles.colours}`}>
+                            {name}
+                        </div>
+                    </div>
+                : 
+                    <DDoris solution={this.props.conundrumResults.solution}/>
+                }
+                
             </div>
         );
     }
