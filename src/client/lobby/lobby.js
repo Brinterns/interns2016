@@ -8,6 +8,7 @@ import routingService from '../services/routing-service';
 import { resetSliders } from './lobby-actions';
 
 import style from './lobby.scss';
+import styleystyle from '../game/conundrum-round/conundrum-round.scss';
 
 import UserList from '../user/user-list';
 import RoomList from './room-list';

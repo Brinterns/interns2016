@@ -1,0 +1,56 @@
+.banner {
+  background-color: #009999;
+  width: 50%;
+  margin: 0 auto;
+  line-height: 34px;
+  position: relative;
+  outline:none !important;
+  color: white;
+  font-weight: bolder;
+  font-size: 200%;
+}
+
+.banner:active {
+  outline:none;
+}
+
+.banner.ribbon {
+  outline:none;
+  outline-color: transparent;
+}
+
+.banner.ribbon:before, .banner.ribbon:after {
+  top: 5px;
+  z-index: -10;
+}
+
+.banner.ribbon:before {
+  border-color: #009999 #009999 #009999 transparent;
+  left: -25px;
+  border-width: 17px;
+}
+
+.banner.ribbon:after {
+  border-color: #009999 transparent #009999 #009999;
+  right: -25px;
+  border-width: 17px;
+}
+
+.banner:before, .banner:after {
+  content: '';
+  position: absolute;
+  height: 0;
+  width: 0;
+  border-style: solid;
+  border-width: 0;
+  outline:none;
+}
+
+.banner.colours:before {
+  border-color: #009999 #009999 #009999 transparent;
+}
+
+.banner.colours:after {
+  border-color: #009999 transparent #009999 #009999;
+}
+

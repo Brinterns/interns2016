@@ -45,10 +45,10 @@ function startAnswering(room) {
 
 function timerCallback(room) {
     answeringFinished(room);
+    room.messageMembers('roundEnded');
     room.messageMembers('correctAnagram', {
         solution: room.data.conundrumRound.solution
     });
-    room.messageMembers('roundEnded');
     bestAnswerDefinition(room.data.conundrumRound.solution, room)
     startRoundResetTimer(room);
 }
@@ -70,6 +70,7 @@ function submitAnagram(anagram, user) {
         if(verifyAnswer(room, anagram)) {
             answeringFinished(room);
             clearTimeout(answeringTimer);
+            room.messageMembers('roundEnded');
             room.messageMembers('correctAnagram', {
                 winner: {
                     name: user.name,
@@ -80,7 +81,6 @@ function submitAnagram(anagram, user) {
             bestAnswerDefinition(anagram, room)
             room.data.scores[user.id] += 10;
             refreshService.refreshRoomUsers(room);
-            room.messageMembers('roundEnded');
             startRoundResetTimer(room);
         } else {
             incorrectAnagram(room);
@@ -94,11 +94,11 @@ function incorrectAnagram(room) {
     if(numAnswers === roomUsers.length) {
         answeringFinished(room);
         clearTimeout(answeringTimer);
+        room.messageMembers('roundEnded');
         room.messageMembers('correctAnagram', {
             solution: room.data.conundrumRound.solution
         });
         bestAnswerDefinition(room.data.conundrumRound.solution, room)
-        room.messageMembers('roundEnded');
         startRoundResetTimer(room);
     }
 }
