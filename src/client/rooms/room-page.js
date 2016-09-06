@@ -79,7 +79,7 @@ export class RoomPage extends Component {
                         <UserList users={this.props.roomUsers} />
                         <DictionaryCorner />
                     </div>
-                    <div className="col-lg-8" >
+                    <div className="col-lg-8">
                         <button className={`btn ${style.startGame}`} id="start-game" disabled={this.props.disableStart}
                                 onClick={() => {cloakService.messageStartGame()}}>Start</button>
                             <button className={`btn  ${style.leaveGame}`} id="leave-room"
