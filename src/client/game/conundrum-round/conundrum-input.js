@@ -56,7 +56,6 @@ export class ConundrumInput extends Component {
     }
 
     render() {
-        console.log(this.props.answerTimerValue);
         const submitButton = (
             <div>
                 <button className={`btn btn-success ${style['submit-button']}`} onClick={() => this.submitAnswer.bind(this)()}>Submit</button>
