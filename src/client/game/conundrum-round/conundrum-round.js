@@ -43,8 +43,8 @@ export class ConundrumRound extends Component {
                     Conundrum
                 </h3>
                 {letterBoxes}
-                
-                {!this.props.roundResults? 
+
+                {!this.props.roundResults?
                     <ConundrumInput />
                 :
                     <ConundrumResults />

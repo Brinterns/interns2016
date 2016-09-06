@@ -7,6 +7,13 @@ import style from '../game.scss';
 import bannerStyles from './conundrum-round.scss';
 
 export class ConundrumResults extends Component {
+    constructor() {
+        super();
+        this.state = {
+            flippedLetterBoxes: false
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         if(nextProps.conundrumResults !== this.props.conundrumResults) {
             this.conundrumTimer = setTimeout(() => this.flipLetters(), 500);
@@ -14,20 +21,22 @@ export class ConundrumResults extends Component {
     }
 
     flipLetters() {
-        for(var i=0; i< this.props.conundrumResults.solution.length; i++){
-            this.refs[`letterBox${i}`].className += this.refs[`letterBox${i}`].className.includes(style.flipped) ? '' : ` ${style.flipped}` ;
-        }
+        this.setState({
+            flippedLetterBoxes: !this.state.flippedLetterBoxes
+        });
     }
 
     render() {
         const name = this.props.conundrumResults.winner !== undefined ? this.props.conundrumResults.winner.name : null;
 
+        const flipLetters = this.state.flippedLetterBoxes ? style.flipped : '';
+
         const letterBox = (letter, index) => (
             <div className={style.flip}>
-                <div className={style.card} ref={`letterBox${index}`}>
+                <div className={`${style.card} ${flipLetters}`}>
                     <div className={`${style.face} ${style.front}`}>
                     </div>
-                    <div ref={`letterCard${index}`} className={`${style.face} ${style.back}`}>
+                    <div className={`${style.face} ${style.back}`}>
                         <span className={style.cardInner}>{letter}</span>
                     </div>
                 </div>
