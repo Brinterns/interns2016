@@ -30,13 +30,12 @@ export default class DDoris extends Component {
                     </div>
                     <div className={style.bubble}>
                         <div className={style.conundrumSolution}>
-                            AYYYYLMAO WADDUP ITS YA BOI DDORIS
-                            OBVIOUSLY ITS {
+                             <span className={style.conundrumSolutionSolution}>{
                                 this.props.solution !== undefined ?
                                     this.props.solution.toUpperCase()
                                 :
                                     null
-                                }
+                                }</span>
                         </div>
                     </div>
                 </div>
