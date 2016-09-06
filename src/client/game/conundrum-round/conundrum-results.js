@@ -9,7 +9,7 @@ import bannerStyles from './conundrum-round.scss';
 export class ConundrumResults extends Component {
     componentWillReceiveProps(nextProps) {
         if(nextProps.conundrumResults !== this.props.conundrumResults) {
-            this.conundrumTimer = setTimeout(this.flipLetters.bind(this), 500);
+            this.conundrumTimer = setTimeout(() => this.flipLetters(), 500);
         }
     }
 
@@ -21,7 +21,7 @@ export class ConundrumResults extends Component {
 
     render() {
         const name = this.props.conundrumResults.winner !== undefined ? this.props.conundrumResults.winner.name : null;
-    
+
         const letterBox = (letter, index) => (
             <div className={style.flip}>
                 <div className={style.card} ref={`letterBox${index}`}>
@@ -52,10 +52,10 @@ export class ConundrumResults extends Component {
                             {name}
                         </div>
                     </div>
-                : 
+                :
                     <DDoris solution={this.props.conundrumResults.solution}/>
                 }
-                
+
             </div>
         );
     }

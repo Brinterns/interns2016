@@ -7,12 +7,12 @@ import ddoris from './ddoris.jpg';
 let dDorisTimer;
 export default class DDoris extends Component {
     componentWillMount() {
-        dDorisTimer = setTimeout(this.fadeDDoris.bind(this), 1000);
+        dDorisTimer = setTimeout(() => this.fadeDDoris(), 1000);
     }
 
     fadeDDoris() {
         this.refs['DDORIS'].className += ' ' + style.fade;
-    }  
+    }
 
     componentWillUnmount() {
         clearTimeout(dDorisTimer);
@@ -32,11 +32,11 @@ export default class DDoris extends Component {
                         <div className={style.conundrumSolution}>
                             AYYYYLMAO WADDUP ITS YA BOI DDORIS
                             OBVIOUSLY ITS {
-                                this.props.solution !== undefined ? 
-                                    this.props.solution.toUpperCase() 
-                                : 
+                                this.props.solution !== undefined ?
+                                    this.props.solution.toUpperCase()
+                                :
                                     null
-                                } 
+                                }
                         </div>
                     </div>
                 </div>
