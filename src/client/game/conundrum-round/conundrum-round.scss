@@ -1,5 +1,7 @@
+$banner-color: #009999;
+
 .banner {
-  background-color: #009999;
+  background-color: $banner-color;
   width: 50%;
   margin: 0 auto;
   line-height: 34px;
@@ -25,13 +27,13 @@
 }
 
 .banner.ribbon:before {
-  border-color: #009999 #009999 #009999 transparent;
+  border-color: $banner-color $banner-color $banner-color transparent;
   left: -25px;
   border-width: 17px;
 }
 
 .banner.ribbon:after {
-  border-color: #009999 transparent #009999 #009999;
+  border-color: $banner-color transparent $banner-color $banner-color;
   right: -25px;
   border-width: 17px;
 }
@@ -47,11 +49,11 @@
 }
 
 .banner.colours:before {
-  border-color: #009999 #009999 #009999 transparent;
+  border-color: $banner-color $banner-color $banner-color transparent;
 }
 
 .banner.colours:after {
-  border-color: #009999 transparent #009999 #009999;
+  border-color: $banner-color transparent $banner-color $banner-color;
 }
 
 .ddoris {
