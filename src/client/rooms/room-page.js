@@ -11,7 +11,7 @@ import DictionaryCorner from './dictionary-corner/dictionary-corner';
 import NumbersRound from '../game/numbers-round/numbers-round';
 import ReassuringMessages from './reassuring-messages/reassuring-messages';
 import ConundrumRound from '../game/conundrum-round/conundrum-round';
-import FinalScores from './final-scores.js';
+import FinalScores from './final-scores/final-scores';
 
 import { leaveGame, reInitialiseState } from '../game/game-actions';
 import storageService from '../services/storage-service';
@@ -78,7 +78,6 @@ export class RoomPage extends Component {
                     </div>
                     <div className="col-lg-4">
                         <UserList users={this.props.roomUsers} />
-                        <DictionaryCorner />
                     </div>
                     <div className="col-lg-8">
                         <button className={`btn ${style.startGame}`} id="start-game" disabled={this.props.disableStart}
@@ -89,7 +88,7 @@ export class RoomPage extends Component {
                     {!this.props.gameFinished ?
                         (this.props.started ? round : <ReassuringMessages />)
                     :
-                        <div>
+                        <div className="col-lg-8">
                             <FinalScores users={this.props.roomUsers} />
                         </div>
                     }

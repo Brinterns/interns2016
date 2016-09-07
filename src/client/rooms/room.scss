@@ -2,18 +2,18 @@ h1 {
     margin-bottom: 0px;
 }
 
-.timers{
+.timers {
    position: fixed;
    top: 0;
    width: 100%;
    z-index: 100;
 }
 
-.start-game{
+.start-game {
   background-color: #01a501;
 }
 
-.leave-game{
+.leave-game {
   background-color: #ce2020;
 }
 
@@ -81,4 +81,36 @@ h1 {
 .glosbe {
   text-align: center;
   font-style: italic;
+}
+
+.teapots {
+  height: 140px;
+  width: auto;
+  padding-right: 10px;
+}
+
+.wrapper {
+  border: none;
+  height: 150px;
+}
+
+.image {
+  width: 50%;
+}
+
+.data {
+  font-size: 150%;
+  font-weight: bold;
+  line-height: 6;
+}
+
+.loser-data {
+  font-size: 125%;
+  line-height: 6;
+  font-weight: bold;
+  font-family: Comic Sans, Comic Sans MS, cursive;
+}
+
+.name {
+  padding-right: 100px;
 }

@@ -1,4 +1,4 @@
-var answerTime = 30;
+var answerTime = 2;
 var conundrumTime = 35;
 var conundrumLength = 10;
 var submitTime = 15;
