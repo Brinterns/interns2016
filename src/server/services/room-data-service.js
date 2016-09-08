@@ -93,7 +93,6 @@ function setRounds(oldData, options) {
     oldData.conundrums.push(conundrums.splice(index, 1)[0]);
     roundList.push('C');
 
-    console.log(roundList);
     return roundList;
 }
 
