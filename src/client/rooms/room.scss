@@ -84,24 +84,35 @@ h1 {
 }
 
 .teapots {
-  height: 140px;
+  height: 50px;
   width: auto;
   padding-right: 10px;
 }
 
-.wrapper {
+.list-item {
   border: none;
-  height: 150px;
+  height: 125px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .image {
   width: 50%;
+  height: 100%;
+  line-height: 8;
+  text-align: left;
 }
 
 .data {
   font-size: 150%;
   font-weight: bold;
   line-height: 6;
+  text-align: right;
+  width: 50%;
 }
 
 .loser-data {
@@ -109,8 +120,10 @@ h1 {
   line-height: 6;
   font-weight: bold;
   font-family: Comic Sans, Comic Sans MS, cursive;
+  text-align: right;
+  width: 50%;
 }
 
 .name {
-  padding-right: 100px;
+  padding-right: 50px;
 }

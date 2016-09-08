@@ -40,50 +40,52 @@ export default class FinalScores extends Component {
         const loser = this.getLoser();
         return(
             <div>
-                <h2> Final Scores </h2>
-                <li className={`list-group-item ${style.wrapper}`}>
-                    <div className={`col-lg-4 ${style.image}`}>
-                        <img className={style.teapots} src={First} />
-                    </div>
-                    <div className={`col-lg-4 ${style.data}`}>
-                        <span className={style.name}>{winners[0].name}</span>
-                        <span>{winners[0].score}</span>
-                    </div>
-                </li>
-                <br />
-                <li className={`list-group-item ${style.wrapper}`}>
-                    <div className={`col-lg-4 ${style.image}`}>
-                        <img className={style.teapots} src={Second} />
-                    </div>
-                    <div className={`col-lg-4 ${style.data}`}>
-                        <span className={style.name}>{winners[1].name}</span>
-                        <span>{winners[1].score}</span>
-                    </div>
-                </li>
-                <br />
-                { this.props.users[2] ? 
-                    <li className={`list-group-item ${style.wrapper}`}>
-                        <div className={`col-lg-4 ${style.image}`}>
-                            <img className={style.teapots} src={Third} />
-                        </div>
+                <h2> Final Scores </h2> 
+                <div>
+                    <li className={`list-group-item ${style.listItem}`}>
                         <div className={`col-lg-4 ${style.data}`}>
-                            <span className={style.name}>{winners[2].name}</span>
-                            <span>{winners[2].score}</span>
+                            <span className={style.name}>{winners[0].name}</span>
+                            <span>{winners[0].score}</span>
                         </div>
-                    </li>
-                : null}
-                <br />
-                {loser !== undefined ? 
-                    <li className={`list-group-item ${style.wrapper}`}>
                         <div className={`col-lg-4 ${style.image}`}>
-                            <img className={style.teapots} src={Loser} />
-                        </div>
-                        <div className={`col-lg-4 ${style.loserData}`}>
-                            <span className={style.name}>{loser.name}</span>
-                            <span>{loser.score}</span>
+                            <img className={style.teapots} src={First} />
                         </div>
                     </li>
-                : null}
+                    <br />
+                    <li className={`list-group-item ${style.listItem}`}>
+                        <div className={`col-lg-4 ${style.data}`}>
+                            <span className={style.name}>{winners[1].name}</span>
+                            <span>{winners[1].score}</span>
+                        </div>
+                        <div className={`col-lg-4 ${style.image}`}>
+                            <img className={style.teapots} src={Second} />
+                        </div>
+                    </li>
+                    <br />
+                    {this.props.users[2] ? 
+                        <li className={`list-group-item ${style.listItem}`}>
+                            <div className={`col-lg-4 ${style.data}`}>
+                                <span className={style.name}>{winners[2].name}</span>
+                                <span>{winners[2].score}</span>
+                            </div>
+                            <div className={`col-lg-4 ${style.image}`}>
+                                <img className={style.teapots} src={Third} />
+                            </div>
+                        </li>
+                    : null}
+                    <br />
+                    {loser !== undefined ? 
+                        <li className={`list-group-item ${style.listItem}`}>
+                            <div className={`col-lg-4 ${style.loserData}`}>
+                                <span className={style.name}>{loser.name}</span>
+                                <span>{loser.score}</span>
+                            </div>
+                            <div className={`col-lg-4 ${style.image}`}>
+                                <img className={style.teapots} src={Loser} />
+                            </div>
+                        </li>
+                    : null}
+                </div>
             </div>
         )
     }
