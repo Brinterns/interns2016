@@ -11,6 +11,7 @@ import DictionaryCorner from './dictionary-corner/dictionary-corner';
 import NumbersRound from '../game/numbers-round/numbers-round';
 import ReassuringMessages from './reassuring-messages/reassuring-messages';
 import ConundrumRound from '../game/conundrum-round/conundrum-round';
+import FinalScores from './final-scores/final-scores';
 
 import { leaveGame, reInitialiseState } from '../game/game-actions';
 import storageService from '../services/storage-service';
@@ -88,8 +89,8 @@ export class RoomPage extends Component {
                     {!this.props.gameFinished ?
                         (this.props.started ? round : <ReassuringMessages />)
                     :
-                        <div>
-                            GAME DONE GJ GUYS
+                        <div className="col-lg-8">
+                            <FinalScores users={this.props.roomUsers} />
                         </div>
                     }
                 </div>
