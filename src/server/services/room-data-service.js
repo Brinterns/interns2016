@@ -81,11 +81,19 @@ function setRounds(oldData, options) {
         roundList.push('N');
     }
 
-    for(var i=0; i<options.rounds.conundrum; i++) {
+    for(var i=0; i<options.rounds.conundrum - 1; i++) {
         var index = Math.floor(Math.random() * (conundrums.length - 0));
         oldData.conundrums.push(conundrums.splice(index, 1)[0]);
         roundList.push('C');
     }
+
+    shuffle(roundList);
+
+    var index = Math.floor(Math.random() * (conundrums.length - 0));
+    oldData.conundrums.push(conundrums.splice(index, 1)[0]);
+    roundList.push('C');
+
+    console.log(roundList);
     return roundList;
 }
 
